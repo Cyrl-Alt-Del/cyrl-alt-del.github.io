@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Name — Academic</title>
+  <title>Cyril Birks — Academic</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Spectral+SC:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
 
   <style>
     /* ─────────────────────────────────────────
@@ -16,9 +16,10 @@
       --transition: 0.35s ease;
     }
 
-    [data-theme="dark"] {
+    html[data-theme="dark"] {
       --bg-base:        #0B1912;
       --bg-surface:     #111F17;
+      --bg-sidebar:     #0D2418;
       --bg-raised:      #192B20;
       --bg-overlay:     #1F3528;
       --border:         #2A4235;
@@ -45,9 +46,10 @@
       --glow:           rgba(45, 90, 61, 0.15);
     }
 
-    [data-theme="light"] {
+    html[data-theme="light"] {
       --bg-base:        #F2EDE4;
       --bg-surface:     #EDE8DF;
+      --bg-sidebar:     #DDE8DC;
       --bg-raised:      #E5DFD3;
       --bg-overlay:     #DDD7CA;
       --border:         #C5BEB0;
@@ -85,11 +87,11 @@
     }
 
     body {
-      font-family: 'Spectral', Georgia, serif;
+      font-family: 'DM Sans', sans-serif;
       font-weight: 400;
       background: var(--bg-base);
       color: var(--text-primary);
-      line-height: 1.75;
+      line-height: 1.7;
       transition: background var(--transition), color var(--transition);
       min-height: 100vh;
       overflow-x: hidden;
@@ -120,7 +122,7 @@
     a:hover { color: var(--blush); }
 
     h1, h2, h3, h4 {
-      font-family: 'EB Garamond', Georgia, serif;
+      font-family: 'Cormorant Garamond', Georgia, serif;
       font-weight: 500;
       line-height: 1.25;
       letter-spacing: 0.01em;
@@ -145,13 +147,13 @@
       left: 0;
       width: 280px;
       height: 100vh;
-      background: var(--bg-surface);
+      background: var(--bg-sidebar);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       padding: 2.5rem 2rem;
       z-index: 100;
-      transition: background var(--transition), border-color var(--transition);
+      transition: background var(--transition), border-color var(--transition), transform 0.3s ease;
       overflow-y: auto;
     }
 
@@ -176,7 +178,7 @@
     }
 
     .site-name {
-      font-family: 'EB Garamond', serif;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 1.45rem;
       font-weight: 600;
       color: var(--text-primary);
@@ -186,7 +188,7 @@
     }
 
     .site-role {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.62rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -232,7 +234,7 @@
     nav { margin-top: auto; }
 
     .nav-section-label {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.58rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
@@ -255,7 +257,7 @@
       gap: 0.75rem;
       padding: 0.5rem 0.75rem;
       border-radius: 3px;
-      font-family: 'EB Garamond', serif;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 1.05rem;
       color: var(--text-secondary);
       transition: all var(--transition);
@@ -299,7 +301,7 @@
       border: 1px solid var(--border);
       border-radius: 3px;
       padding: 0.45rem 0.85rem;
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.62rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -327,7 +329,7 @@
     }
 
     .social-link {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.58rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -378,7 +380,7 @@
     }
 
     .hero-eyebrow {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.65rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -398,7 +400,7 @@
     }
 
     .hero-name {
-      font-family: 'EB Garamond', serif;
+      font-family: 'Cormorant Garamond', serif;
       font-size: clamp(2.8rem, 4vw, 4.2rem);
       font-weight: 500;
       color: var(--text-primary);
@@ -433,38 +435,88 @@
       gap: 0.4rem;
       padding: 0.3rem 0.85rem;
       border-radius: 2px;
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.6rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       border: 1px solid;
+      cursor: default;
+      transition: all 0.2s ease;
     }
 
     .badge-green {
-      border-color: var(--green-deep);
-      color: var(--green-bright);
-      background: rgba(45, 90, 61, 0.12);
+      border-color: var(--green-mid);
+      color: #C8EDD8;
+      background: rgba(45, 90, 61, 0.35);
+    }
+
+    .badge-green:hover {
+      background: rgba(91, 163, 114, 0.25);
+      border-color: var(--green-bright);
+      box-shadow: 0 0 10px rgba(91, 163, 114, 0.4), 0 0 20px rgba(91, 163, 114, 0.15);
+      color: #E2F5EA;
     }
 
     .badge-navy {
-      border-color: var(--navy-mid);
-      color: var(--navy-bright);
-      background: rgba(11, 34, 64, 0.25);
+      border-color: var(--navy-bright);
+      color: #B8CCEC;
+      background: rgba(30, 77, 140, 0.35);
     }
 
-    [data-theme="light"] .badge-navy {
-      color: var(--navy-mid);
+    .badge-navy:hover {
+      background: rgba(30, 77, 140, 0.5);
+      border-color: #4A7BC4;
+      box-shadow: 0 0 10px rgba(30, 77, 140, 0.5), 0 0 20px rgba(30, 77, 140, 0.2);
+      color: #D6E4F7;
     }
 
     .badge-blush {
-      border-color: var(--blush-faint);
-      color: var(--blush);
-      background: rgba(201, 148, 154, 0.08);
+      border-color: var(--blush);
+      color: #EDD5D7;
+      background: rgba(201, 148, 154, 0.25);
     }
 
-    [data-theme="light"] .badge-blush {
-      border-color: var(--blush-faint);
-      background: rgba(160, 88, 95, 0.08);
+    .badge-blush:hover {
+      background: rgba(201, 148, 154, 0.35);
+      border-color: #DDA8AE;
+      box-shadow: 0 0 10px rgba(201, 148, 154, 0.4), 0 0 20px rgba(201, 148, 154, 0.15);
+      color: #F5E5E6;
+    }
+
+    html[data-theme="light"] .badge-green {
+      border-color: var(--green-mid);
+      color: #1A4A2C;
+      background: rgba(31, 74, 47, 0.12);
+    }
+
+    html[data-theme="light"] .badge-green:hover {
+      background: rgba(31, 74, 47, 0.22);
+      box-shadow: 0 0 10px rgba(45, 106, 66, 0.3), 0 0 20px rgba(45, 106, 66, 0.1);
+      color: #0F3019;
+    }
+
+    html[data-theme="light"] .badge-navy {
+      border-color: var(--navy-mid);
+      color: #0A1E40;
+      background: rgba(11, 31, 58, 0.1);
+    }
+
+    html[data-theme="light"] .badge-navy:hover {
+      background: rgba(11, 31, 58, 0.18);
+      box-shadow: 0 0 10px rgba(14, 43, 82, 0.25), 0 0 20px rgba(14, 43, 82, 0.1);
+      color: #060F20;
+    }
+
+    html[data-theme="light"] .badge-blush {
+      border-color: var(--blush);
+      color: #6B2428;
+      background: rgba(160, 88, 95, 0.12);
+    }
+
+    html[data-theme="light"] .badge-blush:hover {
+      background: rgba(160, 88, 95, 0.2);
+      box-shadow: 0 0 10px rgba(160, 88, 95, 0.3), 0 0 20px rgba(160, 88, 95, 0.1);
+      color: #4A1518;
     }
 
     /* ─────────────────────────────────────────
@@ -473,14 +525,9 @@
     .section {
       padding: 4.5rem 5rem;
       border-bottom: 1px solid var(--border-faint);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .section.visible {
       opacity: 1;
       transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
     .section-header {
@@ -490,17 +537,9 @@
       margin-bottom: 3rem;
     }
 
-    .section-number {
-      font-family: 'Spectral SC', serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.14em;
-      color: var(--blush);
-      opacity: 0.7;
-      flex-shrink: 0;
-    }
 
     .section-title {
-      font-family: 'EB Garamond', serif;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 1.75rem;
       font-weight: 500;
       color: var(--text-primary);
@@ -545,7 +584,7 @@
     }
 
     .aside-label {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.6rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -554,7 +593,7 @@
     }
 
     .aside-value {
-      font-family: 'EB Garamond', serif;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 1.05rem;
       color: var(--text-secondary);
       line-height: 1.5;
@@ -607,7 +646,7 @@
     }
 
     .card-type {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.58rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -615,7 +654,7 @@
     }
 
     .card-year {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.58rem;
       letter-spacing: 0.08em;
       color: var(--text-muted);
@@ -629,7 +668,7 @@
     }
 
     .card-title {
-      font-family: 'EB Garamond', serif;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 1.25rem;
       font-weight: 500;
       color: var(--text-primary);
@@ -646,7 +685,7 @@
     }
 
     .card-link {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.6rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -691,7 +730,7 @@
     }
 
     .pub-year {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.65rem;
       letter-spacing: 0.08em;
       color: var(--text-muted);
@@ -700,7 +739,7 @@
     .pub-content {}
 
     .pub-title {
-      font-family: 'EB Garamond', serif;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 1.1rem;
       font-weight: 500;
       color: var(--text-primary);
@@ -723,7 +762,7 @@
     }
 
     .pub-link {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.58rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -748,7 +787,7 @@
     }
 
     .cv-column-title {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.65rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -778,7 +817,7 @@
     }
 
     .cv-period {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.58rem;
       letter-spacing: 0.1em;
       color: var(--text-muted);
@@ -786,7 +825,7 @@
     }
 
     .cv-role {
-      font-family: 'EB Garamond', serif;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 1.05rem;
       font-weight: 500;
       color: var(--text-primary);
@@ -820,7 +859,7 @@
     }
 
     .cv-download-text {
-      font-family: 'EB Garamond', serif;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 1.05rem;
       color: var(--text-secondary);
     }
@@ -831,7 +870,7 @@
       gap: 0.5rem;
       padding: 0.55rem 1.4rem;
       border-radius: 2px;
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.62rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -897,7 +936,7 @@
     .contact-item:last-child { border-bottom: none; }
 
     .contact-label {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.58rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -925,14 +964,14 @@
     }
 
     .footer-copy {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.58rem;
       letter-spacing: 0.1em;
       color: var(--text-muted);
     }
 
     .footer-built {
-      font-family: 'Spectral SC', serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.58rem;
       letter-spacing: 0.08em;
       color: var(--text-muted);
@@ -1050,10 +1089,10 @@
     <aside class="sidebar" id="sidebar">
 
       <div class="site-identity">
-        <div class="site-name">Your Name</div>
+        <div class="site-name">Cyril Birks</div>
         <div class="site-role">
           Doctoral Researcher<br>
-          Moral Philosopher & Engineer
+          Moral Philosopher &amp; Engineer
         </div>
         <div class="site-rule"></div>
         <div class="affiliation-block">
@@ -1064,6 +1103,10 @@
           <div class="affiliation-item">
             <span class="affiliation-dot navy"></span>
             <span>University of Oxford<br>Oxford Internet Institute</span>
+          </div>
+          <div class="affiliation-item">
+            <span class="affiliation-dot"></span>
+            <span>University of St Andrews<br>Alma Mater</span>
           </div>
           <div class="affiliation-item">
             <span class="affiliation-dot blush"></span>
@@ -1105,19 +1148,21 @@
 
       <!-- HERO -->
       <header class="hero">
-        <div class="hero-eyebrow">Academic · Edinburgh &amp; Oxford</div>
-        <h1 class="hero-name">Cyril Birks<br></h1>
+        <div class="hero-eyebrow">Edinburgh · Oxford · St Andrews</div>
+        <h1 class="hero-name">Cyril Birks</h1>
         <p class="hero-desc">
-          I am a doctoral researcher in Informatics (Artificial Intelligence) at the
-          University of Edinburgh, with a background in moral philosophy from
-          the University of Oxford. My work sits at the intersection of
-          ethical theory and machine intelligence.
+          I am a UKRI-funded Doctoral Researcher in Artificial Intelligence trying to
+          maximise the risk-adjusted rewards of innovation, particularly AI. I am optimistic
+          about the future, prudent about risks, and chasing an ever-expanding wave of
+          human flourishing.
         </p>
         <div class="hero-badges">
           <span class="badge badge-green">AI &amp; Ethics</span>
           <span class="badge badge-navy">Philosophy of Mind</span>
           <span class="badge badge-green">Machine Learning</span>
           <span class="badge badge-navy">Normative Theory</span>
+          <span class="badge badge-green">Cognitive Warfare</span>
+          <span class="badge badge-navy">Defence Ethics</span>
           <span class="badge badge-blush">UKRI Scholar</span>
         </div>
       </header>
@@ -1125,7 +1170,6 @@
       <!-- ABOUT -->
       <section class="section" id="about">
         <div class="section-header">
-          <span class="section-number">01</span>
           <h2 class="section-title">About</h2>
           <div class="section-rule"></div>
         </div>
@@ -1134,20 +1178,19 @@
           <div class="about-text">
             <p>
               I am a <strong>PhD candidate in Informatics</strong> at the University of Edinburgh,
-              funded by the UKRI. Before moving into AI research, I read philosophy at Oxford,
-              where my work focused on moral theory, practical reason, and the foundations of
-              ethical normativity.
+              funded by the UKRI. Before moving into AI research, I read philosophy and psychology,
+              with a focus on moral philosophy, philosophy of mind, and behavioural neuroscience
+              and cognition.
             </p>
             <p>
-              My current research explores [describe your research area — e.g., value alignment,
-              AI safety, machine ethics, interpretability]. I am interested in how classical
-              philosophical frameworks can inform and challenge the way we design, evaluate, and
-              govern intelligent systems.
+              Before my PhD, I spent time as an investment strategist with Invesco's Global Market
+              Strategy team, producing research for investment opportunities in emerging technologies
+              and macroeconomic trends given geopolitical crises.
             </p>
             <p>
-              I am a member of [relevant research group / lab] at Edinburgh and maintain
-              affiliations with [Oxford unit / group]. I am committed to interdisciplinary work
-              that bridges the technical and humanistic dimensions of artificial intelligence.
+              My research is inspired by moral philosophy, cognitive science, and temporal dynamics.
+              I am interested in how classical philosophical frameworks can inform and challenge the
+              way we design, evaluate, and govern intelligent systems.
             </p>
           </div>
           <div class="about-aside">
@@ -1157,26 +1200,28 @@
                 AI Ethics &amp; Alignment<br>
                 Moral Philosophy<br>
                 Normative Theory<br>
-                Philosophy of Action<br>
-                [Your area here]
+                Philosophy of Mind<br>
+                Cognitive Warfare<br>
+                Defence Ethics
               </div>
             </div>
             <div class="aside-block">
               <div class="aside-label">Institutions</div>
               <div class="aside-value">
                 University of Edinburgh<br>
-                University of Oxford
+                University of Oxford<br>
+                University of St Andrews
               </div>
             </div>
             <div class="aside-block">
               <div class="aside-label">Funding</div>
-              <div class="aside-value">UKRI [scheme name]</div>
+              <div class="aside-value">UKRI (Designing Responsible<br>Natural Language Programming)</div>
             </div>
             <div class="aside-block">
               <div class="aside-label">Supervisors</div>
               <div class="aside-value">
-                Prof. [Name] (Edinburgh)<br>
-                [Name] (Oxford)
+                Dr. Neil Bramley<br>
+                <span style="font-size:0.9rem;opacity:0.8;">Computational Cognitive Science Lab<br>University of Edinburgh</span>
               </div>
             </div>
           </div>
@@ -1186,7 +1231,6 @@
       <!-- RESEARCH -->
       <section class="section" id="research">
         <div class="section-header">
-          <span class="section-number">02</span>
           <h2 class="section-title">Research</h2>
           <div class="section-rule"></div>
         </div>
@@ -1242,7 +1286,6 @@
       <!-- PUBLICATIONS -->
       <section class="section" id="publications">
         <div class="section-header">
-          <span class="section-number">03</span>
           <h2 class="section-title">Publications</h2>
           <div class="section-rule"></div>
         </div>
@@ -1256,6 +1299,10 @@
             <div class="pub-content">
               <div class="pub-title">Paper Title: Subtitle</div>
               <div class="pub-venue">Journal Name / Conference Name, Vol. X, No. Y</div>
+              <div class="pub-tags" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;">
+                <a href="#research" class="badge badge-green">AI &amp; Ethics</a>
+                <a href="#research" class="badge badge-navy">Normative Theory</a>
+              </div>
               <div class="pub-links">
                 <a href="#" class="pub-link">DOI</a>
                 <a href="#" class="pub-link">PDF</a>
@@ -1271,6 +1318,10 @@
             <div class="pub-content">
               <div class="pub-title">Another Published Paper Title</div>
               <div class="pub-venue">Journal Name / Conference Proceedings</div>
+              <div class="pub-tags" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;">
+                <a href="#research" class="badge badge-navy">Defence Ethics</a>
+                <a href="#research" class="badge badge-green">Cognitive Warfare</a>
+              </div>
               <div class="pub-links">
                 <a href="#" class="pub-link">DOI</a>
                 <a href="#" class="pub-link">PDF</a>
@@ -1285,6 +1336,10 @@
             <div class="pub-content">
               <div class="pub-title">A Third Published Work</div>
               <div class="pub-venue">Book Chapter / Edited Volume Name</div>
+              <div class="pub-tags" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;">
+                <a href="#about" class="badge badge-green">Moral Philosophy</a>
+                <a href="#about" class="badge badge-navy">Philosophy of Mind</a>
+              </div>
               <div class="pub-links">
                 <a href="#" class="pub-link">Publisher</a>
                 <a href="#" class="pub-link">PDF</a>
@@ -1299,6 +1354,10 @@
             <div class="pub-content">
               <div class="pub-title">Forthcoming Work Title (under review)</div>
               <div class="pub-venue">Under review at Journal Name</div>
+              <div class="pub-tags" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;">
+                <a href="#research" class="badge badge-green">Machine Learning</a>
+                <a href="#research" class="badge badge-blush">UKRI Scholar</a>
+              </div>
               <div class="pub-links">
                 <a href="#" class="pub-link">Preprint</a>
               </div>
@@ -1311,7 +1370,6 @@
       <!-- WRITING -->
       <section class="section" id="writing">
         <div class="section-header">
-          <span class="section-number">04</span>
           <h2 class="section-title">Writing</h2>
           <div class="section-rule"></div>
         </div>
@@ -1352,7 +1410,6 @@
       <!-- CV -->
       <section class="section" id="cv">
         <div class="section-header">
-          <span class="section-number">05</span>
           <h2 class="section-title">Curriculum Vitae</h2>
           <div class="section-rule"></div>
         </div>
@@ -1451,7 +1508,6 @@
       <!-- CONTACT -->
       <section class="section" id="contact">
         <div class="section-header">
-          <span class="section-number">06</span>
           <h2 class="section-title">Contact</h2>
           <div class="section-rule"></div>
         </div>
@@ -1473,7 +1529,7 @@
             <div class="contact-item">
               <span class="contact-label">Email</span>
               <span class="contact-value">
-                <a href="mailto:you@ed.ac.uk">you@ed.ac.uk</a>
+                <a href="/cdn-cgi/l/email-protection#fd849288bd9899d39c9ed38896"><span class="__cf_email__" data-cfemail="e59c8a90a58081cb8486cb908e">[email&#160;protected]</span></a>
               </span>
             </div>
 
@@ -1506,11 +1562,11 @@
       <!-- FOOTER -->
       <footer class="site-footer">
         <span class="footer-copy">
-          © <span id="year"></span> Your Name. All rights reserved.
+          © <span id="year"></span> Cyril Birks. All rights reserved.
         </span>
         <span class="footer-built">
           University of Edinburgh <span class="footer-accent">·</span>
-          University of Oxford <span class="footer-accent">·</span>
+          Oxford Internet Institute <span class="footer-accent">·</span>
           UKRI
         </span>
       </footer>
@@ -1528,7 +1584,7 @@
 
     function applyTheme(theme) {
       html.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
+      try { localStorage.setItem('theme', theme); } catch(e) {}
       if (theme === 'dark') {
         icon.textContent  = '☀';
         label.textContent = 'Light Mode';
@@ -1538,8 +1594,10 @@
       }
     }
 
-    const saved = localStorage.getItem('theme');
-    if (saved) applyTheme(saved);
+    try {
+      const saved = localStorage.getItem('theme');
+      if (saved) applyTheme(saved);
+    } catch(e) {}
 
     btn.addEventListener('click', () => {
       const current = html.getAttribute('data-theme');
@@ -1586,6 +1644,7 @@
         }
       });
     }, { threshold: 0.08 });
+
 
     document.querySelectorAll('.section').forEach(s => sectionObserver.observe(s));
 
