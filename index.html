@@ -9,819 +9,231 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
 
   <style>
-    /* ─────────────────────────────────────────
-       DESIGN TOKENS
-    ───────────────────────────────────────── */
-    :root {
-      --transition: 0.35s ease;
-    }
+    :root { --transition: 0.35s ease; }
 
     html[data-theme="dark"] {
-      --bg-base:        #060E09;
-      --bg-surface:     #0A1610;
-      --bg-sidebar:     #0D2418;
-      --bg-raised:      #111F17;
-      --bg-overlay:     #172C1E;
-      --border:         #1E3328;
-      --border-faint:   #121E15;
-
-      --green-deep:     #2D5A3D;
-      --green-mid:      #3D7A54;
-      --green-bright:   #5BA372;
-
-      --navy:           #0B2240;
-      --navy-mid:       #163665;
-      --navy-bright:    #1E4D8C;
-
-      --blush:          #C9949A;
-      --blush-faint:    #7A3D43;
-
-      --text-primary:   #E2DDD4;
-      --text-secondary: #A8A49C;
-      --text-muted:     #6B6860;
-      --text-accent:    #8ABF9E;
-
-      --rule:           #2A4235;
-      --shadow:         rgba(0, 0, 0, 0.5);
-      --glow:           rgba(45, 90, 61, 0.15);
+      --bg-base: #060E09; --bg-surface: #0A1610; --bg-sidebar: #0D2418;
+      --bg-raised: #111F17; --bg-overlay: #172C1E; --border: #1E3328;
+      --border-faint: #121E15; --green-deep: #2D5A3D; --green-mid: #3D7A54;
+      --green-bright: #5BA372; --navy: #0B2240; --navy-mid: #163665;
+      --navy-bright: #1E4D8C; --blush: #C9949A; --blush-faint: #7A3D43;
+      --text-primary: #E2DDD4; --text-secondary: #A8A49C; --text-muted: #6B6860;
+      --text-accent: #8ABF9E; --rule: #2A4235; --shadow: rgba(0,0,0,.5);
+      --glow: rgba(45,90,61,.15);
     }
 
     html[data-theme="light"] {
-      --bg-base:        #F2EDE4;
-      --bg-surface:     #EDE8DF;
-      --bg-sidebar:     #DDE8DC;
-      --bg-raised:      #E5DFD3;
-      --bg-overlay:     #DDD7CA;
-      --border:         #C5BEB0;
-      --border-faint:   #D8D2C5;
-
-      --green-deep:     #1F4A2F;
-      --green-mid:      #2D6A42;
-      --green-bright:   #3D8A56;
-
-      --navy:           #0B1F3A;
-      --navy-mid:       #0E2B52;
-      --navy-bright:    #163D75;
-
-      --blush:          #A0585F;
-      --blush-faint:    #E8C8CB;
-
-      --text-primary:   #1A1714;
-      --text-secondary: #4A453E;
-      --text-muted:     #7A7268;
-      --text-accent:    #2D6A42;
-
-      --rule:           #B8B2A4;
-      --shadow:         rgba(0, 0, 0, 0.12);
-      --glow:           rgba(45, 106, 66, 0.08);
+      --bg-base: #F2EDE4; --bg-surface: #EDE8DF; --bg-sidebar: #DDE8DC;
+      --bg-raised: #E5DFD3; --bg-overlay: #DDD7CA; --border: #C5BEB0;
+      --border-faint: #D8D2C5; --green-deep: #1F4A2F; --green-mid: #2D6A42;
+      --green-bright: #3D8A56; --navy: #0B1F3A; --navy-mid: #0E2B52;
+      --navy-bright: #163D75; --blush: #A0585F; --blush-faint: #E8C8CB;
+      --text-primary: #1A1714; --text-secondary: #4A453E; --text-muted: #7A7268;
+      --text-accent: #2D6A42; --rule: #B8B2A4; --shadow: rgba(0,0,0,.12);
+      --glow: rgba(45,106,66,.08);
     }
 
-    /* ─────────────────────────────────────────
-       RESET & BASE
-    ───────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html {
-      scroll-behavior: smooth;
-      font-size: 17px;
-    }
+    html { scroll-behavior: smooth; font-size: 17px; }
 
     body {
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 400;
-      background: var(--bg-base);
-      color: var(--text-primary);
-      line-height: 1.7;
-      transition: background var(--transition), color var(--transition);
-      min-height: 100vh;
-      overflow-x: hidden;
+      font-family: 'DM Sans', sans-serif; font-weight: 400;
+      background: var(--bg-base); color: var(--text-primary);
+      line-height: 1.7; transition: background var(--transition), color var(--transition);
+      min-height: 100vh; overflow-x: hidden;
     }
 
-    /* Subtle grain texture overlay */
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
+      content: ''; position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 999;
-      opacity: 0.35;
+      pointer-events: none; z-index: 999; opacity: 0.35;
     }
 
-    ::selection {
-      background: var(--green-deep);
-      color: var(--text-primary);
-    }
-
-    a {
-      color: var(--text-accent);
-      text-decoration: none;
-      transition: color var(--transition);
-    }
-
+    ::selection { background: var(--green-deep); color: var(--text-primary); }
+    a { color: var(--text-accent); text-decoration: none; transition: color var(--transition); }
     a:hover { color: var(--blush); }
-
-    h1, h2, h3, h4 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-weight: 500;
-      line-height: 1.25;
-      letter-spacing: 0.01em;
-    }
-
+    h1, h2, h3, h4 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; line-height: 1.25; letter-spacing: 0.01em; }
     p { margin-bottom: 1.1em; }
     p:last-child { margin-bottom: 0; }
 
-    /* ─────────────────────────────────────────
-       LAYOUT
-    ───────────────────────────────────────── */
-    .layout {
-      min-height: 100vh;
-    }
+    .layout { min-height: 100vh; }
 
-    /* ─────────────────────────────────────────
-       SIDEBAR
-    ───────────────────────────────────────── */
     .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 280px;
-      height: 100vh;
-      background: var(--bg-sidebar);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      padding: 2.5rem 2rem;
-      z-index: 100;
-      transition: background var(--transition), border-color var(--transition), transform 0.3s ease;
+      position: fixed; top: 0; left: 0; width: 280px; height: 100vh;
+      background: var(--bg-sidebar); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; padding: 2.5rem 2rem;
+      z-index: 100; transition: background var(--transition), border-color var(--transition), transform 0.3s ease;
       overflow-y: auto;
     }
 
     .sidebar::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: -1px;
-      width: 3px;
-      height: 100%;
-      background: linear-gradient(to bottom,
-        transparent,
-        var(--green-deep) 20%,
-        var(--green-deep) 80%,
-        transparent
-      );
+      content: ''; position: absolute; top: 0; right: -1px; width: 3px; height: 100%;
+      background: linear-gradient(to bottom, transparent, var(--green-deep) 20%, var(--green-deep) 80%, transparent);
       opacity: 0.4;
     }
 
-    .site-identity {
-      margin-bottom: 2.5rem;
-    }
-
-    .site-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.45rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      line-height: 1.2;
-      letter-spacing: 0.02em;
-      margin-bottom: 0.35rem;
-    }
-
-    .site-role {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    .site-rule {
-      width: 2rem;
-      height: 1px;
-      background: var(--green-mid);
-      margin: 1.2rem 0;
-      opacity: 0.7;
-    }
-
-    .affiliation-block {
-      margin-bottom: 2rem;
-    }
-
-    .affiliation-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.6rem;
-      margin-bottom: 0.6rem;
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      line-height: 1.4;
-    }
-
-    .affiliation-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--green-mid);
-      flex-shrink: 0;
-      margin-top: 0.42rem;
-    }
-
+    .site-identity { margin-bottom: 2.5rem; }
+    .site-name { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 600; color: var(--text-primary); line-height: 1.2; letter-spacing: 0.02em; margin-bottom: 0.35rem; }
+    .site-role { font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); line-height: 1.5; }
+    .site-rule { width: 2rem; height: 1px; background: var(--green-mid); margin: 1.2rem 0; opacity: 0.7; }
+    .affiliation-block { margin-bottom: 2rem; }
+    .affiliation-item { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; }
+    .affiliation-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green-mid); flex-shrink: 0; margin-top: 0.42rem; }
     .affiliation-dot.navy { background: var(--navy-bright); }
     .affiliation-dot.blush { background: var(--blush); }
 
-    /* Nav */
     nav { margin-top: auto; }
-
-    .nav-section-label {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.58rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 1px solid var(--border-faint);
-    }
-
-    .nav-list {
-      list-style: none;
-      margin-bottom: 2rem;
-    }
-
+    .nav-section-label { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border-faint); }
+    .nav-list { list-style: none; margin-bottom: 2rem; }
     .nav-list li { margin-bottom: 0.1rem; }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.5rem 0.75rem;
-      border-radius: 3px;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
-      color: var(--text-secondary);
-      transition: all var(--transition);
-      position: relative;
-    }
-
-    .nav-link::before {
-      content: '';
-      width: 2px;
-      height: 0;
-      background: var(--blush);
-      border-radius: 2px;
-      transition: height 0.2s ease;
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-      color: var(--text-primary);
-      background: var(--bg-raised);
-    }
-
-    .nav-link:hover::before,
-    .nav-link.active::before {
-      height: 1.1em;
-    }
-
+    .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 3px; font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-secondary); transition: all var(--transition); position: relative; }
+    .nav-link::before { content: ''; width: 2px; height: 0; background: var(--blush); border-radius: 2px; transition: height 0.2s ease; }
+    .nav-link:hover, .nav-link.active { color: var(--text-primary); background: var(--bg-raised); }
+    .nav-link:hover::before, .nav-link.active::before { height: 1.1em; }
     .nav-link.active { color: var(--text-accent); }
 
-    /* Theme toggle */
-    .theme-toggle-wrap {
-      margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border-faint);
-    }
-
-    .theme-toggle {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      padding: 0.45rem 0.85rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all var(--transition);
-      width: 100%;
-      justify-content: center;
-    }
-
-    .theme-toggle:hover {
-      border-color: var(--green-mid);
-      color: var(--text-primary);
-      background: var(--bg-raised);
-    }
-
+    .theme-toggle-wrap { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-faint); }
+    .theme-toggle { display: flex; align-items: center; gap: 0.6rem; background: none; border: 1px solid var(--border); border-radius: 3px; padding: 0.45rem 0.85rem; font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); cursor: pointer; transition: all var(--transition); width: 100%; justify-content: center; }
+    .theme-toggle:hover { border-color: var(--green-mid); color: var(--text-primary); background: var(--bg-raised); }
     .toggle-icon { font-size: 0.9rem; }
 
-    /* Social links */
-    .social-links {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-    }
+    .social-links { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+    .social-link { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: all var(--transition); }
+    .social-link:hover { color: var(--blush); border-color: var(--blush); }
 
-    .social-link {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.58rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1px;
-      transition: all var(--transition);
-    }
+    .main { margin-left: 280px; min-height: 100vh; }
 
-    .social-link:hover {
-      color: var(--blush);
-      border-color: var(--blush);
-    }
-
-    /* ─────────────────────────────────────────
-       MAIN CONTENT
-    ───────────────────────────────────────── */
-    .main {
-      margin-left: 280px;
-      min-height: 100vh;
-    }
-
-    /* ─────────────────────────────────────────
-       HERO
-    ───────────────────────────────────────── */
     .hero {
-      padding: 6rem 5rem 5rem;
-      position: relative;
-      border-bottom: 1px solid var(--border);
-      background: linear-gradient(
-        135deg,
-        var(--bg-base) 0%,
-        var(--bg-surface) 100%
-      );
-      overflow: hidden;
+      padding: 6rem 5rem 5rem; position: relative; border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, var(--bg-base) 0%, var(--bg-surface) 100%); overflow: hidden;
     }
+    .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, var(--glow) 0%, transparent 70%); pointer-events: none; }
+    .hero-eyebrow { font-family: 'DM Sans', sans-serif; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.8rem; }
+    .hero-eyebrow::after { content: ''; width: 2.5rem; height: 1px; background: var(--green-mid); opacity: 0.6; }
+    .hero-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 4vw, 4.2rem); font-weight: 500; color: var(--text-primary); line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.01em; }
+    .hero-name em { font-style: italic; color: var(--text-secondary); }
+    .hero-desc { font-size: 1.12rem; color: var(--text-secondary); max-width: 580px; line-height: 1.75; font-weight: 300; }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2.5rem; }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -80px;
-      right: -80px;
-      width: 400px;
-      height: 400px;
-      border-radius: 50%;
-      background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
-      pointer-events: none;
-    }
+    .badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.85rem; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; cursor: default; transition: all 0.2s ease; }
+    .badge-green { border-color: var(--green-mid); color: #C8EDD8; background: rgba(45,90,61,.35); }
+    .badge-green:hover { background: rgba(91,163,114,.25); border-color: var(--green-bright); box-shadow: 0 0 10px rgba(91,163,114,.4), 0 0 20px rgba(91,163,114,.15); color: #E2F5EA; }
+    .badge-navy { border-color: var(--navy-bright); color: #B8CCEC; background: rgba(30,77,140,.35); }
+    .badge-navy:hover { background: rgba(30,77,140,.5); border-color: #4A7BC4; box-shadow: 0 0 10px rgba(30,77,140,.5), 0 0 20px rgba(30,77,140,.2); color: #D6E4F7; }
+    .badge-blush { border-color: var(--blush); color: #EDD5D7; background: rgba(201,148,154,.25); }
+    .badge-blush:hover { background: rgba(201,148,154,.35); border-color: #DDA8AE; box-shadow: 0 0 10px rgba(201,148,154,.4), 0 0 20px rgba(201,148,154,.15); color: #F5E5E6; }
 
-    .hero-eyebrow {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--green-bright);
-      margin-bottom: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
+    html[data-theme="light"] .badge-green { border-color: var(--green-mid); color: #1A4A2C; background: rgba(31,74,47,.12); }
+    html[data-theme="light"] .badge-green:hover { background: rgba(31,74,47,.22); box-shadow: 0 0 10px rgba(45,106,66,.3), 0 0 20px rgba(45,106,66,.1); color: #0F3019; }
+    html[data-theme="light"] .badge-navy { border-color: var(--navy-mid); color: #0A1E40; background: rgba(11,31,58,.1); }
+    html[data-theme="light"] .badge-navy:hover { background: rgba(11,31,58,.18); box-shadow: 0 0 10px rgba(14,43,82,.25), 0 0 20px rgba(14,43,82,.1); color: #060F20; }
+    html[data-theme="light"] .badge-blush { border-color: var(--blush); color: #6B2428; background: rgba(160,88,95,.12); }
+    html[data-theme="light"] .badge-blush:hover { background: rgba(160,88,95,.2); box-shadow: 0 0 10px rgba(160,88,95,.3), 0 0 20px rgba(160,88,95,.1); color: #4A1518; }
 
-    .hero-eyebrow::after {
-      content: '';
-      width: 2.5rem;
-      height: 1px;
-      background: var(--green-mid);
-      opacity: 0.6;
-    }
+    .section { padding: 4.5rem 5rem; border-bottom: 1px solid var(--border-faint); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 500; color: var(--text-primary); letter-spacing: 0.02em; flex-grow: 1; }
+    .section-rule { flex-grow: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
 
-    .hero-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.8rem, 4vw, 4.2rem);
-      font-weight: 500;
-      color: var(--text-primary);
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-      letter-spacing: -0.01em;
-    }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .about-text { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.85; font-weight: 300; }
+    .about-text strong { font-weight: 500; color: var(--text-primary); }
+    .about-aside { border-left: 2px solid var(--green-deep); padding-left: 1.75rem; }
+    .aside-block { margin-bottom: 2rem; }
+    .aside-label { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .aside-value { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-secondary); line-height: 1.5; }
 
-    .hero-name em {
-      font-style: italic;
-      color: var(--text-secondary);
-    }
-
-    .hero-desc {
-      font-size: 1.12rem;
-      color: var(--text-secondary);
-      max-width: 580px;
-      line-height: 1.75;
-      font-weight: 300;
-    }
-
-    .hero-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-top: 2.5rem;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.3rem 0.85rem;
-      border-radius: 2px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      border: 1px solid;
-      cursor: default;
-      transition: all 0.2s ease;
-    }
-
-    .badge-green {
-      border-color: var(--green-mid);
-      color: #C8EDD8;
-      background: rgba(45, 90, 61, 0.35);
-    }
-
-    .badge-green:hover {
-      background: rgba(91, 163, 114, 0.25);
-      border-color: var(--green-bright);
-      box-shadow: 0 0 10px rgba(91, 163, 114, 0.4), 0 0 20px rgba(91, 163, 114, 0.15);
-      color: #E2F5EA;
-    }
-
-    .badge-navy {
-      border-color: var(--navy-bright);
-      color: #B8CCEC;
-      background: rgba(30, 77, 140, 0.35);
-    }
-
-    .badge-navy:hover {
-      background: rgba(30, 77, 140, 0.5);
-      border-color: #4A7BC4;
-      box-shadow: 0 0 10px rgba(30, 77, 140, 0.5), 0 0 20px rgba(30, 77, 140, 0.2);
-      color: #D6E4F7;
-    }
-
-    .badge-blush {
-      border-color: var(--blush);
-      color: #EDD5D7;
-      background: rgba(201, 148, 154, 0.25);
-    }
-
-    .badge-blush:hover {
-      background: rgba(201, 148, 154, 0.35);
-      border-color: #DDA8AE;
-      box-shadow: 0 0 10px rgba(201, 148, 154, 0.4), 0 0 20px rgba(201, 148, 154, 0.15);
-      color: #F5E5E6;
-    }
-
-    html[data-theme="light"] .badge-green {
-      border-color: var(--green-mid);
-      color: #1A4A2C;
-      background: rgba(31, 74, 47, 0.12);
-    }
-
-    html[data-theme="light"] .badge-green:hover {
-      background: rgba(31, 74, 47, 0.22);
-      box-shadow: 0 0 10px rgba(45, 106, 66, 0.3), 0 0 20px rgba(45, 106, 66, 0.1);
-      color: #0F3019;
-    }
-
-    html[data-theme="light"] .badge-navy {
-      border-color: var(--navy-mid);
-      color: #0A1E40;
-      background: rgba(11, 31, 58, 0.1);
-    }
-
-    html[data-theme="light"] .badge-navy:hover {
-      background: rgba(11, 31, 58, 0.18);
-      box-shadow: 0 0 10px rgba(14, 43, 82, 0.25), 0 0 20px rgba(14, 43, 82, 0.1);
-      color: #060F20;
-    }
-
-    html[data-theme="light"] .badge-blush {
-      border-color: var(--blush);
-      color: #6B2428;
-      background: rgba(160, 88, 95, 0.12);
-    }
-
-    html[data-theme="light"] .badge-blush:hover {
-      background: rgba(160, 88, 95, 0.2);
-      box-shadow: 0 0 10px rgba(160, 88, 95, 0.3), 0 0 20px rgba(160, 88, 95, 0.1);
-      color: #4A1518;
-    }
-
-    /* ─────────────────────────────────────────
-       SECTIONS
-    ───────────────────────────────────────── */
-    .section {
-      padding: 4.5rem 5rem;
-      border-bottom: 1px solid var(--border-faint);
-      opacity: 1;
-      transform: translateY(0);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-
-
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.75rem;
-      font-weight: 500;
-      color: var(--text-primary);
-      letter-spacing: 0.02em;
-      flex-grow: 1;
-    }
-
-    .section-rule {
-      flex-grow: 1;
-      height: 1px;
-      background: linear-gradient(to right, var(--border), transparent);
-    }
-
-    /* ─────────────────────────────────────────
-       ABOUT
-    ───────────────────────────────────────── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-    }
-
-    .about-text {
-      font-size: 1.05rem;
-      color: var(--text-secondary);
-      line-height: 1.85;
-      font-weight: 300;
-    }
-
-    .about-text strong {
-      font-weight: 500;
-      color: var(--text-primary);
-    }
-
-    .about-aside {
-      border-left: 2px solid var(--green-deep);
-      padding-left: 1.75rem;
-    }
-
-    .aside-block {
-      margin-bottom: 2rem;
-    }
-
-    .aside-label {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.6rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
-    }
-
-    .aside-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    /* ─────────────────────────────────────────
-       RESEARCH / WRITING
-    ───────────────────────────────────────── */
-    .research-grid {
-      display: grid;
-      gap: 1.25rem;
-    }
-
-    .research-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      padding: 1.75rem 2rem;
-      transition: all var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .research-card::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 3px;
-      height: 100%;
-      background: var(--green-deep);
-      transform: scaleY(0);
-      transform-origin: bottom;
-      transition: transform 0.3s ease;
-    }
-
+    .research-grid { display: grid; gap: 1.25rem; }
+    .research-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 2px; padding: 1.75rem 2rem; transition: all var(--transition); position: relative; overflow: hidden; }
+    .research-card::before { content: ''; position: absolute; left: 0; top: 0; width: 3px; height: 100%; background: var(--green-deep); transform: scaleY(0); transform-origin: bottom; transition: transform 0.3s ease; }
     .research-card:hover::before { transform: scaleY(1); }
-
-    .research-card:hover {
-      background: var(--bg-raised);
-      border-color: var(--green-deep);
-    }
-
-    .card-meta {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .card-type {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.58rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--blush);
-    }
-
-    .card-year {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.58rem;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-    }
-
-    .card-dot {
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: var(--border);
-    }
-
-    .card-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin-bottom: 0.6rem;
-      line-height: 1.35;
-    }
-
-    .card-desc {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      font-weight: 300;
-      line-height: 1.65;
-      margin-bottom: 1rem;
-    }
-
-    .card-link {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-accent);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1px;
-      transition: all var(--transition);
-    }
-
-    .card-link:hover {
-      color: var(--blush);
-      border-color: var(--blush);
-    }
-
+    .research-card:hover { background: var(--bg-raised); border-color: var(--green-deep); }
+    .card-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+    .card-type { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blush); }
+    .card-year { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.08em; color: var(--text-muted); }
+    .card-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border); }
+    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 500; color: var(--text-primary); margin-bottom: 0.6rem; line-height: 1.35; }
+    .card-desc { font-size: 0.9rem; color: var(--text-secondary); font-weight: 300; line-height: 1.65; margin-bottom: 1rem; }
+    .card-link { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-accent); display: inline-flex; align-items: center; gap: 0.4rem; border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: all var(--transition); }
+    .card-link:hover { color: var(--blush); border-color: var(--blush); }
     .card-link::after { content: '→'; }
 
-    /* ─────────────────────────────────────────
-       PUBLICATIONS
-    ───────────────────────────────────────── */
-    .pub-list {
-      display: grid;
-      gap: 0;
-    }
-
-    .pub-item {
-      display: grid;
-      grid-template-columns: 4rem 1fr;
-      gap: 1.25rem;
-      padding: 1.5rem 0;
-      border-bottom: 1px solid var(--border-faint);
-      transition: background var(--transition);
-    }
-
+    .pub-list { display: grid; gap: 0; }
+    .pub-item { display: grid; grid-template-columns: 4rem 1fr; gap: 1.25rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border-faint); transition: background var(--transition); }
     .pub-item:last-child { border-bottom: none; }
+    .pub-year-block { text-align: right; padding-top: 0.15rem; }
+    .pub-year { font-family: 'DM Sans', sans-serif; font-size: 0.65rem; letter-spacing: 0.08em; color: var(--text-muted); }
+    .pub-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 500; color: var(--text-primary); margin-bottom: 0.3rem; line-height: 1.35; }
+    .pub-venue { font-size: 0.85rem; color: var(--text-secondary); font-style: italic; margin-bottom: 0.5rem; font-weight: 300; }
+    .pub-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .pub-link { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border-faint); padding-bottom: 1px; transition: all var(--transition); }
+    .pub-link:hover { color: var(--green-bright); border-color: var(--green-bright); }
 
-    .pub-year-block {
-      text-align: right;
-      padding-top: 0.15rem;
-    }
-
-    .pub-year {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-    }
-
-    .pub-content {}
-
-    .pub-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin-bottom: 0.3rem;
-      line-height: 1.35;
-    }
-
-    .pub-venue {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      font-style: italic;
-      margin-bottom: 0.5rem;
-      font-weight: 300;
-    }
-
-    .pub-links {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .pub-link {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.58rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border-faint);
-      padding-bottom: 1px;
-      transition: all var(--transition);
-    }
-
-    .pub-link:hover {
-      color: var(--green-bright);
-      border-color: var(--green-bright);
-    }
-
-    /* ─────────────────────────────────────────
-       CV SECTION
-    ───────────────────────────────────────── */
+    /* ─── CV ─── */
     .cv-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 3rem;
+      gap: 3.5rem 4rem;
     }
+
+    /* Subsection heading inside CV */
+    .cv-group { margin-bottom: 0; }
+    .cv-group + .cv-group { margin-top: 2.75rem; }
 
     .cv-column-title {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.14em;
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--green-bright);
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.6rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.55rem;
       border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .cv-column-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--green-mid);
+      flex-shrink: 0;
     }
 
     .cv-entry {
-      margin-bottom: 1.75rem;
-      padding-left: 1rem;
+      margin-bottom: 1.6rem;
+      padding-left: 1.1rem;
       border-left: 1px solid var(--border-faint);
       position: relative;
     }
+
+    .cv-entry:last-child { margin-bottom: 0; }
 
     .cv-entry::before {
       content: '';
       position: absolute;
       left: -3px;
-      top: 0.45rem;
+      top: 0.5rem;
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: var(--green-deep);
+      background: var(--bg-base);
       border: 1px solid var(--green-mid);
+      transition: background var(--transition);
     }
+
+    .cv-entry:hover::before { background: var(--green-mid); }
 
     .cv-period {
       font-family: 'DM Sans', sans-serif;
       font-size: 0.58rem;
       letter-spacing: 0.1em;
       color: var(--text-muted);
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.25rem;
     }
 
     .cv-role {
@@ -833,17 +245,35 @@
     }
 
     .cv-org {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      font-weight: 300;
+      font-size: 0.82rem;
+      color: var(--text-accent);
+      font-weight: 400;
       margin-top: 0.15rem;
+      letter-spacing: 0.01em;
     }
 
     .cv-note {
       font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 0.4rem;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    .cv-note em { font-style: italic; color: var(--text-secondary); }
+
+    /* Grade pill on education entries */
+    .cv-grade {
+      display: inline-block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.55rem;
+      border-radius: 2px;
+      border: 1px solid var(--border);
       color: var(--text-muted);
-      margin-top: 0.25rem;
-      font-style: italic;
+      margin-top: 0.35rem;
     }
 
     .cv-download {
@@ -858,226 +288,60 @@
       gap: 1rem;
     }
 
-    .cv-download-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
-      color: var(--text-secondary);
-    }
+    .cv-download-text { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-secondary); }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.55rem 1.4rem;
-      border-radius: 2px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      border: 1px solid;
-      cursor: pointer;
-      transition: all var(--transition);
-      text-decoration: none;
-    }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.55rem 1.4rem; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; cursor: pointer; transition: all var(--transition); text-decoration: none; }
+    .btn-primary { background: var(--green-deep); border-color: var(--green-mid); color: var(--text-primary); }
+    .btn-primary:hover { background: var(--green-mid); color: var(--text-primary); }
+    .btn-outline { background: transparent; border-color: var(--border); color: var(--text-secondary); }
+    .btn-outline:hover { border-color: var(--green-mid); color: var(--text-primary); background: var(--bg-raised); }
 
-    .btn-primary {
-      background: var(--green-deep);
-      border-color: var(--green-mid);
-      color: var(--text-primary);
-    }
-
-    .btn-primary:hover {
-      background: var(--green-mid);
-      color: var(--text-primary);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border-color: var(--border);
-      color: var(--text-secondary);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--green-mid);
-      color: var(--text-primary);
-      background: var(--bg-raised);
-    }
-
-    /* ─────────────────────────────────────────
-       CONTACT
-    ───────────────────────────────────────── */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-    }
-
-    .contact-text {
-      font-size: 1.05rem;
-      color: var(--text-secondary);
-      line-height: 1.85;
-      font-weight: 300;
-    }
-
-    .contact-details {
-      display: grid;
-      gap: 1.25rem;
-    }
-
-    .contact-item {
-      display: grid;
-      grid-template-columns: 5.5rem 1fr;
-      gap: 0.75rem;
-      align-items: start;
-      padding-bottom: 1.25rem;
-      border-bottom: 1px solid var(--border-faint);
-    }
-
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .contact-text { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.85; font-weight: 300; }
+    .contact-details { display: grid; gap: 1.25rem; }
+    .contact-item { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0.75rem; align-items: start; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-faint); }
     .contact-item:last-child { border-bottom: none; }
+    .contact-label { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); padding-top: 0.12rem; }
+    .contact-value { font-size: 0.95rem; color: var(--text-secondary); font-weight: 300; }
 
-    .contact-label {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.58rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      padding-top: 0.12rem;
-    }
+    .site-footer { padding: 2rem 5rem; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-faint); gap: 1rem; flex-wrap: wrap; }
+    .footer-copy { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; color: var(--text-muted); }
+    .footer-built { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.08em; color: var(--text-muted); }
+    .footer-accent { color: var(--blush); }
 
-    .contact-value {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      font-weight: 300;
-    }
+    .mobile-nav-toggle { display: none; position: fixed; top: 1rem; left: 1rem; z-index: 200; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 3px; width: 2.5rem; height: 2.5rem; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+    .mobile-nav-toggle span { display: block; width: 1.1rem; height: 1px; background: var(--text-secondary); transition: all var(--transition); }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 90; }
 
-    /* ─────────────────────────────────────────
-       FOOTER
-    ───────────────────────────────────────── */
-    .site-footer {
-      padding: 2rem 5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid var(--border-faint);
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .footer-copy {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.58rem;
-      letter-spacing: 0.1em;
-      color: var(--text-muted);
-    }
-
-    .footer-built {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.58rem;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-    }
-
-    .footer-accent {
-      color: var(--blush);
-    }
-
-    /* ─────────────────────────────────────────
-       MOBILE NAV
-    ───────────────────────────────────────── */
-    .mobile-nav-toggle {
-      display: none;
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-      z-index: 200;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      width: 2.5rem;
-      height: 2.5rem;
-      cursor: pointer;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-
-    .mobile-nav-toggle span {
-      display: block;
-      width: 1.1rem;
-      height: 1px;
-      background: var(--text-secondary);
-      transition: all var(--transition);
-    }
-
-    .sidebar-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 90;
-    }
-
-    /* ─────────────────────────────────────────
-       ANIMATIONS
-    ───────────────────────────────────────── */
-    @keyframes fadeSlideIn {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
+    @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
     .hero-eyebrow { animation: fadeSlideIn 0.6s ease 0.1s both; }
     .hero-name    { animation: fadeSlideIn 0.6s ease 0.2s both; }
     .hero-desc    { animation: fadeSlideIn 0.6s ease 0.35s both; }
     .hero-badges  { animation: fadeSlideIn 0.6s ease 0.5s both; }
 
-    /* ─────────────────────────────────────────
-       RESPONSIVE
-    ───────────────────────────────────────── */
     @media (max-width: 1100px) {
-      .about-grid,
-      .cv-grid,
-      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about-grid, .cv-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
     }
-
     @media (max-width: 860px) {
-      .layout { grid-template-columns: 1fr; }
-
-      .sidebar {
-        transform: translateX(-100%);
-        transition: transform 0.3s ease, background var(--transition);
-      }
-
+      .sidebar { transform: translateX(-100%); transition: transform 0.3s ease, background var(--transition); }
       .sidebar.open { transform: translateX(0); }
-
-      .sidebar-overlay { display: none; }
       .sidebar-overlay.visible { display: block; }
-
       .mobile-nav-toggle { display: flex; }
-
       .main { margin-left: 0; }
-
-      .hero,
-      .section { padding: 3.5rem 2rem; }
-
+      .hero, .section { padding: 3.5rem 2rem; }
       .hero { padding-top: 5rem; }
-
       .site-footer { padding: 2rem; }
-
       .cv-download { flex-direction: column; align-items: flex-start; }
     }
-
     @media (max-width: 520px) {
       html { font-size: 15px; }
-      .hero,
-      .section { padding: 2.5rem 1.25rem; }
+      .hero, .section { padding: 2.5rem 1.25rem; }
       .site-footer { padding: 1.5rem 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Mobile toggle -->
   <button class="mobile-nav-toggle" id="navToggle" aria-label="Toggle navigation">
     <span></span><span></span><span></span>
   </button>
@@ -1085,33 +349,16 @@
 
   <div class="layout">
 
-    <!-- ─── SIDEBAR ─── -->
     <aside class="sidebar" id="sidebar">
-
       <div class="site-identity">
         <div class="site-name">Cyril Birks</div>
-        <div class="site-role">
-          Doctoral Researcher<br>
-          Moral Philosopher &amp; Engineer
-        </div>
+        <div class="site-role">Doctoral Researcher<br>Moral Philosopher &amp; Engineer</div>
         <div class="site-rule"></div>
         <div class="affiliation-block">
-          <div class="affiliation-item">
-            <span class="affiliation-dot"></span>
-            <span>University of Edinburgh<br>School of Informatics</span>
-          </div>
-          <div class="affiliation-item">
-            <span class="affiliation-dot navy"></span>
-            <span>University of Oxford<br>Oxford Internet Institute</span>
-          </div>
-          <div class="affiliation-item">
-            <span class="affiliation-dot"></span>
-            <span>University of St Andrews<br>Alma Mater</span>
-          </div>
-          <div class="affiliation-item">
-            <span class="affiliation-dot blush"></span>
-            <span>UKRI Funded</span>
-          </div>
+          <div class="affiliation-item"><span class="affiliation-dot"></span><span>University of Edinburgh<br>School of Informatics</span></div>
+          <div class="affiliation-item"><span class="affiliation-dot navy"></span><span>University of Oxford<br>Oxford Internet Institute</span></div>
+          <div class="affiliation-item"><span class="affiliation-dot"></span><span>University of St Andrews<br>Alma Mater</span></div>
+          <div class="affiliation-item"><span class="affiliation-dot blush"></span><span>UKRI Funded</span></div>
         </div>
       </div>
 
@@ -1125,14 +372,12 @@
           <li><a href="#cv"           class="nav-link">Curriculum Vitae</a></li>
           <li><a href="#contact"      class="nav-link">Contact</a></li>
         </ul>
-
         <div class="social-links">
           <a href="#" class="social-link">Google Scholar</a>
           <a href="#" class="social-link">ORCID</a>
           <a href="#" class="social-link">GitHub</a>
           <a href="#" class="social-link">Twitter / X</a>
         </div>
-
         <div class="theme-toggle-wrap">
           <button class="theme-toggle" id="themeToggle">
             <span class="toggle-icon" id="toggleIcon">☀</span>
@@ -1140,20 +385,14 @@
           </button>
         </div>
       </nav>
-
     </aside>
 
-    <!-- ─── MAIN ─── -->
     <main class="main">
 
-      <!-- HERO -->
       <header class="hero">
         <div class="hero-eyebrow">Edinburgh · Oxford · St Andrews</div>
         <h1 class="hero-name">Cyril Birks</h1>
-        <p class="hero-desc">
-          Optimistic about the future, prudent about risks, 
-          chasing an ever-expanding wave of human flourishing.
-        </p>
+        <p class="hero-desc">Optimistic about the future, prudent about risks, chasing an ever-expanding wave of human flourishing.</p>
         <div class="hero-badges">
           <span class="badge badge-green">AI &amp; Ethics</span>
           <span class="badge badge-navy">Philosophy of Mind</span>
@@ -1165,257 +404,133 @@
         </div>
       </header>
 
-      <!-- ABOUT -->
       <section class="section" id="about">
         <div class="section-header">
           <h2 class="section-title">About</h2>
           <div class="section-rule"></div>
         </div>
-
         <div class="about-grid">
           <div class="about-text">
-            <p>
-              I am a doctoral researcher at the University of Edinburgh, funded by the UKRI. 
-              Before moving into AI research, I read philosophy and psychology, with a focus on 
-              moral philosophy, philosophy of mind, and behavioural neuroscience and cognition.
-            </p>
-            <p>
-              Before my PhD, I was an investment strategist with Invesco's Global Market Strategy office, 
-              producing research for investment opportunities in emerging technologies and macroeconomic trends.
-            </p>
-            <p>
-              My research is inspired by moral philosophy, cognitive science, and temporal dynamics.
-              I am interested in how philosophy can inform the way we engineer, evaluate, and govern 
-              emerging technologies, especially intelligent systems.
-            </p>
+            <p>I am a doctoral researcher at the University of Edinburgh, funded by the UKRI. Before moving into AI research, I read philosophy and psychology, with a focus on moral philosophy, philosophy of mind, and behavioural neuroscience and cognition.</p>
+            <p>Before my PhD, I was an investment strategist with Invesco's Global Market Strategy office, producing research for investment opportunities in emerging technologies and macroeconomic trends.</p>
+            <p>My research is inspired by moral philosophy, cognitive science, and temporal dynamics. I am interested in how philosophy can inform the way we engineer, evaluate, and govern emerging technologies, especially intelligent systems.</p>
           </div>
           <div class="about-aside">
             <div class="aside-block">
               <div class="aside-label">Research Interests</div>
-              <div class="aside-value">
-                AI Ethics &amp; Alignment<br>
-                Moral Philosophy<br>
-                Normative Theory<br>
-                Philosophy of Mind<br>
-                Cognitive Warfare<br>
-                Defence Ethics<br>
-                Possible Minds
-              </div>
+              <div class="aside-value">AI Ethics &amp; Alignment<br>Moral Philosophy<br>Normative Theory<br>Philosophy of Mind<br>Cognitive Warfare<br>Defence Ethics<br>Possible Minds</div>
             </div>
             <div class="aside-block">
               <div class="aside-label">Institutions</div>
-              <div class="aside-value">
-                University of Edinburgh<br>
-                University of Oxford<br>
-                University of St Andrews
-              </div>
+              <div class="aside-value">University of Edinburgh<br>University of Oxford<br>University of St Andrews</div>
             </div>
             <div class="aside-block">
               <div class="aside-label">Funding</div>
-              <div class="aside-value">
-                UKRI<br>
-                <span style="font-size:0.9rem;opacity:0.8;">Designing Responsible Natural Language Programming</span>
-              </div>
+              <div class="aside-value">UKRI<br><span style="font-size:0.9rem;opacity:0.8;">Designing Responsible Natural Language Programming</span></div>
             </div>
             <div class="aside-block">
               <div class="aside-label">Supervised by</div>
-              <div class="aside-value">
-                Dr. Neil Bramley<br>
-                <span style="font-size:0.9rem;opacity:0.8;">Computational Cognitive Science Lab<br>University of Edinburgh</span>
-              </div>
+              <div class="aside-value">Dr. Neil Bramley<br><span style="font-size:0.9rem;opacity:0.8;">Computational Cognitive Science Lab<br>University of Edinburgh</span></div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- RESEARCH -->
       <section class="section" id="research">
         <div class="section-header">
           <h2 class="section-title">Research</h2>
           <div class="section-rule"></div>
         </div>
-
         <div class="research-grid">
-
           <div class="research-card">
-            <div class="card-meta">
-              <span class="card-type">Working Paper</span>
-              <span class="card-dot"></span>
-              <span class="card-year">2024</span>
-            </div>
+            <div class="card-meta"><span class="card-type">Working Paper</span><span class="card-dot"></span><span class="card-year">2024</span></div>
             <div class="card-title">Your Paper Title: A Subtitle That Elaborates</div>
-            <p class="card-desc">
-              A brief abstract or description of this piece of work. Summarise the central
-              argument, the methods used, and the contribution it makes to the literature.
-              Two or three sentences is sufficient here.
-            </p>
+            <p class="card-desc">A brief abstract or description of this piece of work. Summarise the central argument, the methods used, and the contribution it makes to the literature. Two or three sentences is sufficient here.</p>
             <a href="#" class="card-link">Read preprint</a>
           </div>
-
           <div class="research-card">
-            <div class="card-meta">
-              <span class="card-type">Conference Paper</span>
-              <span class="card-dot"></span>
-              <span class="card-year">2024</span>
-            </div>
+            <div class="card-meta"><span class="card-type">Conference Paper</span><span class="card-dot"></span><span class="card-year">2024</span></div>
             <div class="card-title">Another Paper Title</div>
-            <p class="card-desc">
-              Description of this paper and its contribution. What was the central question?
-              What methods did you employ? What did you find or argue?
-            </p>
+            <p class="card-desc">Description of this paper and its contribution. What was the central question? What methods did you employ? What did you find or argue?</p>
             <a href="#" class="card-link">Read paper</a>
           </div>
-
           <div class="research-card">
-            <div class="card-meta">
-              <span class="card-type">PhD Thesis</span>
-              <span class="card-dot"></span>
-              <span class="card-year">In Progress</span>
-            </div>
+            <div class="card-meta"><span class="card-type">PhD Thesis</span><span class="card-dot"></span><span class="card-year">In Progress</span></div>
             <div class="card-title">Your Thesis Title</div>
-            <p class="card-desc">
-              A short description of your doctoral thesis: its scope, central questions,
-              methodology, and anticipated contribution. Supervised by [names] at Edinburgh,
-              with additional supervision at Oxford.
-            </p>
+            <p class="card-desc">A short description of your doctoral thesis: its scope, central questions, methodology, and anticipated contribution. Supervised by [names] at Edinburgh, with additional supervision at Oxford.</p>
           </div>
-
         </div>
       </section>
 
-      <!-- PUBLICATIONS -->
       <section class="section" id="publications">
         <div class="section-header">
           <h2 class="section-title">Publications</h2>
           <div class="section-rule"></div>
         </div>
-
         <div class="pub-list">
-
           <div class="pub-item">
-            <div class="pub-year-block">
-              <span class="pub-year">2024</span>
-            </div>
+            <div class="pub-year-block"><span class="pub-year">2024</span></div>
             <div class="pub-content">
               <div class="pub-title">Paper Title: Subtitle</div>
               <div class="pub-venue">Journal Name / Conference Name, Vol. X, No. Y</div>
-              <div class="pub-tags" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;">
-                <a href="#research" class="badge badge-green">AI &amp; Ethics</a>
-                <a href="#research" class="badge badge-navy">Normative Theory</a>
-              </div>
-              <div class="pub-links">
-                <a href="#" class="pub-link">DOI</a>
-                <a href="#" class="pub-link">PDF</a>
-                <a href="#" class="pub-link">Preprint</a>
-              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;"><a href="#research" class="badge badge-green">AI &amp; Ethics</a><a href="#research" class="badge badge-navy">Normative Theory</a></div>
+              <div class="pub-links"><a href="#" class="pub-link">DOI</a><a href="#" class="pub-link">PDF</a><a href="#" class="pub-link">Preprint</a></div>
             </div>
           </div>
-
           <div class="pub-item">
-            <div class="pub-year-block">
-              <span class="pub-year">2023</span>
-            </div>
+            <div class="pub-year-block"><span class="pub-year">2023</span></div>
             <div class="pub-content">
               <div class="pub-title">Another Published Paper Title</div>
               <div class="pub-venue">Journal Name / Conference Proceedings</div>
-              <div class="pub-tags" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;">
-                <a href="#research" class="badge badge-navy">Defence Ethics</a>
-                <a href="#research" class="badge badge-green">Cognitive Warfare</a>
-              </div>
-              <div class="pub-links">
-                <a href="#" class="pub-link">DOI</a>
-                <a href="#" class="pub-link">PDF</a>
-              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;"><a href="#research" class="badge badge-navy">Defence Ethics</a><a href="#research" class="badge badge-green">Cognitive Warfare</a></div>
+              <div class="pub-links"><a href="#" class="pub-link">DOI</a><a href="#" class="pub-link">PDF</a></div>
             </div>
           </div>
-
           <div class="pub-item">
-            <div class="pub-year-block">
-              <span class="pub-year">2022</span>
-            </div>
+            <div class="pub-year-block"><span class="pub-year">2022</span></div>
             <div class="pub-content">
               <div class="pub-title">A Third Published Work</div>
               <div class="pub-venue">Book Chapter / Edited Volume Name</div>
-              <div class="pub-tags" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;">
-                <a href="#about" class="badge badge-green">Moral Philosophy</a>
-                <a href="#about" class="badge badge-navy">Philosophy of Mind</a>
-              </div>
-              <div class="pub-links">
-                <a href="#" class="pub-link">Publisher</a>
-                <a href="#" class="pub-link">PDF</a>
-              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;"><a href="#about" class="badge badge-green">Moral Philosophy</a><a href="#about" class="badge badge-navy">Philosophy of Mind</a></div>
+              <div class="pub-links"><a href="#" class="pub-link">Publisher</a><a href="#" class="pub-link">PDF</a></div>
             </div>
           </div>
-
           <div class="pub-item">
-            <div class="pub-year-block">
-              <span class="pub-year">Forthcoming</span>
-            </div>
+            <div class="pub-year-block"><span class="pub-year">Forthcoming</span></div>
             <div class="pub-content">
               <div class="pub-title">Forthcoming Work Title (under review)</div>
               <div class="pub-venue">Under review at Journal Name</div>
-              <div class="pub-tags" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;">
-                <a href="#research" class="badge badge-green">Machine Learning</a>
-                <a href="#research" class="badge badge-blush">UKRI Scholar</a>
-              </div>
-              <div class="pub-links">
-                <a href="#" class="pub-link">Preprint</a>
-              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;"><a href="#research" class="badge badge-green">Machine Learning</a><a href="#research" class="badge badge-blush">UKRI Scholar</a></div>
+              <div class="pub-links"><a href="#" class="pub-link">Preprint</a></div>
             </div>
           </div>
-
         </div>
       </section>
 
-      <!-- WRITING -->
       <section class="section" id="writing">
         <div class="section-header">
           <h2 class="section-title">Writing</h2>
           <div class="section-rule"></div>
         </div>
-
         <div class="research-grid">
-
           <div class="research-card">
-            <div class="card-meta">
-              <span class="card-type">Essay</span>
-              <span class="card-dot"></span>
-              <span class="card-year">2024</span>
-            </div>
+            <div class="card-meta"><span class="card-type">Essay</span><span class="card-dot"></span><span class="card-year">2024</span></div>
             <div class="card-title">Essay or Article Title</div>
-            <p class="card-desc">
-              A short description of this piece — where it was published, what it argues,
-              and who it is aimed at. Non-academic writing or public-facing essays live here.
-            </p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.85rem;">
-              <a href="#about" class="badge badge-green">AI &amp; Ethics</a>
-              <a href="#about" class="badge badge-navy">Normative Theory</a>
-            </div>
+            <p class="card-desc">A short description of this piece — where it was published, what it argues, and who it is aimed at. Non-academic writing or public-facing essays live here.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.85rem;"><a href="#about" class="badge badge-green">AI &amp; Ethics</a><a href="#about" class="badge badge-navy">Normative Theory</a></div>
             <a href="#" class="card-link">Read essay</a>
           </div>
-
           <div class="research-card">
-            <div class="card-meta">
-              <span class="card-type">Blog Post</span>
-              <span class="card-dot"></span>
-              <span class="card-year">2023</span>
-            </div>
+            <div class="card-meta"><span class="card-type">Blog Post</span><span class="card-dot"></span><span class="card-year">2023</span></div>
             <div class="card-title">Blog Post or Opinion Piece Title</div>
-            <p class="card-desc">
-              Where this appeared — e.g., a department blog, The Conversation, Aeon,
-              or your own site. A sentence on what it covers.
-            </p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.85rem;">
-              <a href="#about" class="badge badge-navy">Defence Ethics</a>
-              <a href="#about" class="badge badge-green">Moral Philosophy</a>
-            </div>
+            <p class="card-desc">Where this appeared — e.g., a department blog, The Conversation, Aeon, or your own site. A sentence on what it covers.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.85rem;"><a href="#about" class="badge badge-navy">Defence Ethics</a><a href="#about" class="badge badge-green">Moral Philosophy</a></div>
             <a href="#" class="card-link">Read post</a>
           </div>
-
         </div>
       </section>
 
-      <!-- CV -->
+      <!-- ─── CV ─── -->
       <section class="section" id="cv">
         <div class="section-header">
           <h2 class="section-title">Curriculum Vitae</h2>
@@ -1424,80 +539,170 @@
 
         <div class="cv-grid">
 
+          <!-- LEFT COLUMN -->
           <div>
-            <div class="cv-column-title">Education</div>
 
-            <div class="cv-entry">
-              <div class="cv-period">2022 — Present</div>
-              <div class="cv-role">PhD, Informatics (Artificial Intelligence)</div>
-              <div class="cv-org">University of Edinburgh</div>
-              <div class="cv-note">UKRI funded. Supervised by Prof. [Name]</div>
+            <div class="cv-group">
+              <div class="cv-column-title">Education</div>
+
+              <div class="cv-entry">
+                <div class="cv-period">2025 — 2029</div>
+                <div class="cv-role">PhD in Informatics</div>
+                <div class="cv-org">University of Edinburgh</div>
+                <div class="cv-note">Designing Responsible NLP CDT. Recipient of a four-year UKRI doctoral scholarship valued at £165k, supporting interdisciplinary research in the design, deployment, and governance of frontier AI.</div>
+              </div>
+
+              <div class="cv-entry">
+                <div class="cv-period">University of St Andrews</div>
+                <div class="cv-role">MSc Psychology</div>
+                <div class="cv-org">Cognition &amp; Behavioural Neuroscience</div>
+                <div class="cv-note"><span class="cv-grade">Merit</span></div>
+              </div>
+
+              <div class="cv-entry">
+                <div class="cv-period">University of Otago</div>
+                <div class="cv-role">PGDip Health Science</div>
+                <div class="cv-org">Bioethics</div>
+                <div class="cv-note"><span class="cv-grade">Distinction</span></div>
+              </div>
+
+              <div class="cv-entry">
+                <div class="cv-period">University of Otago</div>
+                <div class="cv-role">BA Philosophy</div>
+                <div class="cv-org">Moral Philosophy</div>
+                <div class="cv-note"><span class="cv-grade">First Class</span></div>
+              </div>
             </div>
 
-            <div class="cv-entry">
-              <div class="cv-period">20XX — 20XX</div>
-              <div class="cv-role">[Degree], [Subject]</div>
-              <div class="cv-org">University of Oxford</div>
-              <div class="cv-note">[College name]. [Class / distinction if relevant]</div>
-            </div>
+            <div class="cv-group">
+              <div class="cv-column-title">Appointments</div>
 
-            <div class="cv-entry">
-              <div class="cv-period">20XX — 20XX</div>
-              <div class="cv-role">[Undergraduate Degree]</div>
-              <div class="cv-org">[Institution]</div>
-            </div>
+              <div class="cv-entry">
+                <div class="cv-period">Dec 2025 — Sep 2026</div>
+                <div class="cv-role">Researcher</div>
+                <div class="cv-org">Oxford Internet Institute, University of Oxford</div>
+                <div class="cv-note">Frontier AI policy in high-risk domains and high-stakes decision-making with Professor Mariarosaria Taddeo. Funded by DSTL and the European Commission. 5 publications forthcoming, 3 as first author.</div>
+              </div>
 
-            <div class="cv-column-title" style="margin-top: 2.5rem;">Appointments</div>
+              <div class="cv-entry">
+                <div class="cv-period">Dec 2025 — Jul 2026</div>
+                <div class="cv-role">AI Safety Researcher</div>
+                <div class="cv-org">London Stock Exchange Group</div>
+                <div class="cv-note">PhD industry collaboration on AI safety, alignment, and interpretability for large language models, with a particular emphasis on chain-of-thought and agent faithfulness.</div>
+              </div>
 
-            <div class="cv-entry">
-              <div class="cv-period">20XX — Present</div>
-              <div class="cv-role">[Role Title]</div>
-              <div class="cv-org">[Organisation / Institution]</div>
-            </div>
+              <div class="cv-entry">
+                <div class="cv-period">Dec 2025 — Mar 2026</div>
+                <div class="cv-role">Medical Informatics, Grade 7</div>
+                <div class="cv-org">University of Edinburgh</div>
+                <div class="cv-note">Guest lectures and tutorials on ethics in medical informatics with Chancellor's Fellow (Data Driven Innovation) Dr. Nayha Sethi.</div>
+              </div>
 
-            <div class="cv-entry">
-              <div class="cv-period">20XX — 20XX</div>
-              <div class="cv-role">[Previous Role]</div>
-              <div class="cv-org">[Organisation]</div>
+              <div class="cv-entry">
+                <div class="cv-period">Jan 2025 — Sep 2025</div>
+                <div class="cv-role">Researcher</div>
+                <div class="cv-org">King's College London</div>
+                <div class="cv-note">Peer reviewed and developed 12 of 31 chapters for <em>Contemporary Debates in the Ethics of Artificial Intelligence</em> (2026). Investigated social sentiment and the legal significance of algorithmic microtargeting, funded by Schmidt Sciences.</div>
+              </div>
+
+              <div class="cv-entry">
+                <div class="cv-period">Jan 2025 — Sep 2025</div>
+                <div class="cv-role">Research Fellowship</div>
+                <div class="cv-org">Cambridge AI Safety Hub</div>
+                <div class="cv-note">Researched novel economic pathways to AI-driven conflict, investigating how emerging economic interdependencies shape international cooperation, conflict risks, and societal resilience.</div>
+              </div>
+
+              <div class="cv-entry">
+                <div class="cv-period">2024</div>
+                <div class="cv-role">Research Manager</div>
+                <div class="cv-org">UKRI Policymakers Lab, University of Warwick</div>
+                <div class="cv-note">Built and managed relationships with politicians, policymakers, and global research bodies. Co-developed dissemination strategy and a passive recruitment pipeline for policymaker engagement.</div>
+              </div>
+
+              <div class="cv-entry">
+                <div class="cv-period">2022 — 2024</div>
+                <div class="cv-role">Investment Strategist</div>
+                <div class="cv-org">Invesco</div>
+                <div class="cv-note">Developed forecasting and scenario models for global macroeconomic trends, including emerging technology and geopolitics. Translated complex analyses into actionable insights for institutional investors and C-suite stakeholders.</div>
+              </div>
+
             </div>
 
           </div>
 
+          <!-- RIGHT COLUMN -->
           <div>
-            <div class="cv-column-title">Awards &amp; Funding</div>
 
-            <div class="cv-entry">
-              <div class="cv-period">2022</div>
-              <div class="cv-role">UKRI [Scheme] Studentship</div>
-              <div class="cv-org">UK Research and Innovation</div>
+            <div class="cv-group">
+              <div class="cv-column-title">Awards &amp; Funding</div>
+
+              <div class="cv-entry">
+                <div class="cv-period">2025</div>
+                <div class="cv-role">UKRI Doctoral Scholarship</div>
+                <div class="cv-org">UK Research and Innovation</div>
+                <div class="cv-note">Four-year scholarship valued at £165k.</div>
+              </div>
+
+              <div class="cv-entry">
+                <div class="cv-period">2024</div>
+                <div class="cv-role">Best AI Thought Leadership</div>
+                <div class="cv-org">Savvy Investor</div>
+              </div>
+
+              <div class="cv-entry">
+                <div class="cv-period">2024</div>
+                <div class="cv-role">Top 10 Whitepapers</div>
+                <div class="cv-org">Savvy Investor</div>
+              </div>
+
             </div>
 
-            <div class="cv-entry">
-              <div class="cv-period">20XX</div>
-              <div class="cv-role">[Award or Prize Name]</div>
-              <div class="cv-org">[Awarding body]</div>
+            <div class="cv-group">
+              <div class="cv-column-title">Teaching</div>
+
+              <div class="cv-entry">
+                <div class="cv-period">Dec 2025 — Mar 2026</div>
+                <div class="cv-role">Guest Lecturer &amp; Tutor</div>
+                <div class="cv-org">University of Edinburgh</div>
+                <div class="cv-note">Ethics in Medical Informatics, alongside Dr. Nayha Sethi (Chancellor's Fellow, Data Driven Innovation).</div>
+              </div>
+
             </div>
 
-            <div class="cv-column-title" style="margin-top: 2.5rem;">Teaching</div>
+            <div class="cv-group">
+              <div class="cv-column-title">Talks &amp; Presentations</div>
 
-            <div class="cv-entry">
-              <div class="cv-period">20XX — 20XX</div>
-              <div class="cv-role">Teaching Assistant — [Course Name]</div>
-              <div class="cv-org">University of Edinburgh</div>
+              <div class="cv-entry">
+                <div class="cv-period">Selected</div>
+                <div class="cv-role">"The Nature of Digital Minds"</div>
+                <div class="cv-org">Wilks Moral Psychology Lab</div>
+              </div>
+
+              <div class="cv-entry">
+                <div class="cv-period">Selected</div>
+                <div class="cv-role">"Partial Aggregationist Ethics in Real-World AI Deployment"</div>
+                <div class="cv-org">Bramley Computational Cognition Lab</div>
+              </div>
+
+              <div class="cv-entry">
+                <div class="cv-period">2024</div>
+                <div class="cv-role">World Economic Forum</div>
+                <div class="cv-org">Invesco</div>
+                <div class="cv-note">Researched and co-authored the Invesco presentations for executive leadership at Davos.</div>
+              </div>
+
             </div>
 
-            <div class="cv-entry">
-              <div class="cv-period">20XX</div>
-              <div class="cv-role">[Tutorial / Seminar role]</div>
-              <div class="cv-org">[Institution]</div>
-            </div>
+            <div class="cv-group">
+              <div class="cv-column-title">Editorial &amp; Review</div>
 
-            <div class="cv-column-title" style="margin-top: 2.5rem;">Service</div>
+              <div class="cv-entry">
+                <div class="cv-period">2025 — 2026</div>
+                <div class="cv-role">Peer Reviewer &amp; Chapter Developer</div>
+                <div class="cv-org">King's College London</div>
+                <div class="cv-note">Reviewed and developed 12 of 31 chapters for <em>Contemporary Debates in the Ethics of Artificial Intelligence</em> (Wiley, forthcoming 2026).</div>
+              </div>
 
-            <div class="cv-entry">
-              <div class="cv-period">20XX — Present</div>
-              <div class="cv-role">Reviewer — [Journal / Conference]</div>
-              <div class="cv-org"></div>
             </div>
 
           </div>
@@ -1505,78 +710,45 @@
         </div>
 
         <div class="cv-download">
-          <span class="cv-download-text">
-            Full curriculum vitae available as a PDF document.
-          </span>
+          <span class="cv-download-text">Full curriculum vitae available as a PDF document.</span>
           <a href="cv.pdf" class="btn btn-primary">Download CV (PDF)</a>
         </div>
 
       </section>
 
-      <!-- CONTACT -->
       <section class="section" id="contact">
         <div class="section-header">
           <h2 class="section-title">Contact</h2>
           <div class="section-rule"></div>
         </div>
-
         <div class="contact-grid">
           <div class="contact-text">
-            <p>
-              I welcome enquiries from researchers, journalists, and members of the public
-              with an interest in my work. Please feel free to get in touch by email.
-            </p>
-            <p>
-              I am also happy to discuss potential collaborations, speaking invitations,
-              or supervision opportunities for prospective students.
-            </p>
+            <p>I welcome enquiries from researchers, journalists, and members of the public with an interest in my work. Please feel free to get in touch by email.</p>
           </div>
-
           <div class="contact-details">
-
             <div class="contact-item">
               <span class="contact-label">Email</span>
-              <span class="contact-value">
-                <a href="/cdn-cgi/l/email-protection#fd849288bd9899d39c9ed38896"><span class="__cf_email__" data-cfemail="e59c8a90a58081cb8486cb908e">[email&#160;protected]</span></a>
-              </span>
+              <span class="contact-value"><a href="#">[email protected]</a></span>
             </div>
-
             <div class="contact-item">
               <span class="contact-label">Office</span>
-              <span class="contact-value">
-                Room [X.XX], Informatics Forum<br>
-                10 Crichton Street, Edinburgh EH8 9AB
-              </span>
+              <span class="contact-value">Edinburgh Futures Institute</span>
             </div>
-
             <div class="contact-item">
               <span class="contact-label">Scholar</span>
-              <span class="contact-value">
-                <a href="#">Google Scholar Profile</a>
-              </span>
+              <span class="contact-value"><a href="#">Google Scholar Profile</a></span>
             </div>
-
             <div class="contact-item">
               <span class="contact-label">ORCID</span>
-              <span class="contact-value">
-                <a href="#">0000-0000-0000-0000</a>
-              </span>
+              <span class="contact-value"><a href="#">0000-0000-0000-0000</a></span>
             </div>
-
           </div>
         </div>
       </section>
 
-      <!-- FOOTER -->
       <footer class="site-footer">
-        <span class="footer-copy">
-          © <span id="year"></span> Cyril Birks. All rights reserved.
-        </span>
-        <span class="footer-built">
-          University of Edinburgh <span class="footer-accent">·</span>
-          Oxford Internet Institute <span class="footer-accent">·</span>
-          UKRI
-        </span>
+        <span class="footer-copy">© <span id="year"></span> Cyril Birks. All rights reserved.</span>
+        <span class="footer-built">University of Edinburgh <span class="footer-accent">·</span> Oxford Internet Institute <span class="footer-accent">·</span> UKRI</span>
       </footer>
 
     </main>
@@ -1585,83 +757,44 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    const html     = document.documentElement;
-    const btn      = document.getElementById('themeToggle');
-    const icon     = document.getElementById('toggleIcon');
-    const label    = document.getElementById('toggleLabel');
+    const html = document.documentElement;
+    const btn = document.getElementById('themeToggle');
+    const icon = document.getElementById('toggleIcon');
+    const label = document.getElementById('toggleLabel');
 
     function applyTheme(theme) {
       html.setAttribute('data-theme', theme);
       try { localStorage.setItem('theme', theme); } catch(e) {}
-      if (theme === 'dark') {
-        icon.textContent  = '☀';
-        label.textContent = 'Light Mode';
-      } else {
-        icon.textContent  = '☾';
-        label.textContent = 'Dark Mode';
-      }
+      if (theme === 'dark') { icon.textContent = '☀'; label.textContent = 'Light Mode'; }
+      else { icon.textContent = '☾'; label.textContent = 'Dark Mode'; }
     }
 
-    try {
-      const saved = localStorage.getItem('theme');
-      if (saved) applyTheme(saved);
-    } catch(e) {}
+    try { const saved = localStorage.getItem('theme'); if (saved) applyTheme(saved); } catch(e) {}
+    btn.addEventListener('click', () => { applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); });
 
-    btn.addEventListener('click', () => {
-      const current = html.getAttribute('data-theme');
-      applyTheme(current === 'dark' ? 'light' : 'dark');
-    });
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const toggle = document.getElementById('navToggle');
+    toggle.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('visible'); });
+    overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); });
 
-    const sidebar  = document.getElementById('sidebar');
-    const overlay  = document.getElementById('sidebarOverlay');
-    const toggle   = document.getElementById('navToggle');
-
-    toggle.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('visible');
-    });
-
-    overlay.addEventListener('click', () => {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('visible');
-    });
-
-    const sections  = document.querySelectorAll('section[id], header.hero');
-    const navLinks  = document.querySelectorAll('.nav-link');
-
+    const navLinks = document.querySelectorAll('.nav-link');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id') || 'about';
-          navLinks.forEach(link => {
-            link.classList.toggle(
-              'active',
-              link.getAttribute('href') === `#${id}`
-            );
-          });
+          navLinks.forEach(link => { link.classList.toggle('active', link.getAttribute('href') === `#${id}`); });
         }
       });
     }, { threshold: 0.35 });
-
     document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
 
     const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
     }, { threshold: 0.08 });
-
-
     document.querySelectorAll('.section').forEach(s => sectionObserver.observe(s));
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('visible');
-      });
-    });
+    navLinks.forEach(link => { link.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); }); });
   </script>
 </body>
 </html>
