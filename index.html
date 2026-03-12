@@ -11,24 +11,26 @@
   <style>
     :root { --transition: 0.35s ease; }
 
+    /* ── Dark mode: flat, matte palette ── */
     html[data-theme="dark"] {
-      --bg-base: #060E09; --bg-surface: #0A1610; --bg-sidebar: #0D2418;
-      --bg-raised: #111F17; --bg-overlay: #172C1E; --border: #1E3328;
-      --border-faint: #121E15; --green-deep: #2D5A3D; --green-mid: #3D7A54;
-      --green-bright: #5BA372; --navy: #0B2240; --navy-mid: #163665;
-      --navy-bright: #1E4D8C; --blush: #C9949A; --blush-faint: #7A3D43;
-      --text-primary: #E2DDD4; --text-secondary: #A8A49C; --text-muted: #6B6860;
-      --text-accent: #8ABF9E; --rule: #2A4235; --shadow: rgba(0,0,0,.5);
-      --glow: rgba(45,90,61,.15);
+      --bg-base: #0B0F0C; --bg-surface: #0F1511; --bg-sidebar: #111714;
+      --bg-raised: #161D18; --bg-overlay: #1C251E; --border: #222E25;
+      --border-faint: #181F1A; --green-deep: #2A5038; --green-mid: #3A6B4A;
+      --green-bright: #52916A; --navy: #0B1E36; --navy-mid: #133058;
+      --navy-bright: #1A4278; --blush: #B8888E; --blush-faint: #6E343A;
+      --text-primary: #D8D4CB; --text-secondary: #9C9890; --text-muted: #606058;
+      --text-accent: #7AAD8E; --rule: #243528; --shadow: rgba(0,0,0,.6);
+      --glow: rgba(42,80,56,.1);
     }
 
+    /* ── Light mode: dark-green hero texts for continuity ── */
     html[data-theme="light"] {
       --bg-base: #F2EDE4; --bg-surface: #EDE8DF; --bg-sidebar: #DDE8DC;
       --bg-raised: #E5DFD3; --bg-overlay: #DDD7CA; --border: #C5BEB0;
       --border-faint: #D8D2C5; --green-deep: #1F4A2F; --green-mid: #2D6A42;
       --green-bright: #3D8A56; --navy: #0B1F3A; --navy-mid: #0E2B52;
       --navy-bright: #163D75; --blush: #A0585F; --blush-faint: #E8C8CB;
-      --text-primary: #1A1714; --text-secondary: #4A453E; --text-muted: #7A7268;
+      --text-primary: #1F4A2F; --text-secondary: #4A453E; --text-muted: #7A7268;
       --text-accent: #2D6A42; --rule: #B8B2A4; --shadow: rgba(0,0,0,.12);
       --glow: rgba(45,106,66,.08);
     }
@@ -49,9 +51,8 @@
       pointer-events: none; z-index: 999; opacity: 0.35;
     }
 
-    /* ── Lighter text selection ── */
-    ::selection { background: rgba(91, 163, 114, 0.35); color: var(--text-primary); }
-    html[data-theme="light"] ::selection { background: rgba(45, 106, 66, 0.2); color: var(--text-primary); }
+    ::selection { background: rgba(82, 145, 106, 0.3); color: var(--text-primary); }
+    html[data-theme="light"] ::selection { background: rgba(45, 106, 66, 0.18); color: var(--text-primary); }
 
     a { color: var(--text-accent); text-decoration: none; transition: color var(--transition); }
     a:hover { color: var(--blush); }
@@ -70,22 +71,22 @@
     }
 
     .sidebar::after {
-      content: ''; position: absolute; top: 0; right: -1px; width: 3px; height: 100%;
+      content: ''; position: absolute; top: 0; right: -1px; width: 2px; height: 100%;
       background: linear-gradient(to bottom, transparent, var(--green-deep) 20%, var(--green-deep) 80%, transparent);
-      opacity: 0.4;
+      opacity: 0.3;
     }
 
     .site-identity { margin-bottom: 2.5rem; }
     .site-name { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 600; color: var(--text-primary); line-height: 1.2; letter-spacing: 0.02em; margin-bottom: 0.35rem; }
     .site-role { font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); line-height: 1.5; }
-    .site-rule { width: 2rem; height: 1px; background: var(--green-mid); margin: 1.2rem 0; opacity: 0.7; }
+    .site-rule { width: 2rem; height: 1px; background: var(--green-mid); margin: 1.2rem 0; opacity: 0.5; }
     .affiliation-block { margin-bottom: 2rem; }
     .affiliation-item { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; }
     .affiliation-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green-mid); flex-shrink: 0; margin-top: 0.42rem; }
     .affiliation-dot.navy { background: var(--navy-bright); }
     .affiliation-dot.blush { background: var(--blush); }
 
-    nav { margin-top: auto; }
+    nav { margin-top: 0; }
     .nav-section-label { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border-faint); }
     .nav-list { list-style: none; margin-bottom: 2rem; }
     .nav-list li { margin-bottom: 0.1rem; }
@@ -95,45 +96,68 @@
     .nav-link:hover::before, .nav-link.active::before { height: 1.1em; }
     .nav-link.active { color: var(--text-accent); }
 
-    .theme-toggle-wrap { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-faint); }
-    .theme-toggle { display: flex; align-items: center; gap: 0.6rem; background: none; border: 1px solid var(--border); border-radius: 3px; padding: 0.45rem 0.85rem; font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); cursor: pointer; transition: all var(--transition); width: 100%; justify-content: center; }
-    .theme-toggle:hover { border-color: var(--green-mid); color: var(--text-primary); background: var(--bg-raised); }
-    .toggle-icon { font-size: 0.9rem; }
-
     .social-links { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
     .social-link { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: all var(--transition); }
     .social-link:hover { color: var(--blush); border-color: var(--blush); }
 
+    /* ── Theme toggle: fixed top-right ── */
+    .theme-toggle-float {
+      position: fixed; top: 1.1rem; right: 1.5rem; z-index: 200;
+      width: 2rem; height: 2rem;
+      background: var(--bg-raised); border: 1px solid var(--border);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 0.8rem; color: var(--text-muted);
+      transition: all var(--transition); opacity: 0.65;
+    }
+    .theme-toggle-float:hover {
+      border-color: var(--green-mid); color: var(--text-accent);
+      background: var(--bg-overlay); opacity: 1;
+    }
+
+    /* ── Back to top ── */
+    .back-to-top {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 150;
+      width: 2.2rem; height: 2.2rem;
+      background: var(--bg-raised); border: 1px solid var(--border);
+      border-radius: 3px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-muted); font-size: 0.85rem;
+      opacity: 0; transform: translateY(8px); pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease, border-color var(--transition), color var(--transition), background var(--transition);
+    }
+    .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .back-to-top:hover { background: var(--bg-overlay); border-color: var(--green-mid); color: var(--text-accent); }
+
     .main { margin-left: 280px; min-height: 100vh; }
 
     .hero {
-      padding: 6rem 5rem 5rem; position: relative; border-bottom: 1px solid var(--border);
-      background: linear-gradient(135deg, var(--bg-base) 0%, var(--bg-surface) 100%); overflow: hidden;
+      padding: 6rem 5rem 5rem; position: relative;
+      background: var(--bg-base); overflow: hidden;
+      transition: background var(--transition);
     }
     .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, var(--glow) 0%, transparent 70%); pointer-events: none; }
     .hero-eyebrow { font-family: 'DM Sans', sans-serif; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.8rem; }
-    .hero-eyebrow::after { content: ''; width: 2.5rem; height: 1px; background: var(--green-mid); opacity: 0.6; }
     .hero-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 4vw, 4.2rem); font-weight: 500; color: var(--text-primary); line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.01em; }
     .hero-name em { font-style: italic; color: var(--text-secondary); }
     .hero-desc { font-size: 1.12rem; color: var(--text-secondary); max-width: 580px; line-height: 1.75; font-weight: 300; }
     .hero-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2.5rem; }
 
     .badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.85rem; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; cursor: default; transition: all 0.2s ease; }
-    .badge-green { border-color: var(--green-mid); color: #C8EDD8; background: rgba(45,90,61,.35); }
-    .badge-green:hover { background: rgba(91,163,114,.25); border-color: var(--green-bright); box-shadow: 0 0 10px rgba(91,163,114,.4), 0 0 20px rgba(91,163,114,.15); color: #E2F5EA; }
-    .badge-navy { border-color: var(--navy-bright); color: #B8CCEC; background: rgba(30,77,140,.35); }
-    .badge-navy:hover { background: rgba(30,77,140,.5); border-color: #4A7BC4; box-shadow: 0 0 10px rgba(30,77,140,.5), 0 0 20px rgba(30,77,140,.2); color: #D6E4F7; }
-    .badge-blush { border-color: var(--blush); color: #EDD5D7; background: rgba(201,148,154,.25); }
-    .badge-blush:hover { background: rgba(201,148,154,.35); border-color: #DDA8AE; box-shadow: 0 0 10px rgba(201,148,154,.4), 0 0 20px rgba(201,148,154,.15); color: #F5E5E6; }
+    .badge-green { border-color: var(--green-mid); color: #C2E8D0; background: rgba(42,80,56,.3); }
+    .badge-green:hover { background: rgba(82,145,106,.2); border-color: var(--green-bright); color: #D8F0E4; }
+    .badge-navy { border-color: var(--navy-bright); color: #B0C8E8; background: rgba(26,66,120,.3); }
+    .badge-navy:hover { background: rgba(26,66,120,.45); border-color: #3E6AAA; color: #CCE0F5; }
+    .badge-blush { border-color: var(--blush); color: #E8D0D3; background: rgba(184,136,142,.2); }
+    .badge-blush:hover { background: rgba(184,136,142,.3); border-color: #CCA0A6; color: #F0E2E4; }
 
     html[data-theme="light"] .badge-green { border-color: var(--green-mid); color: #1A4A2C; background: rgba(31,74,47,.12); }
-    html[data-theme="light"] .badge-green:hover { background: rgba(31,74,47,.22); box-shadow: 0 0 10px rgba(45,106,66,.3), 0 0 20px rgba(45,106,66,.1); color: #0F3019; }
+    html[data-theme="light"] .badge-green:hover { background: rgba(31,74,47,.22); color: #0F3019; }
     html[data-theme="light"] .badge-navy { border-color: var(--navy-mid); color: #0A1E40; background: rgba(11,31,58,.1); }
-    html[data-theme="light"] .badge-navy:hover { background: rgba(11,31,58,.18); box-shadow: 0 0 10px rgba(14,43,82,.25), 0 0 20px rgba(14,43,82,.1); color: #060F20; }
+    html[data-theme="light"] .badge-navy:hover { background: rgba(11,31,58,.18); color: #060F20; }
     html[data-theme="light"] .badge-blush { border-color: var(--blush); color: #6B2428; background: rgba(160,88,95,.12); }
-    html[data-theme="light"] .badge-blush:hover { background: rgba(160,88,95,.2); box-shadow: 0 0 10px rgba(160,88,95,.3), 0 0 20px rgba(160,88,95,.1); color: #4A1518; }
+    html[data-theme="light"] .badge-blush:hover { background: rgba(160,88,95,.2); color: #4A1518; }
 
-    .section { padding: 4.5rem 5rem; border-bottom: 1px solid var(--border-faint); transition: opacity 0.6s ease, transform 0.6s ease; }
+    /* Sections: no dividing border-bottom */
+    .section { padding: 4.5rem 5rem; transition: opacity 0.6s ease, transform 0.6s ease; }
     .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 500; color: var(--text-primary); letter-spacing: 0.02em; flex-grow: 1; }
     .section-rule { flex-grow: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
@@ -143,7 +167,7 @@
     .about-text strong { font-weight: 500; color: var(--text-primary); }
     .about-aside { border-left: 2px solid var(--green-deep); padding-left: 1.75rem; }
     .aside-block { margin-bottom: 2rem; }
-    .aside-label { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .aside-label { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 0.5rem; }
     .aside-value { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-secondary); line-height: 1.5; }
 
     .research-grid { display: grid; gap: 1.25rem; }
@@ -160,17 +184,6 @@
     .card-link { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-accent); display: inline-flex; align-items: center; gap: 0.4rem; border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: all var(--transition); }
     .card-link:hover { color: var(--blush); border-color: var(--blush); }
     .card-link::after { content: '→'; }
-
-    .pub-list { display: grid; gap: 0; }
-    .pub-item { display: grid; grid-template-columns: 4rem 1fr; gap: 1.25rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border-faint); transition: background var(--transition); }
-    .pub-item:last-child { border-bottom: none; }
-    .pub-year-block { text-align: right; padding-top: 0.15rem; }
-    .pub-year { font-family: 'DM Sans', sans-serif; font-size: 0.65rem; letter-spacing: 0.08em; color: var(--text-muted); }
-    .pub-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 500; color: var(--text-primary); margin-bottom: 0.3rem; line-height: 1.35; }
-    .pub-venue { font-size: 0.85rem; color: var(--text-secondary); font-style: italic; margin-bottom: 0.5rem; font-weight: 300; }
-    .pub-links { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .pub-link { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border-faint); padding-bottom: 1px; transition: all var(--transition); }
-    .pub-link:hover { color: var(--green-bright); border-color: var(--green-bright); }
 
     /* ─── CV ─── */
     .cv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem 4rem; }
@@ -197,7 +210,7 @@
     }
     .cv-entry:hover::before { background: var(--green-mid); }
 
-    .cv-period { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.25rem; }
+    .cv-period { font-family: 'DM Sans', sans-serif; font-size: 0.68rem; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.25rem; }
     .cv-role { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 500; color: var(--text-primary); line-height: 1.3; }
     .cv-org { font-size: 0.82rem; color: var(--text-accent); font-weight: 400; margin-top: 0.15rem; letter-spacing: 0.01em; }
     .cv-note { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.4rem; font-weight: 300; line-height: 1.6; }
@@ -208,19 +221,6 @@
       letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.55rem;
       border-radius: 2px; border: 1px solid var(--border); color: var(--text-muted); margin-top: 0.35rem;
     }
-
-    .cv-download {
-      margin-top: 3rem; padding: 1.5rem 2rem; background: var(--bg-surface);
-      border: 1px solid var(--border); border-radius: 2px;
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    }
-    .cv-download-text { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-secondary); }
-
-    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.55rem 1.4rem; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; cursor: pointer; transition: all var(--transition); text-decoration: none; }
-    .btn-primary { background: var(--green-deep); border-color: var(--green-mid); color: var(--text-primary); }
-    .btn-primary:hover { background: var(--green-mid); color: var(--text-primary); }
-    .btn-outline { background: transparent; border-color: var(--border); color: var(--text-secondary); }
-    .btn-outline:hover { border-color: var(--green-mid); color: var(--text-primary); background: var(--bg-raised); }
 
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
     .contact-text { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.85; font-weight: 300; }
@@ -238,39 +238,6 @@
     .mobile-nav-toggle { display: none; position: fixed; top: 1rem; left: 1rem; z-index: 200; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 3px; width: 2.5rem; height: 2.5rem; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
     .mobile-nav-toggle span { display: block; width: 1.1rem; height: 1px; background: var(--text-secondary); transition: all var(--transition); }
     .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 90; }
-
-    /* ── Back to top button ── */
-    .back-to-top {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 150;
-      width: 2.4rem;
-      height: 2.4rem;
-      background: var(--bg-raised);
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      opacity: 0;
-      transform: translateY(8px);
-      pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s ease, border-color var(--transition), color var(--transition), background var(--transition);
-    }
-    .back-to-top.visible {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    .back-to-top:hover {
-      background: var(--bg-overlay);
-      border-color: var(--green-mid);
-      color: var(--text-accent);
-    }
 
     @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
     .hero-eyebrow { animation: fadeSlideIn 0.6s ease 0.1s both; }
@@ -290,8 +257,8 @@
       .hero, .section { padding: 3.5rem 2rem; }
       .hero { padding-top: 5rem; }
       .site-footer { padding: 2rem; }
-      .cv-download { flex-direction: column; align-items: flex-start; }
-      .back-to-top { bottom: 1.25rem; right: 1.25rem; }
+      .theme-toggle-float { top: 0.75rem; right: 1rem; }
+      .back-to-top { bottom: 1rem; right: 1rem; }
     }
     @media (max-width: 520px) {
       html { font-size: 15px; }
@@ -305,6 +272,11 @@
   <!-- Back to top -->
   <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
+  <!-- Floating theme toggle -->
+  <button class="theme-toggle-float" id="themeToggle" aria-label="Toggle theme">
+    <span id="toggleIcon">☀</span>
+  </button>
+
   <button class="mobile-nav-toggle" id="navToggle" aria-label="Toggle navigation">
     <span></span><span></span><span></span>
   </button>
@@ -317,37 +289,24 @@
         <div class="site-name">Cyril Birks</div>
         <div class="site-role">Doctoral Researcher<br>Moral Philosopher &amp; Engineer</div>
         <div class="site-rule"></div>
-        <div class="affiliation-block">
-          <div class="affiliation-item"><span class="affiliation-dot"></span><span>University of Edinburgh<br>School of Informatics</span></div>
-          <div class="affiliation-item"><span class="affiliation-dot navy"></span><span>University of Oxford<br>Oxford Internet Institute</span></div>
-          <div class="affiliation-item"><span class="affiliation-dot"></span><span>University of St Andrews<br>Alma Mater</span></div>
-          <div class="affiliation-item"><span class="affiliation-dot blush"></span><span>UKRI Funded</span></div>
-        </div>
       </div>
 
       <nav>
         <div class="nav-section-label">Navigation</div>
         <ul class="nav-list">
-          <li><a href="#about"        class="nav-link active">About</a></li>
-          <li><a href="#research"     class="nav-link">Research</a></li>
-          <li><a href="#publications" class="nav-link">Publications</a></li>
-          <li><a href="#writing"      class="nav-link">Writing</a></li>
-          <li><a href="#cv"           class="nav-link">Curriculum Vitae</a></li>
-          <li><a href="#contact"      class="nav-link">Contact</a></li>
+          <li><a href="#about"    class="nav-link active">About</a></li>
+          <li><a href="#research" class="nav-link">Research</a></li>
+          <li><a href="#cv"       class="nav-link">Curriculum Vitae</a></li>
+          <li><a href="#contact"  class="nav-link">Contact</a></li>
         </ul>
-        <div class="social-links">
-          <a href="#" class="social-link">Google Scholar</a>
-          <a href="#" class="social-link">ORCID</a>
-          <a href="#" class="social-link">GitHub</a>
-          <a href="#" class="social-link">Twitter / X</a>
-        </div>
-        <div class="theme-toggle-wrap">
-          <button class="theme-toggle" id="themeToggle">
-            <span class="toggle-icon" id="toggleIcon">☀</span>
-            <span id="toggleLabel">Light Mode</span>
-          </button>
-        </div>
       </nav>
+
+      <div class="affiliation-block" style="margin-top: 1.5rem;">
+        <div class="affiliation-item"><span class="affiliation-dot"></span><span>University of Edinburgh<br>School of Informatics</span></div>
+        <div class="affiliation-item"><span class="affiliation-dot navy"></span><span>University of Oxford<br>Oxford Internet Institute</span></div>
+        <div class="affiliation-item"><span class="affiliation-dot"></span><span>University of St Andrews<br>Alma Mater</span></div>
+        <div class="affiliation-item"><span class="affiliation-dot blush"></span><span>UKRI Funded</span></div>
+      </div>
     </aside>
 
     <main class="main">
@@ -416,74 +375,6 @@
         </div>
       </section>
 
-      <section class="section" id="publications">
-        <div class="section-header">
-          <h2 class="section-title">Publications</h2>
-          <div class="section-rule"></div>
-        </div>
-        <div class="pub-list">
-          <div class="pub-item">
-            <div class="pub-year-block"><span class="pub-year">2024</span></div>
-            <div class="pub-content">
-              <div class="pub-title">Paper Title: Subtitle</div>
-              <div class="pub-venue">Journal Name / Conference Name, Vol. X, No. Y</div>
-              <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;"><a href="#research" class="badge badge-green">AI &amp; Ethics</a><a href="#research" class="badge badge-navy">Normative Theory</a></div>
-              <div class="pub-links"><a href="#" class="pub-link">DOI</a><a href="#" class="pub-link">PDF</a><a href="#" class="pub-link">Preprint</a></div>
-            </div>
-          </div>
-          <div class="pub-item">
-            <div class="pub-year-block"><span class="pub-year">2023</span></div>
-            <div class="pub-content">
-              <div class="pub-title">Another Published Paper Title</div>
-              <div class="pub-venue">Journal Name / Conference Proceedings</div>
-              <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;"><a href="#research" class="badge badge-navy">Defence Ethics</a><a href="#research" class="badge badge-green">Cognitive Warfare</a></div>
-              <div class="pub-links"><a href="#" class="pub-link">DOI</a><a href="#" class="pub-link">PDF</a></div>
-            </div>
-          </div>
-          <div class="pub-item">
-            <div class="pub-year-block"><span class="pub-year">2022</span></div>
-            <div class="pub-content">
-              <div class="pub-title">A Third Published Work</div>
-              <div class="pub-venue">Book Chapter / Edited Volume Name</div>
-              <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;"><a href="#about" class="badge badge-green">Moral Philosophy</a><a href="#about" class="badge badge-navy">Philosophy of Mind</a></div>
-              <div class="pub-links"><a href="#" class="pub-link">Publisher</a><a href="#" class="pub-link">PDF</a></div>
-            </div>
-          </div>
-          <div class="pub-item">
-            <div class="pub-year-block"><span class="pub-year">Forthcoming</span></div>
-            <div class="pub-content">
-              <div class="pub-title">Forthcoming Work Title (under review)</div>
-              <div class="pub-venue">Under review at Journal Name</div>
-              <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;"><a href="#research" class="badge badge-green">Machine Learning</a><a href="#research" class="badge badge-blush">UKRI Scholar</a></div>
-              <div class="pub-links"><a href="#" class="pub-link">Preprint</a></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="writing">
-        <div class="section-header">
-          <h2 class="section-title">Writing</h2>
-          <div class="section-rule"></div>
-        </div>
-        <div class="research-grid">
-          <div class="research-card">
-            <div class="card-meta"><span class="card-type">Essay</span><span class="card-dot"></span><span class="card-year">2024</span></div>
-            <div class="card-title">Essay or Article Title</div>
-            <p class="card-desc">A short description of this piece — where it was published, what it argues, and who it is aimed at. Non-academic writing or public-facing essays live here.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.85rem;"><a href="#about" class="badge badge-green">AI &amp; Ethics</a><a href="#about" class="badge badge-navy">Normative Theory</a></div>
-            <a href="#" class="card-link">Read essay</a>
-          </div>
-          <div class="research-card">
-            <div class="card-meta"><span class="card-type">Blog Post</span><span class="card-dot"></span><span class="card-year">2023</span></div>
-            <div class="card-title">Blog Post or Opinion Piece Title</div>
-            <p class="card-desc">Where this appeared — e.g., a department blog, The Conversation, Aeon, or your own site. A sentence on what it covers.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.85rem;"><a href="#about" class="badge badge-navy">Defence Ethics</a><a href="#about" class="badge badge-green">Moral Philosophy</a></div>
-            <a href="#" class="card-link">Read post</a>
-          </div>
-        </div>
-      </section>
-
       <!-- ─── CV ─── -->
       <section class="section" id="cv">
         <div class="section-header">
@@ -507,24 +398,24 @@
               </div>
 
               <div class="cv-entry">
-                <div class="cv-period">University of St Andrews</div>
+                <div class="cv-period">2020</div>
                 <div class="cv-role">MSc Psychology</div>
-                <div class="cv-org">Cognition &amp; Behavioural Neuroscience</div>
-                <div class="cv-note"><span class="cv-grade">Merit</span></div>
+                <div class="cv-org">University of St Andrews</div>
+                <div class="cv-note">Cognition &amp; Behavioural Neuroscience<br><span class="cv-grade">Merit</span></div>
               </div>
 
               <div class="cv-entry">
-                <div class="cv-period">University of Otago</div>
+                <div class="cv-period">2018</div>
                 <div class="cv-role">PGDip Health Science</div>
-                <div class="cv-org">Bioethics</div>
-                <div class="cv-note"><span class="cv-grade">Distinction</span></div>
+                <div class="cv-org">University of Otago</div>
+                <div class="cv-note">Bioethics<br><span class="cv-grade">Distinction</span></div>
               </div>
 
               <div class="cv-entry">
-                <div class="cv-period">University of Otago</div>
+                <div class="cv-period">2016</div>
                 <div class="cv-role">BA Philosophy</div>
-                <div class="cv-org">Moral Philosophy</div>
-                <div class="cv-note"><span class="cv-grade">First Class</span></div>
+                <div class="cv-org">University of Otago</div>
+                <div class="cv-note">Moral Philosophy<br><span class="cv-grade">First Class</span></div>
               </div>
             </div>
 
@@ -543,13 +434,6 @@
                 <div class="cv-role">AI Safety Researcher</div>
                 <div class="cv-org">London Stock Exchange Group</div>
                 <div class="cv-note">PhD industry collaboration on AI safety, alignment, and interpretability for large language models, with a particular emphasis on chain-of-thought and agent faithfulness.</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">Dec 2025 — Mar 2026</div>
-                <div class="cv-role">Medical Informatics, Grade 7</div>
-                <div class="cv-org">University of Edinburgh</div>
-                <div class="cv-note">Guest lectures and tutorials on ethics in medical informatics with Chancellor's Fellow (Data Driven Innovation) Dr. Nayha Sethi.</div>
               </div>
 
               <div class="cv-entry">
@@ -621,6 +505,12 @@
                 <div class="cv-note">Ethics in Medical Informatics, alongside Dr. Nayha Sethi (Chancellor's Fellow, Data Driven Innovation).</div>
               </div>
 
+              <div class="cv-entry">
+                <div class="cv-period">2017 &amp; 2018</div>
+                <div class="cv-role">Campbell Bioethics Teaching Fellow</div>
+                <div class="cv-org">University of Otago</div>
+              </div>
+
             </div>
 
             <div class="cv-group">
@@ -659,13 +549,19 @@
 
             </div>
 
+            <div class="cv-group">
+              <div class="cv-column-title">Volunteering</div>
+
+              <div class="cv-entry">
+                <div class="cv-period">2022 — 2026</div>
+                <div class="cv-role">Turtle Conservation</div>
+                <div class="cv-org">Marine Wildlife Conservation</div>
+              </div>
+
+            </div>
+
           </div>
 
-        </div>
-
-        <div class="cv-download">
-          <span class="cv-download-text">Full curriculum vitae available as a PDF document.</span>
-          <a href="cv.pdf" class="btn btn-primary">Download CV (PDF)</a>
         </div>
 
       </section>
@@ -692,10 +588,6 @@
               <span class="contact-label">Scholar</span>
               <span class="contact-value"><a href="#">Google Scholar Profile</a></span>
             </div>
-            <div class="contact-item">
-              <span class="contact-label">ORCID</span>
-              <span class="contact-value"><a href="#">0000-0000-0000-0000</a></span>
-            </div>
           </div>
         </div>
       </section>
@@ -714,13 +606,11 @@
     const html = document.documentElement;
     const btn = document.getElementById('themeToggle');
     const icon = document.getElementById('toggleIcon');
-    const label = document.getElementById('toggleLabel');
 
     function applyTheme(theme) {
       html.setAttribute('data-theme', theme);
       try { localStorage.setItem('theme', theme); } catch(e) {}
-      if (theme === 'dark') { icon.textContent = '☀'; label.textContent = 'Light Mode'; }
-      else { icon.textContent = '☾'; label.textContent = 'Dark Mode'; }
+      icon.textContent = theme === 'dark' ? '☀' : '☾';
     }
 
     try { const saved = localStorage.getItem('theme'); if (saved) applyTheme(saved); } catch(e) {}
@@ -742,11 +632,6 @@
       });
     }, { threshold: 0.35 });
     document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
-
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.section').forEach(s => sectionObserver.observe(s));
 
     navLinks.forEach(link => { link.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); }); });
 
