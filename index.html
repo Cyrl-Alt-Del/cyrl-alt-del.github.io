@@ -36,7 +36,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 17px; }
+    html { scroll-behaviour: smooth; font-size: 17px; }
 
     body {
       font-family: 'DM Sans', sans-serif; font-weight: 400;
@@ -100,18 +100,74 @@
     .social-link { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: all var(--transition); }
     .social-link:hover { color: var(--blush); border-color: var(--blush); }
 
-    /* ── Theme toggle: fixed top-right ── */
+    /* ── Theme toggle: fixed top-right, high contrast on load, softer on scroll ── */
     .theme-toggle-float {
-      position: fixed; top: 1.1rem; right: 1.5rem; z-index: 200;
-      width: 2rem; height: 2rem;
-      background: var(--bg-raised); border: 1px solid var(--border);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 0.8rem; color: var(--text-muted);
-      transition: all var(--transition); opacity: 0.65;
+      position: fixed;
+      top: 1rem;
+      right: 1.25rem;
+      z-index: 300;
+      width: 2.9rem;
+      height: 2.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      cursor: pointer;
+      background: color-mix(in srgb, var(--bg-base) 18%, black 82%);
+      border: 1px solid color-mix(in srgb, var(--text-primary) 70%, transparent);
+      color: var(--text-primary);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 10px 24px rgba(0,0,0,0.28);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity 0.3s ease,
+        background var(--transition),
+        border-color var(--transition),
+        color var(--transition),
+        box-shadow var(--transition),
+        transform var(--transition);
     }
-    .theme-toggle-float:hover {
-      border-color: var(--green-mid); color: var(--text-accent);
-      background: var(--bg-overlay); opacity: 1;
+
+    html[data-theme="light"] .theme-toggle-float {
+      background: color-mix(in srgb, white 88%, var(--bg-raised) 12%);
+      border-color: color-mix(in srgb, var(--text-primary) 24%, transparent);
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.03),
+        0 10px 24px rgba(0,0,0,0.12);
+    }
+
+    .theme-toggle-float.is-scrolled {
+      opacity: 0.58;
+      background: var(--bg-raised);
+      border-color: var(--border);
+      color: var(--text-muted);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.14);
+    }
+
+    .theme-toggle-float:hover,
+    .theme-toggle-float:focus-visible {
+      opacity: 1;
+      color: var(--text-accent);
+      border-color: var(--green-mid);
+      background: var(--bg-overlay);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 10px 24px rgba(0,0,0,0.22);
+      outline: none;
+    }
+
+    .theme-toggle-float:active {
+      transform: scale(0.96);
+    }
+
+    .theme-toggle-float span {
+      font-size: 1rem;
+      line-height: 1;
+      pointer-events: none;
     }
 
     /* ── Back to top ── */
@@ -294,10 +350,10 @@
       <nav>
         <div class="nav-section-label">Navigation</div>
         <ul class="nav-list">
-          <li><a href="#about"    class="nav-link active">About</a></li>
+          <li><a href="#about" class="nav-link active">About</a></li>
           <li><a href="#research" class="nav-link">Research</a></li>
-          <li><a href="#cv"       class="nav-link">Curriculum Vitae</a></li>
-          <li><a href="#contact"  class="nav-link">Contact</a></li>
+          <li><a href="#cv" class="nav-link">Curriculum Vitae</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
       </nav>
 
@@ -521,7 +577,7 @@
                 <div class="cv-role">"AI Ethics in Defence"</div>
                 <div class="cv-org">Ministry of Defence</div>
               </div>
-              
+
               <div class="cv-entry">
                 <div class="cv-period">Dec 2025</div>
                 <div class="cv-role">"The Nature of Digital Minds"</div>
@@ -616,38 +672,70 @@
 
     function applyTheme(theme) {
       html.setAttribute('data-theme', theme);
-      try { localStorage.setItem('theme', theme); } catch(e) {}
+      try { localStorage.setItem('theme', theme); } catch (e) {}
       icon.textContent = theme === 'dark' ? '☀' : '☾';
     }
 
-    try { const saved = localStorage.getItem('theme'); if (saved) applyTheme(saved); } catch(e) {}
-    btn.addEventListener('click', () => { applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); });
+    try {
+      const saved = localStorage.getItem('theme');
+      if (saved) applyTheme(saved);
+    } catch (e) {}
+
+    btn.addEventListener('click', () => {
+      applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+
+    function updateThemeToggleContrast() {
+      btn.classList.toggle('is-scrolled', window.scrollY > 80);
+    }
+
+    window.addEventListener('scroll', updateThemeToggleContrast, { passive: true });
+    updateThemeToggleContrast();
 
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
     const toggle = document.getElementById('navToggle');
-    toggle.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('visible'); });
-    overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); });
+
+    toggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('visible');
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+    });
 
     const navLinks = document.querySelectorAll('.nav-link');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id') || 'about';
-          navLinks.forEach(link => { link.classList.toggle('active', link.getAttribute('href') === `#${id}`); });
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+          });
         }
       });
     }, { threshold: 0.35 });
+
     document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
 
-    navLinks.forEach(link => { link.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); }); });
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('visible');
+      });
+    });
 
     // Back to top
     const backToTop = document.getElementById('backToTop');
     window.addEventListener('scroll', () => {
       backToTop.classList.toggle('visible', window.scrollY > 400);
     }, { passive: true });
-    backToTop.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behaviour: 'smooth' });
+    });
   </script>
 </body>
 </html>
