@@ -263,7 +263,7 @@
     .reading-header {
       position: sticky; top: 0; z-index: 10;
       display: flex; align-items: center; gap: 1.25rem;
-      padding: 0.9rem 5rem;
+      padding: 0.9rem 2rem;
       background: var(--bg-base);
       border-bottom: 1px solid var(--border-faint);
       transition: background var(--transition), border-color var(--transition), backdrop-filter 0.2s;
@@ -276,7 +276,41 @@
     .reading-progress-fill { position: absolute; top: 0; left: 0; bottom: 0; width: 0%; background: var(--green-bright); transition: width 0.1s linear; }
     .reading-stat { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.08em; color: var(--text-muted); white-space: nowrap; }
 
-    .reading-body { max-width: 680px; margin: 0 auto; padding: 3.5rem 5rem 6rem; }
+    /* ── Three-column reading grid ──
+       The margin columns use minmax(0, 220px) — they naturally
+       shrink to zero when the panel is narrow, so nothing ever
+       forces a horizontal scrollbar.
+       --reading-margin-min is the threshold below which we
+       switch to popover mode; read by JS.                        */
+    :root { --reading-margin-min: 160px; }
+
+    .reading-grid {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 220px)   /* left margin  */
+        minmax(320px, 720px) /* prose        */
+        minmax(0, 220px);  /* right margin */
+      justify-content: center;
+      padding: 0 1rem;
+      /* Left and right margin cols need relative positioning
+         so notes inside them stack correctly */
+      align-items: start;
+      gap: 0;
+    }
+
+    .reading-body {
+      padding: 3.5rem 2.5rem 6rem;
+      min-width: 0; /* prevent blowout inside grid */
+    }
+
+    /* Margin columns — notes stack here as normal flow children */
+    .reading-margin {
+      padding-top: 3.5rem; /* align with prose top padding */
+      min-width: 0;
+      position: relative;
+    }
+    .reading-margin-left  { padding-right: 1.25rem; }
+    .reading-margin-right { padding-left: 1.25rem; }
 
     .reading-eyebrow { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blush); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
     .reading-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.75rem,3.5vw,2.5rem); font-weight: 500; color: var(--text-primary); line-height: 1.15; margin-bottom: 0.65rem; letter-spacing: -0.01em; }
@@ -297,100 +331,130 @@
     .reading-prose ul, .reading-prose ol { padding-left: 1.5rem; margin-bottom: 1.35em; color: var(--text-secondary); font-weight: 300; }
     .reading-prose li { margin-bottom: 0.4em; line-height: 1.75; }
 
-    /* ── Footnote inline refs ── */
+    /* ── Footnote inline trigger ── */
     .reading-prose sup.fn-ref {
-      font-size: 0.65em; line-height: 1; vertical-align: super;
-      margin-left: 1px; position: relative;
+      font-size: 0.65em; line-height: 1; vertical-align: super; margin-left: 1px;
     }
     .fn-trigger {
       font-family: 'DM Sans', sans-serif; font-size: inherit;
       color: var(--text-accent); font-weight: 500;
-      background: none; border: none; padding: 0 2px;
-      cursor: pointer; border-radius: 2px;
+      background: none; border: none; padding: 0 1px;
+      cursor: pointer; border-radius: 2px; line-height: 1;
       transition: color var(--transition), background var(--transition);
-      line-height: 1;
     }
     .fn-trigger:hover { color: var(--blush); }
-    .fn-trigger.active { color: var(--blush); background: rgba(184,136,142,0.12); }
-    html[data-theme="light"] .fn-trigger.active { background: rgba(160,88,95,0.1); }
+    /* Hovered (transient) state — subtle highlight */
+    .fn-trigger.hovered { color: var(--blush); }
+    /* Pinned state — blush tint background so it reads as "locked" */
+    .fn-trigger.pinned {
+      color: var(--blush);
+      background: rgba(184,136,142,0.15);
+      border-radius: 2px;
+      outline: 1px solid rgba(184,136,142,0.3);
+      outline-offset: 1px;
+    }
+    html[data-theme="light"] .fn-trigger.pinned {
+      background: rgba(160,88,95,0.1);
+      outline-color: rgba(160,88,95,0.25);
+    }
 
-    /* Popover bubble */
-    .fn-popover {
+    /* ── Margin note container ──
+       Sits inside the margin column (position: relative).
+       JS sets top in px; left/right span the full column.     */
+    .fn-margin-note {
       position: absolute;
-      bottom: calc(100% + 10px);
-      left: 50%;
-      transform: translateX(-50%) translateY(4px);
-      width: 300px;
-      background: var(--bg-overlay);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 0.85rem 1rem;
-      box-shadow: 0 8px 28px var(--shadow);
-      z-index: 500;
+      left: 0; right: 0;
+      background: transparent;
+      z-index: 10;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.18s ease, transform 0.18s ease;
+      transition: opacity 0.22s ease;
     }
-    .fn-popover.visible {
+    .fn-margin-note.visible {
       opacity: 1;
       pointer-events: auto;
-      transform: translateX(-50%) translateY(0);
     }
-    /* Arrow caret pointing down */
-    .fn-popover::after {
+    /* Pinned note gets the blush left-border accent */
+    .fn-margin-note .fn-note-inner {
+      border-left: 2px solid transparent;
+      padding-left: 0.75rem;
+      transition: border-color 0.2s ease;
+    }
+    .fn-margin-note.pinned .fn-note-inner {
+      border-left-color: var(--blush);
+    }
+    /* Small pin icon shown only when pinned */
+    .fn-pin-indicator {
+      display: none;
+      font-family: 'DM Sans', sans-serif; font-size: 0.5rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--blush); margin-bottom: 0.35rem;
+      align-items: center; gap: 0.3rem;
+    }
+    .fn-margin-note.pinned .fn-pin-indicator { display: flex; }
+    /* Pin icon — a tiny filled circle */
+    .fn-pin-indicator::before {
       content: '';
-      position: absolute;
-      top: 100%; left: 50%;
-      transform: translateX(-50%);
-      border: 5px solid transparent;
-      border-top-color: var(--border);
+      display: inline-block; width: 4px; height: 4px;
+      border-radius: 50%; background: var(--blush); flex-shrink: 0;
     }
-    .fn-popover::before {
-      content: '';
-      position: absolute;
-      top: 100%; left: 50%;
-      transform: translateX(-50%);
-      border: 4px solid transparent;
-      border-top-color: var(--bg-overlay);
-      z-index: 1;
-      margin-top: -1px;
-    }
-    /* Keep popover on screen when ref is near left/right edge */
-    .fn-popover.nudge-left  { left: 0;    transform: translateX(0) translateY(4px); }
-    .fn-popover.nudge-left.visible  { transform: translateX(0) translateY(0); }
-    .fn-popover.nudge-left::after  { left: 14px; transform: none; }
-    .fn-popover.nudge-left::before { left: 15px; transform: none; }
-    .fn-popover.nudge-right { left: auto; right: 0; transform: translateX(0) translateY(4px); }
-    .fn-popover.nudge-right.visible { transform: translateX(0) translateY(0); }
-    .fn-popover.nudge-right::after  { left: auto; right: 12px; transform: none; }
-    .fn-popover.nudge-right::before { left: auto; right: 13px; transform: none; }
-
-    .fn-popover-num {
+    .fn-note-num {
       font-family: 'DM Sans', sans-serif; font-size: 0.55rem;
       letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--text-accent); margin-bottom: 0.4rem; display: block;
+      color: var(--text-accent); margin-bottom: 0.3rem; display: block;
     }
-    .fn-popover-text {
-      font-size: 0.82rem; color: var(--text-secondary);
+    .fn-note-text {
+      font-size: 0.8rem; color: var(--text-secondary);
       font-weight: 300; line-height: 1.6;
     }
-    .fn-popover-text a { color: var(--text-accent); border-bottom: 1px solid var(--border); transition: all var(--transition); }
-    .fn-popover-text a:hover { color: var(--blush); border-color: var(--blush); }
-    .fn-popover-footer {
-      display: flex; align-items: center; justify-content: flex-end;
-      margin-top: 0.65rem; padding-top: 0.5rem;
+    .fn-note-text a { color: var(--text-accent); border-bottom: 1px solid var(--border); transition: all var(--transition); }
+    .fn-note-text a:hover { color: var(--blush); border-color: var(--blush); }
+    /* Jump link at the bottom of the note */
+    .fn-note-footer {
+      margin-top: 0.55rem; padding-top: 0.45rem;
       border-top: 1px solid var(--border-faint);
     }
     .fn-jump-link {
-      font-family: 'DM Sans', sans-serif; font-size: 0.55rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.52rem;
       letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--text-muted); background: none; border: none;
-      cursor: pointer; padding: 0;
+      cursor: pointer; padding: 0; display: flex; align-items: center; gap: 0.25rem;
       transition: color var(--transition);
-      display: flex; align-items: center; gap: 0.3rem;
     }
     .fn-jump-link:hover { color: var(--text-accent); }
     .fn-jump-link::after { content: '↓'; }
+
+    /* Fallback popover for narrow screens (< 1100px panel width) */
+    .fn-popover {
+      position: absolute; bottom: calc(100% + 10px); left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      width: 280px; background: var(--bg-overlay);
+      border: 1px solid var(--border); border-radius: 4px;
+      padding: 0.85rem 1rem; box-shadow: 0 8px 28px var(--shadow);
+      z-index: 500; opacity: 0; pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+    .fn-popover.visible { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+    .fn-popover::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--border); }
+    .fn-popover::before { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 4px solid transparent; border-top-color: var(--bg-overlay); z-index: 1; margin-top: -1px; }
+    .fn-popover.nudge-left  { left: 0; transform: translateX(0) translateY(4px); }
+    .fn-popover.nudge-left.visible { transform: translateX(0) translateY(0); }
+    .fn-popover.nudge-left::after, .fn-popover.nudge-left::before { left: 14px; transform: none; }
+    .fn-popover.nudge-right { left: auto; right: 0; transform: translateX(0) translateY(4px); }
+    .fn-popover.nudge-right.visible { transform: translateX(0) translateY(0); }
+    .fn-popover.nudge-right::after, .fn-popover.nudge-right::before { left: auto; right: 12px; transform: none; }
+    .fn-popover-num { font-family: 'DM Sans', sans-serif; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-accent); margin-bottom: 0.4rem; display: block; }
+    .fn-popover-text { font-size: 0.82rem; color: var(--text-secondary); font-weight: 300; line-height: 1.6; }
+    .fn-popover-text a { color: var(--text-accent); border-bottom: 1px solid var(--border); }
+    .fn-popover-text a:hover { color: var(--blush); border-color: var(--blush); }
+    .fn-popover.pinned { border-left: 2px solid var(--blush); }
+    .fn-popover-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 0.65rem; padding-top: 0.5rem; border-top: 1px solid var(--border-faint); }
+    .fn-popover-pin-label { font-family: 'DM Sans', sans-serif; font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blush); display: none; align-items: center; gap: 0.25rem; }
+    .fn-popover-pin-label::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--blush); }
+    .fn-popover.pinned .fn-popover-pin-label { display: flex; }
+    .fn-jump-link-pop { font-family: 'DM Sans', sans-serif; font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 0.25rem; margin-left: auto; transition: color var(--transition); }
+    .fn-jump-link-pop:hover { color: var(--text-accent); }
+    .fn-jump-link-pop::after { content: '↓'; }
 
     /* ── Footnotes block at bottom ── */
     .footnotes-section { margin-top: 3.5rem; padding-top: 1.75rem; border-top: 1px solid var(--border); }
@@ -400,22 +464,9 @@
     .footnote-text { font-size: 0.83rem; color: var(--text-muted); font-weight: 300; line-height: 1.65; }
     .footnote-text a { color: var(--text-accent); border-bottom: 1px solid var(--border); }
     .footnote-text a:hover { color: var(--blush); border-color: var(--blush); }
-    /* Return-to-reading link rendered as a subtle button */
-    .footnote-back-btn {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      font-family: 'DM Sans', sans-serif; font-size: 0.6rem;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--text-muted); background: none; border: none;
-      cursor: pointer; padding: 0; margin-left: 0.5rem;
-      transition: color var(--transition);
-      vertical-align: middle;
-    }
+    .footnote-back-btn { display: inline-flex; align-items: center; gap: 0.3rem; font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); background: none; border: none; cursor: pointer; padding: 0; margin-left: 0.5rem; transition: color var(--transition); vertical-align: middle; }
     .footnote-back-btn:hover { color: var(--text-accent); }
-    /* Flash highlight when jumped to from popover */
-    .footnote-item.highlight .footnote-text {
-      color: var(--text-secondary);
-      transition: color 0.1s;
-    }
+    .footnote-item.highlight .footnote-text { color: var(--text-secondary); transition: color 0.1s; }
 
     /* ── Mobile ── */
     .mobile-nav-toggle { display: none; position: fixed; top: 1rem; left: 1rem; z-index: 200; background: var(--bg-overlay); border: 1px solid var(--border); border-radius: 3px; width: 2.5rem; height: 2.5rem; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 4px; opacity: 1; transition: opacity 0.3s ease, background var(--transition), border-color var(--transition); }
@@ -438,8 +489,9 @@
       .mobile-nav-toggle { display: flex; }
       .main { margin-left: 0; }
       .reading-panel { left: 0; }
-      .reading-header { padding: 0.9rem 1.5rem; }
-      .reading-body { padding: 2.5rem 1.5rem 4rem; }
+      .reading-header { padding: 0.9rem 1rem; }
+      .reading-grid { grid-template-columns: 0 minmax(0,1fr) 0; padding: 0; }
+      .reading-body { padding: 2rem 1.25rem 4rem; }
       .hero, .section { padding: 3.5rem 2rem; }
       .hero { padding-top: 5.5rem; }
       .site-footer { padding: 2rem; }
@@ -476,7 +528,11 @@
       </div>
       <span class="reading-stat" id="readingStat"></span>
     </div>
-    <div class="reading-body" id="readingBody"></div>
+    <div class="reading-grid" id="readingGrid">
+      <div class="reading-margin reading-margin-left" id="marginLeft"></div>
+      <div class="reading-body" id="readingBody"></div>
+      <div class="reading-margin reading-margin-right" id="marginRight"></div>
+    </div>
   </div>
 
   <div class="layout">
@@ -888,137 +944,272 @@
       renderWriting();
     });
 
-    // ── Popover state ──
-    let activePopover = null;
-    let activeTrigger = null;
+    // ════════════════════════════════════════════════════
+    // FOOTNOTE MARGIN-NOTE SYSTEM
+    // ════════════════════════════════════════════════════
 
-    function closePopover() {
-      if (activePopover) {
-        activePopover.classList.remove('visible');
-        // Remove after transition
-        const p = activePopover;
-        setTimeout(() => { if (p.parentNode) p.parentNode.removeChild(p); }, 200);
-        activePopover = null;
-      }
-      if (activeTrigger) {
-        activeTrigger.classList.remove('active');
-        activeTrigger = null;
-      }
+    // How wide a margin column must be (px) before we use it.
+    // Measured from the actual rendered column, not viewport.
+    const MARGIN_MIN = 150;
+    const NOTE_GAP   = 8;  // extra vertical spacing between stacked notes
+
+    // Active notes: Map<num, { el, triggerEl, pinned, inMargin }>
+    const activeNotes    = new Map();
+    const activePopovers = new Map();
+
+    // ── Decide which margin column to use, or fall back to popover ──
+    function getMarginCol() {
+      const ml = document.getElementById('marginLeft');
+      const mr = document.getElementById('marginRight');
+      if (!ml || !mr) return null;
+      // Prefer right; use left if right is too narrow
+      const rw = mr.getBoundingClientRect().width;
+      const lw = ml.getBoundingClientRect().width;
+      if (rw >= MARGIN_MIN) return mr;
+      if (lw >= MARGIN_MIN) return ml;
+      return null; // neither wide enough → popover
     }
 
-    function buildPopover(triggerEl, num, text) {
-      // Close any open popover first
-      if (activePopover) {
-        // Toggle off if same trigger clicked again
-        if (activeTrigger === triggerEl) { closePopover(); return; }
-        closePopover();
+    // ── Compute the vertical offset of the note within its margin column.
+    //    We want the note's top to align with the trigger in the prose,
+    //    then push it down to avoid collisions with existing notes.     ──
+    function computeMarginTop(triggerEl, col) {
+      const colRect      = col.getBoundingClientRect();
+      const panel        = document.getElementById('readingPanel');
+      const trigRect     = triggerEl.getBoundingClientRect();
+
+      // Offset relative to top of the margin column element (which
+      // starts at the same scroll origin as the panel content).
+      // We use offsetTop walking up to the readingGrid to get a
+      // scroll-stable value, not a viewport value.
+      let offsetFromGrid = 0;
+      let el = triggerEl;
+      const grid = document.getElementById('readingGrid');
+      while (el && el !== grid) {
+        offsetFromGrid += el.offsetTop;
+        el = el.offsetParent;
+      }
+
+      // The margin col has padding-top of 3.5rem (56px at 16px base).
+      // We subtract that so note[0] starts flush with the prose top.
+      const colPaddingTop = parseFloat(getComputedStyle(col).paddingTop) || 0;
+      let top = offsetFromGrid - colPaddingTop;
+
+      // Collision avoidance with already-placed notes in this column
+      col.querySelectorAll('.fn-margin-note').forEach(existing => {
+        const existingTop    = existing.offsetTop;
+        const existingBottom = existingTop + existing.offsetHeight + NOTE_GAP;
+        if (top < existingBottom && top + 200 > existingTop) {
+          top = existingBottom;
+        }
+      });
+
+      return Math.max(0, top);
+    }
+
+    // ── Place a note in the margin column ──
+    function showMarginNote(triggerEl, num, text, pinned) {
+      const col = getMarginCol();
+      if (!col) { showPopover(triggerEl, num, text, pinned); return; }
+
+      // If already showing, just upgrade to pinned
+      if (activeNotes.has(num)) {
+        if (pinned) upgradeToPin(num);
+        return;
+      }
+
+      const note = document.createElement('div');
+      note.className = 'fn-margin-note' + (pinned ? ' pinned' : '');
+      note.dataset.fn = num;
+      note.innerHTML = `
+        <div class="fn-note-inner">
+          <div class="fn-pin-indicator">Pinned</div>
+          <span class="fn-note-num">Note ${num}</span>
+          <div class="fn-note-text">${text}</div>
+          <div class="fn-note-footer">
+            <button class="fn-jump-link" data-fn="${num}">Jump to note</button>
+          </div>
+        </div>`;
+
+      // position: absolute within the margin column
+      note.style.position = 'absolute';
+      note.style.left     = '0';
+      note.style.right    = '0';
+      note.style.top      = '0px'; // will be set after append
+
+      col.style.position = 'relative'; // ensure col is positioning context
+      col.appendChild(note);
+
+      // Now measure and set top
+      const top = computeMarginTop(triggerEl, col);
+      note.style.top = top + 'px';
+
+      activeNotes.set(num, { el: note, triggerEl, pinned, col });
+      triggerEl.classList.add(pinned ? 'pinned' : 'hovered');
+
+      requestAnimationFrame(() => note.classList.add('visible'));
+
+      note.querySelector('.fn-jump-link').addEventListener('click', e => {
+        e.stopPropagation();
+        jumpToBottomNote(num);
+      });
+      note.addEventListener('click', e => e.stopPropagation());
+    }
+
+    function upgradeToPin(num) {
+      const rec = activeNotes.get(num);
+      if (!rec || rec.pinned) return;
+      rec.pinned = true;
+      rec.el.classList.add('pinned');
+      rec.triggerEl.classList.remove('hovered');
+      rec.triggerEl.classList.add('pinned');
+    }
+
+    function upgradePinPopover(num) {
+      const rec = activePopovers.get(num);
+      if (!rec || rec.pinned) return;
+      rec.pinned = true;
+      rec.el.classList.add('pinned');
+      rec.triggerEl.classList.remove('hovered');
+      rec.triggerEl.classList.add('pinned');
+    }
+
+    function dismissMarginNote(num, immediate) {
+      const rec = activeNotes.get(num);
+      if (!rec) return;
+      rec.el.classList.remove('visible');
+      rec.triggerEl.classList.remove('hovered', 'pinned');
+      const delay = immediate ? 0 : 220;
+      setTimeout(() => { if (rec.el.parentNode) rec.el.parentNode.removeChild(rec.el); }, delay);
+      activeNotes.delete(num);
+    }
+
+    function dismissAllUnpinned() {
+      activeNotes.forEach((rec, num)    => { if (!rec.pinned) dismissMarginNote(num, false); });
+      activePopovers.forEach((rec, num) => { if (!rec.pinned) dismissPopover(num, false); });
+    }
+
+    // ── Popover fallback ──
+    function showPopover(triggerEl, num, text, pinned) {
+      if (activePopovers.has(num)) {
+        if (pinned) upgradePinPopover(num);
+        return;
       }
 
       const pop = document.createElement('div');
-      pop.className = 'fn-popover';
-      pop.setAttribute('role', 'tooltip');
+      pop.className = 'fn-popover' + (pinned ? ' pinned' : '');
       pop.innerHTML = `
         <span class="fn-popover-num">Note ${num}</span>
         <div class="fn-popover-text">${text}</div>
         <div class="fn-popover-footer">
-          <button class="fn-jump-link" data-fn="${num}">Jump to note</button>
+          <span class="fn-popover-pin-label">Pinned</span>
+          <button class="fn-jump-link-pop" data-fn="${num}">Jump to note</button>
         </div>`;
 
-      // Append inside the sup so it positions relative to it
       triggerEl.parentElement.appendChild(pop);
-      activePopover = pop;
-      activeTrigger = triggerEl;
-      triggerEl.classList.add('active');
+      activePopovers.set(num, { el: pop, triggerEl, pinned });
+      triggerEl.classList.add(pinned ? 'pinned' : 'hovered');
 
-      // Edge-detection: nudge left/right if near viewport edge
       requestAnimationFrame(() => {
-        const rect  = pop.getBoundingClientRect();
-        const panel = document.getElementById('readingPanel');
-        const panelRect = panel.getBoundingClientRect();
-        if (rect.left < panelRect.left + 8) {
-          pop.classList.add('nudge-left');
-        } else if (rect.right > panelRect.right - 8) {
-          pop.classList.add('nudge-right');
-        }
-        // Show after positioning
+        const rect = pop.getBoundingClientRect();
+        const pr   = document.getElementById('readingPanel').getBoundingClientRect();
+        if (rect.left < pr.left + 8)      pop.classList.add('nudge-left');
+        else if (rect.right > pr.right - 8) pop.classList.add('nudge-right');
         requestAnimationFrame(() => pop.classList.add('visible'));
       });
 
-      // Jump-to-note button
-      pop.querySelector('.fn-jump-link').addEventListener('click', e => {
+      pop.querySelector('.fn-jump-link-pop').addEventListener('click', e => {
         e.stopPropagation();
-        const fnEl = document.getElementById(`fn-${num}`);
-        if (fnEl) {
-          closePopover();
-          // Brief highlight then scroll
-          fnEl.classList.add('highlight');
-          fnEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          setTimeout(() => fnEl.classList.remove('highlight'), 1800);
-        }
+        jumpToBottomNote(num);
       });
-
-      // Close on click outside
-      setTimeout(() => {
-        document.addEventListener('click', onOutsideClick, { once: false });
-      }, 10);
+      pop.addEventListener('click', e => e.stopPropagation());
     }
 
-    function onOutsideClick(e) {
-      if (activePopover && !activePopover.contains(e.target) && e.target !== activeTrigger) {
-        closePopover();
-        document.removeEventListener('click', onOutsideClick);
-      }
+    function dismissPopover(num, immediate) {
+      const rec = activePopovers.get(num);
+      if (!rec) return;
+      rec.el.classList.remove('visible');
+      rec.triggerEl.classList.remove('hovered', 'pinned');
+      setTimeout(() => { if (rec.el.parentNode) rec.el.parentNode.removeChild(rec.el); }, immediate ? 0 : 200);
+      activePopovers.delete(num);
     }
 
-    // ── Wire up footnote triggers in the rendered prose ──
+    // ── Jump to bottom note, highlight, offer back-scroll ──
+    function jumpToBottomNote(num) {
+      const fnEl = document.getElementById('fn-' + num);
+      if (!fnEl) return;
+      fnEl.classList.add('highlight');
+      fnEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => fnEl.classList.remove('highlight'), 1800);
+    }
+
+    // ── Wire up triggers after a post is rendered ──
     function initFootnoteTriggers(footnotes) {
       const panel = document.getElementById('readingPanel');
+
       panel.querySelectorAll('sup.fn-ref').forEach(sup => {
-        // Replace the <a> with a <button> for better semantics and no navigation
         const a = sup.querySelector('a');
         if (!a) return;
-        const num = parseInt(a.textContent.trim(), 10);
+        const num    = parseInt(a.textContent.trim(), 10);
         const fnText = footnotes[num - 1] || '';
 
         const btn = document.createElement('button');
         btn.className = 'fn-trigger';
         btn.textContent = num;
-        btn.setAttribute('aria-label', `Footnote ${num}`);
-        btn.setAttribute('id', `fnref-${num}`);
+        btn.setAttribute('aria-label', 'Footnote ' + num);
+        btn.setAttribute('id', 'fnref-' + num);
+
+        let hoverTimer;
+
+        btn.addEventListener('mouseenter', () => {
+          hoverTimer = setTimeout(() => {
+            if (!activeNotes.has(num) && !activePopovers.has(num)) {
+              showMarginNote(btn, num, fnText, false);
+            }
+          }, 260);
+        });
+
+        btn.addEventListener('mouseleave', () => {
+          clearTimeout(hoverTimer);
+          const rec    = activeNotes.get(num);
+          const popRec = activePopovers.get(num);
+          if (rec    && !rec.pinned)    dismissMarginNote(num, false);
+          if (popRec && !popRec.pinned) dismissPopover(num, false);
+        });
 
         btn.addEventListener('click', e => {
           e.stopPropagation();
-          buildPopover(btn, num, fnText);
-        });
+          const rec    = activeNotes.get(num);
+          const popRec = activePopovers.get(num);
 
-        // Also show on hover (desktop) — with a small delay to avoid flicker
-        let hoverTimer;
-        btn.addEventListener('mouseenter', () => {
-          hoverTimer = setTimeout(() => {
-            if (!activePopover) buildPopover(btn, num, fnText);
-          }, 280);
-        });
-        btn.addEventListener('mouseleave', () => {
-          clearTimeout(hoverTimer);
+          if (rec) {
+            rec.pinned ? dismissMarginNote(num, false) : upgradeToPin(num);
+          } else if (popRec) {
+            popRec.pinned ? dismissPopover(num, false) : upgradePinPopover(num);
+          } else {
+            showMarginNote(btn, num, fnText, true);
+          }
         });
 
         sup.replaceChildren(btn);
       });
+
+      // Click on grid background dismisses all transient notes
+      const grid = document.getElementById('readingGrid');
+      if (grid) grid.addEventListener('click', dismissAllUnpinned);
     }
 
-    // ── Bottom footnotes: back-to-ref button ──
+    // ── Bottom footnotes: back-to-ref ──
     function initFootnoteBackLinks() {
       const panel = document.getElementById('readingPanel');
       panel.querySelectorAll('.footnote-back-btn').forEach(backBtn => {
         backBtn.addEventListener('click', () => {
-          const num  = backBtn.dataset.fn;
-          const refEl = document.getElementById(`fnref-${num}`);
+          const num   = backBtn.dataset.fn;
+          const refEl = document.getElementById('fnref-' + num);
           if (!refEl) return;
-          // Store scroll position so we can return cleanly
           refEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          // Brief visual pulse on the trigger
-          refEl.classList.add('active');
-          setTimeout(() => refEl.classList.remove('active'), 900);
+          refEl.classList.add(activeNotes.has(parseInt(num)) ? 'pinned' : 'hovered');
+          setTimeout(() => refEl.classList.remove('hovered', 'pinned'), 900);
         });
       });
     }
@@ -1077,7 +1268,8 @@
 
     // ── Close post ──
     function closePost() {
-      closePopover();
+      [...activeNotes.keys()].forEach(n => dismissMarginNote(n, true));
+      [...activePopovers.keys()].forEach(n => dismissPopover(n, true));
       document.getElementById('readingPanel').classList.remove('open');
       document.body.style.overflow = '';
     }
