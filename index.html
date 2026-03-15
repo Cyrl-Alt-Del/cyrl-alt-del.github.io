@@ -197,11 +197,11 @@
       border-color: var(--navy-bright);
       background: rgba(26,66,120,.18);
     }
-    /* Under Review — blush: active, in process */
+    /* Under Review — ochre: active, in process */
     .research-status--review {
-      color: var(--blush);
-      border-color: var(--blush);
-      background: rgba(184,136,142,.12);
+      color: #C4A96A;
+      border-color: #7A6A3A;
+      background: rgba(122,106,58,.15);
     }
     /* Published — green: complete */
     .research-status--published {
@@ -214,7 +214,7 @@
       background: rgba(11,31,58,.08);
     }
     html[data-theme="light"] .research-status--review {
-      color: var(--blush); background: rgba(160,88,95,.08);
+      color: #7A5C10; border-color: #9A7820; background: rgba(139,105,20,.08);
     }
     html[data-theme="light"] .research-status--published {
       color: var(--text-accent); background: rgba(31,74,47,.1);
@@ -321,10 +321,61 @@
     }
     .reading-header.scrolled { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 
-    .reading-back { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: color var(--transition); white-space: nowrap; padding: 0; }
-    .reading-back:hover { color: var(--text-accent); }
+    .reading-back {
+      font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-muted);
+      background: none; border: 1px solid transparent; border-radius: 3px;
+      cursor: pointer; display: flex; align-items: center; gap: 0.4rem;
+      white-space: nowrap; padding: 0.3rem 0.6rem;
+      transition: color var(--transition), border-color var(--transition),
+                  box-shadow var(--transition), background var(--transition);
+    }
+    .reading-back:hover { color: var(--text-accent); border-color: var(--border); }
+    /* Glow state: reached near end of article */
+    @keyframes reading-back-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(58,107,74,0); }
+      50%       { box-shadow: 0 0 0 5px rgba(58,107,74,0.28); }
+    }
+    .reading-back.glow {
+      color: var(--text-accent);
+      border-color: var(--green-mid);
+      background: rgba(42,80,56,0.18);
+      animation: reading-back-pulse 2.4s ease-in-out infinite;
+    }
+    html[data-theme="light"] .reading-back.glow {
+      color: var(--text-accent);
+      border-color: var(--green-mid);
+      background: rgba(31,74,47,0.1);
+      box-shadow: 0 0 0 4px rgba(31,74,47,0.1);
+    }
+
+    /* ── End-of-article CTA ── */
+    .article-end-cta {
+      margin-top: 3.5rem; padding-top: 2rem;
+      border-top: 1px solid var(--border-faint);
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+    }
+    .article-end-cta.visible {
+      opacity: 1; transform: translateY(0); pointer-events: auto;
+    }
+    .article-end-cta-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-style: italic; font-weight: 400;
+      color: var(--text-secondary); line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+    .article-end-email {
+      font-family: 'DM Sans', sans-serif; font-size: 0.72rem;
+      letter-spacing: 0.06em; color: var(--text-accent);
+      border-bottom: 1px solid var(--border); padding-bottom: 1px;
+      transition: color var(--transition), border-color var(--transition);
+      display: inline-block;
+    }
+    .article-end-email:hover { color: var(--blush); border-color: var(--blush); }
     .reading-progress-track { flex: 1; height: 1px; background: var(--border); position: relative; overflow: hidden; }
-    .reading-progress-fill { position: absolute; top: 0; left: 0; bottom: 0; width: 0%; background: var(--green-bright); transition: width 0.1s linear; }
+    .reading-progress-fill { position: absolute; top: 0; left: 0; bottom: 0; width: 0%; background: var(--green-bright); opacity: 0.45; transition: width 0.1s linear; }
     .reading-stat { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.08em; color: var(--text-muted); white-space: nowrap; }
 
     /* ── Three-column reading grid ──
@@ -549,7 +600,7 @@
     .site-name-btn:hover { color: var(--text-accent); }
 
     /* ── Theme toggle drops below reading header when panel is open ── */
-    body.panel-open .theme-toggle-float { top: 3.8rem; z-index: 215; }
+    body.panel-open .theme-toggle-float { top: 4.25rem; z-index: 215; }
 
     /* ── Writing overlay ── */
     .writing-overlay {
@@ -1159,13 +1210,21 @@
       document.getElementById('writingOverlay').classList.add('open');
       document.body.classList.add('panel-open');
       document.body.style.overflow = 'hidden';
+      // Reset toggle to full opacity — we are at the top of the overlay
+      btn.classList.remove('is-scrolled');
+      // Writing link becomes active while overlay is open
+      setActiveNav('writing');
     }
     function closeWritingOverlay() {
       document.getElementById('writingOverlay').classList.remove('open');
       if (!document.getElementById('readingPanel').classList.contains('open')) {
         document.body.classList.remove('panel-open');
         document.body.style.overflow = '';
+        // Return toggle to main-page scroll state
+        btn.classList.toggle('is-scrolled', window.scrollY > 80);
       }
+      // Restore active nav to whatever section is currently in view
+      updateActiveSection();
     }
 
     // ── Render full writing overlay (featured + grid + sort + filters) ──
@@ -1557,7 +1616,11 @@
           <span>${wc.toLocaleString()} words</span>
         </div>
         <div class="reading-prose">${post.body}</div>
-        ${footnotesHTML}`;
+        ${footnotesHTML}
+        <div class="article-end-cta" id="articleEndCta">
+          <p class="article-end-cta-text">If this piece raised questions worth discussing, I&rsquo;d be glad to hear from you.</p>
+          <a class="article-end-email" href="mailto:xx@ed.ac.uk">xx@ed.ac.uk</a>
+        </div>`;
 
       // Wire up interactive footnote elements
       initFootnoteTriggers(post.footnotes || []);
@@ -1570,17 +1633,25 @@
       document.getElementById('readingProgress').style.width = '0%';
       panel.classList.add('open');
       document.body.style.overflow = 'hidden';
+      // Reset toggle opacity — we are at the top of the article
+      btn.classList.remove('is-scrolled');
     }
 
     // ── Close post ──
     function closePost() {
       [...activeNotes.keys()].forEach(n => dismissMarginNote(n, true));
       [...activePopovers.keys()].forEach(n => dismissPopover(n, true));
+      // Reset glow and end CTA
+      const backBtn = document.getElementById('readingBack');
+      if (backBtn) backBtn.classList.remove('glow');
+      const endCta = document.getElementById('articleEndCta');
+      if (endCta) endCta.classList.remove('visible');
       document.getElementById('readingPanel').classList.remove('open');
       // Only remove panel-open if writing overlay is also closed
       if (!document.getElementById('writingOverlay').classList.contains('open')) {
         document.body.classList.remove('panel-open');
         document.body.style.overflow = '';
+        btn.classList.remove('is-scrolled');
       }
     }
     document.getElementById('readingBack').addEventListener('click', closePost);
@@ -1588,15 +1659,35 @@
       if (e.key === 'Escape' && document.getElementById('readingPanel').classList.contains('open')) closePost();
     });
 
-    // ── Reading scroll: progress + header ──
+    // ── Reading scroll: progress + header + toggle fade ──
     const readingPanel  = document.getElementById('readingPanel');
     const readingHeader = document.getElementById('readingHeader');
     const progressFill  = document.getElementById('readingProgress');
 
     readingPanel.addEventListener('scroll', () => {
-      const total = readingPanel.scrollHeight - readingPanel.clientHeight;
-      progressFill.style.width = total > 0 ? (readingPanel.scrollTop / total * 100) + '%' : '0%';
-      readingHeader.classList.toggle('scrolled', readingPanel.scrollTop > 20);
+      const scrollTop = readingPanel.scrollTop;
+      const total     = readingPanel.scrollHeight - readingPanel.clientHeight;
+      // Progress bar
+      progressFill.style.width = total > 0 ? (scrollTop / total * 100) + '%' : '0%';
+      readingHeader.classList.toggle('scrolled', scrollTop > 20);
+      // Drive toggle fade from this scroll container while panel is open
+      if (readingPanel.classList.contains('open')) {
+        btn.classList.toggle('is-scrolled', scrollTop > 80);
+      }
+      // Glow the back button and show end-CTA when near the end
+      const nearEnd = total > 0 && (scrollTop / total) >= 0.90;
+      const backBtn = document.getElementById('readingBack');
+      const endCta  = document.getElementById('articleEndCta');
+      if (backBtn) backBtn.classList.toggle('glow', nearEnd);
+      if (endCta)  endCta.classList.toggle('visible', nearEnd);
+    }, { passive: true });
+
+    // Writing overlay scroll → drive toggle fade
+    const writingOverlayEl = document.getElementById('writingOverlay');
+    writingOverlayEl.addEventListener('scroll', () => {
+      if (writingOverlayEl.classList.contains('open')) {
+        btn.classList.toggle('is-scrolled', writingOverlayEl.scrollTop > 80);
+      }
     }, { passive: true });
 
     // ── Sidebar & nav ──
@@ -1624,7 +1715,11 @@
       if (link.id === 'navWritingLink') {
         e.preventDefault();
         closePost();
-        openWritingOverlay();
+        if (document.getElementById('writingOverlay').classList.contains('open')) {
+          closeWritingOverlay();
+        } else {
+          openWritingOverlay();
+        }
       } else {
         closePost();
         closeWritingOverlay();
@@ -1639,20 +1734,47 @@
     });
 
     // See all writing button
-    document.getElementById('seeAllBtn').addEventListener('click', openWritingOverlay);
+    document.getElementById('seeAllBtn').addEventListener('click', () => {
+      if (document.getElementById('writingOverlay').classList.contains('open')) {
+        closeWritingOverlay();
+      } else {
+        openWritingOverlay();
+      }
+    });
 
     // Writing overlay close
     document.getElementById('writingOverlayClose').addEventListener('click', closeWritingOverlay);
 
-    const sectionObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+    function setActiveNav(id) {
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+    }
+
+    // Track which section is currently in view using a scroll-position
+    // approach rather than IntersectionObserver thresholds — this handles
+    // sections of very different heights reliably.
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+
+    function updateActiveSection() {
+      // Overlays take precedence — don't update from scroll while one is open
+      if (document.getElementById('writingOverlay').classList.contains('open')) return;
+      if (document.getElementById('readingPanel').classList.contains('open')) return;
+
+      // Find the section whose top is closest to (but still above) 40% of viewport height.
+      // This means a section is considered "active" once its heading has passed
+      // well into the visible area, which gives every section a fair window
+      // regardless of its height.
+      const trigger = window.innerHeight * 0.4;
+      let active = sections[0];
+      for (const s of sections) {
+        if (s.getBoundingClientRect().top <= trigger) {
+          active = s;
         }
-      });
-    }, { threshold: 0.25 });
-    document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
+      }
+      setActiveNav(active.id);
+    }
+
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    updateActiveSection();
 
     window.addEventListener('scroll', () => backToTop.classList.toggle('visible', window.scrollY > 400), { passive: true });
     backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
