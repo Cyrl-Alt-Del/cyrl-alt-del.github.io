@@ -254,7 +254,7 @@
     ════════════════════════════════ */
     .reading-panel {
       position: fixed; top: 0; left: 280px; right: 0; bottom: 0;
-      background: var(--bg-base); z-index: 200; overflow-y: auto;
+      background: var(--bg-base); z-index: 210; overflow-y: auto;
       transform: translateX(100%);
       transition: transform 0.38s cubic-bezier(0.4,0,0.2,1), background var(--transition);
     }
@@ -487,6 +487,154 @@
     .footnote-back-btn:hover { color: var(--text-accent); }
     .footnote-item.highlight .footnote-text { color: var(--text-secondary); transition: color 0.1s; }
 
+    /* ── Site name as home button ── */
+    .site-name-btn {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 600;
+      color: var(--text-primary); line-height: 1.2; letter-spacing: 0.02em;
+      background: none; border: none; padding: 0; cursor: pointer;
+      text-align: left; display: block; width: 100%; margin-bottom: 0.35rem;
+      transition: color var(--transition);
+    }
+    .site-name-btn:hover { color: var(--text-accent); }
+
+    /* ── Theme toggle drops below reading header when panel is open ── */
+    body.panel-open .theme-toggle-float { top: 3.8rem; z-index: 215; }
+
+    /* ── Writing overlay ── */
+    .writing-overlay {
+      position: fixed; top: 0; left: 280px; right: 0; bottom: 0;
+      background: var(--bg-base); z-index: 200; overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.38s cubic-bezier(0.4,0,0.2,1), background var(--transition);
+    }
+    .writing-overlay.open { transform: translateX(0); }
+    .writing-overlay-header {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 0.9rem 3rem;
+      background: var(--bg-base); border-bottom: 1px solid var(--border-faint);
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .writing-overlay-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.05rem;
+      color: var(--text-muted); font-weight: 400; letter-spacing: 0.04em;
+    }
+    .writing-overlay-body { max-width: 900px; margin: 0 auto; padding: 2.5rem 3rem 5rem; }
+
+    /* ── Writing overlay controls: sort + topic filters ── */
+    .writing-full-controls {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.75rem; flex-wrap: wrap;
+    }
+    .overlay-sort-btn {
+      font-family: 'DM Sans', sans-serif; font-size: 0.6rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: none; border: 1px solid var(--border); border-radius: 2px;
+      padding: 0.3rem 0.75rem; cursor: pointer; color: var(--text-secondary);
+      transition: all var(--transition); white-space: nowrap;
+    }
+    .overlay-sort-btn:hover { border-color: var(--green-mid); color: var(--text-accent); }
+    .topic-divider {
+      width: 1px; height: 1rem; background: var(--border); flex-shrink: 0;
+    }
+    .topic-filters { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+    .topic-pill {
+      font-family: 'DM Sans', sans-serif; font-size: 0.58rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: none; border: 1px solid; border-radius: 2px;
+      padding: 0.28rem 0.7rem; cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    /* All — neutral */
+    .topic-pill[data-topic="all"] {
+      border-color: var(--border); color: var(--text-muted);
+    }
+    .topic-pill[data-topic="all"].active,
+    .topic-pill[data-topic="all"]:hover {
+      border-color: var(--text-secondary); color: var(--text-primary);
+      background: var(--bg-raised);
+    }
+    /* Essay — green */
+    .topic-pill[data-topic="Essay"] {
+      border-color: var(--green-mid); color: var(--text-accent);
+      background: rgba(42,80,56,.15);
+    }
+    .topic-pill[data-topic="Essay"].active,
+    .topic-pill[data-topic="Essay"]:hover {
+      background: var(--green-deep); color: var(--green-bright);
+      border-color: var(--green-bright);
+    }
+    /* Policy — navy */
+    .topic-pill[data-topic="Policy"] {
+      border-color: var(--navy-bright); color: #9EC0E0;
+      background: rgba(26,66,120,.18);
+    }
+    .topic-pill[data-topic="Policy"].active,
+    .topic-pill[data-topic="Policy"]:hover {
+      background: var(--navy-mid); color: #C8E0F8; border-color: #3E6AAA;
+    }
+    /* Research note — blush */
+    .topic-pill[data-topic="Research note"] {
+      border-color: var(--blush); color: var(--blush);
+      background: rgba(184,136,142,.12);
+    }
+    .topic-pill[data-topic="Research note"].active,
+    .topic-pill[data-topic="Research note"]:hover {
+      background: var(--blush-faint); color: #F0D8DB; border-color: #CCA0A6;
+    }
+    /* Philosophy — warm ochre */
+    .topic-pill[data-topic="Philosophy"] {
+      border-color: #7A6A3A; color: #C4A96A;
+      background: rgba(122,106,58,.15);
+    }
+    .topic-pill[data-topic="Philosophy"].active,
+    .topic-pill[data-topic="Philosophy"]:hover {
+      background: rgba(122,106,58,.35); color: #E0C882; border-color: #A89050;
+    }
+    html[data-theme="light"] .topic-pill[data-topic="Essay"] { background: rgba(31,74,47,.1); color: var(--text-accent); }
+    html[data-theme="light"] .topic-pill[data-topic="Policy"] { background: rgba(11,31,58,.08); color: var(--navy-mid); border-color: var(--navy-mid); }
+    html[data-theme="light"] .topic-pill[data-topic="Research note"] { background: rgba(160,88,95,.08); }
+    html[data-theme="light"] .topic-pill[data-topic="Philosophy"] { color: #7A5C10; border-color: #9A7820; background: rgba(139,105,20,.08); }
+
+    /* ── Full writing overlay — featured + grid ── */
+    .writing-full-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;
+      margin-top: 0.85rem;
+    }
+    .post-grid-card {
+      background: var(--bg-surface); border: 1px solid var(--border);
+      border-radius: 2px; padding: 1.25rem 1.5rem;
+      cursor: pointer; position: relative; overflow: hidden;
+      transition: all var(--transition);
+    }
+    .post-grid-card::before {
+      content: ''; position: absolute; left: 0; top: 0;
+      width: 3px; height: 100%; background: var(--green-mid);
+      transform: scaleY(0); transform-origin: bottom; transition: transform 0.25s ease;
+    }
+    .post-grid-card:hover { background: var(--bg-raised); border-color: var(--green-deep); }
+    .post-grid-card:hover::before { transform: scaleY(1); }
+    .post-grid-card:hover .post-cta { color: var(--blush); border-color: var(--blush); }
+    .post-grid-card .post-title { font-size: 1.05rem; margin-bottom: 0.35rem; }
+    .post-grid-card .post-excerpt {
+      font-size: 0.82rem; color: var(--text-secondary); font-weight: 300;
+      line-height: 1.55; margin-bottom: 0.7rem;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    /* ── Home writing preview: "see all" button ── */
+    .see-all-wrap { margin-top: 1.5rem; }
+    .see-all-btn {
+      font-family: 'DM Sans', sans-serif; font-size: 0.62rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-accent); background: none; border: none;
+      cursor: pointer; padding: 0;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      border-bottom: 1px solid var(--border); padding-bottom: 2px;
+      transition: color var(--transition), border-color var(--transition);
+    }
+    .see-all-btn:hover { color: var(--blush); border-color: var(--blush); }
+
     /* ── Mobile ── */
     .mobile-nav-toggle { display: none; position: fixed; top: 1rem; left: 1rem; z-index: 200; background: var(--bg-overlay); border: 1px solid var(--border); border-radius: 3px; width: 2.5rem; height: 2.5rem; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 4px; opacity: 1; transition: opacity 0.3s ease, background var(--transition), border-color var(--transition); }
     .mobile-nav-toggle.is-scrolled { opacity: 0.45; background: var(--bg-raised); border-color: var(--border-faint); }
@@ -508,8 +656,12 @@
       .mobile-nav-toggle { display: flex; }
       .main { margin-left: 0; }
       .reading-panel { left: 0; }
+      .writing-overlay { left: 0; }
       .reading-header { padding: 0.9rem 1rem; }
       .reading-grid { grid-template-columns: 0 minmax(0,1fr) 0; padding: 0; }
+      .writing-overlay-body { padding: 1.5rem 1.25rem 3rem; }
+      .writing-overlay-header { padding: 0.9rem 1rem; }
+      .writing-full-grid { grid-template-columns: 1fr; }
       .reading-body { padding: 2rem 1.25rem 4rem; }
       .hero, .section { padding: 3.5rem 2rem; }
       .hero { padding-top: 5.5rem; }
@@ -554,10 +706,23 @@
     </div>
   </div>
 
+  <!-- Writing overlay — full writing index, slides over main content -->
+  <div class="writing-overlay" id="writingOverlay" role="dialog" aria-modal="true" aria-label="All writing">
+    <div class="writing-overlay-header" id="writingOverlayHeader">
+      <button class="reading-back" id="writingOverlayClose">← Close</button>
+      <span class="writing-overlay-title">All Writing</span>
+    </div>
+    <div class="writing-overlay-body">
+      <div class="writing-full-controls" id="writingFullControls"></div>
+      <div id="overlayFeatured"></div>
+      <div class="writing-full-grid" id="writingFullGrid"></div>
+    </div>
+  </div>
+
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="site-identity">
-        <div class="site-name">Cyril Birks</div>
+        <button class="site-name site-name-btn" id="siteNameBtn" aria-label="Return to top">Cyril Birks</button>
         <div class="site-role">Doctoral Researcher<br>Moral Philosopher &amp; Engineer</div>
         <div class="site-rule"></div>
       </div>
@@ -677,15 +842,13 @@
         </div>
       </section>
 
-      <!-- WRITING -->
+      <!-- WRITING — home preview (3 featured posts) -->
       <section class="section" id="writing">
         <div class="section-header"><h2 class="section-title">Writing</h2><div class="section-rule"></div></div>
-        <div class="writing-controls">
-          <span class="writing-count" id="writingCount"></span>
-          <button class="sort-toggle" id="sortToggle">Newest first ↕</button>
+        <div class="post-list" id="homeWritingPreview"></div>
+        <div class="see-all-wrap">
+          <button class="see-all-btn" id="seeAllBtn">See all writing →</button>
         </div>
-        <div id="pinnedContainer"></div>
-        <div class="post-list" id="postList"></div>
       </section>
 
       <section class="section" id="contact">
@@ -733,6 +896,8 @@
     {
       id: 'double-uncertainty',
       pinned: true,
+      featured: true,
+      topic: 'Essay',
       tag: 'Essay',
       date: '2026-03-01',
       dateDisplay: 'March 2026',
@@ -770,6 +935,8 @@
     {
       id: 'ai-governance-defence',
       pinned: false,
+      featured: true,
+      topic: 'Policy',
       tag: 'Policy',
       date: '2026-02-10',
       dateDisplay: 'February 2026',
@@ -802,6 +969,8 @@
     {
       id: 'epistemic-resilience',
       pinned: false,
+      featured: true,
+      topic: 'Research note',
       tag: 'Research note',
       date: '2025-12-05',
       dateDisplay: 'December 2025',
@@ -830,6 +999,8 @@
     {
       id: 'possible-minds',
       pinned: false,
+      featured: false,
+      topic: 'Philosophy',
       tag: 'Philosophy',
       date: '2025-11-18',
       dateDisplay: 'November 2025',
@@ -883,61 +1054,22 @@
     }
     function readTime(words) { return Math.max(1, Math.round(words / 220)); }
 
-    // ── Sort state ──
-    let sortAsc = false;
+    // ── Overlay sort + filter state ──
+    let overlaySortAsc = false;
+    let overlayTopicFilter = 'all';
 
-    // ── Render writing index ──
-    function renderWriting() {
-      const pinnedContainer = document.getElementById('pinnedContainer');
-      const postList        = document.getElementById('postList');
-      const writingCount    = document.getElementById('writingCount');
-
-      const pinned  = POSTS.find(p => p.pinned) || null;
-      const regular = POSTS.filter(p => !p.pinned)
-        .sort((a, b) => {
-          const d = new Date(b.date) - new Date(a.date);
-          return sortAsc ? -d : d;
-        });
-
-      writingCount.textContent = `${POSTS.length} ${POSTS.length === 1 ? 'post' : 'posts'}`;
-
-      // Pinned card
-      pinnedContainer.innerHTML = '';
-      if (pinned) {
-        const wc = wordCount(pinned.body);
-        const rt = readTime(wc);
-        const el = document.createElement('div');
-        el.className = 'post-pinned';
-        el.setAttribute('role', 'button');
-        el.setAttribute('tabindex', '0');
-        el.innerHTML = `
-          <div class="pinned-label">Pinned</div>
-          <div class="post-meta">
-            <span class="post-tag">${pinned.tag}</span>
-            <span class="post-dot"></span>
-            <span class="post-date">${pinned.dateDisplay}</span>
-            <span class="post-dot"></span>
-            <span class="post-readtime">${rt} min read</span>
-            <span class="post-dot"></span>
-            <span class="post-wordcount">${wc.toLocaleString()} words</span>
-          </div>
-          <div class="post-title">${pinned.title}</div>
-          <div class="post-excerpt">${pinned.excerpt}</div>
-          <div class="post-cta">Read essay</div>`;
-        el.addEventListener('click', () => openPost(pinned.id));
-        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openPost(pinned.id); });
-        pinnedContainer.appendChild(el);
-      }
-
-      // Regular list
-      postList.innerHTML = '';
-      regular.forEach(post => {
+    // ── Render home preview (3 featured posts) ──
+    function renderHomeWriting() {
+      const container = document.getElementById('homeWritingPreview');
+      if (!container) return;
+      const featured = POSTS.filter(p => p.featured).slice(0, 3);
+      container.innerHTML = '';
+      featured.forEach(post => {
         const wc = wordCount(post.body);
         const rt = readTime(wc);
         const el = document.createElement('div');
         el.className = 'post-card';
-        el.setAttribute('role', 'button');
-        el.setAttribute('tabindex', '0');
+        el.setAttribute('role', 'button'); el.setAttribute('tabindex', '0');
         el.innerHTML = `
           <div class="post-meta">
             <span class="post-tag">${post.tag}</span>
@@ -953,18 +1085,109 @@
           <div class="post-cta">Read</div>`;
         el.addEventListener('click', () => openPost(post.id));
         el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openPost(post.id); });
-        postList.appendChild(el);
+        container.appendChild(el);
       });
     }
 
-    document.getElementById('sortToggle').addEventListener('click', function() {
-      sortAsc = !sortAsc;
-      this.textContent = sortAsc ? 'Oldest first ↕' : 'Newest first ↕';
-      renderWriting();
-    });
+    // ── Writing overlay: open / close ──
+    function openWritingOverlay() {
+      renderFullWriting();
+      document.getElementById('writingOverlay').classList.add('open');
+      document.body.classList.add('panel-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeWritingOverlay() {
+      document.getElementById('writingOverlay').classList.remove('open');
+      if (!document.getElementById('readingPanel').classList.contains('open')) {
+        document.body.classList.remove('panel-open');
+        document.body.style.overflow = '';
+      }
+    }
 
-    // ════════════════════════════════════════════════════
-    // FOOTNOTE MARGIN-NOTE SYSTEM
+    // ── Render full writing overlay (featured + grid + sort + filters) ──
+    function renderFullWriting() {
+      const controlsEl = document.getElementById('writingFullControls');
+      const featuredEl = document.getElementById('overlayFeatured');
+      const gridEl     = document.getElementById('writingFullGrid');
+      if (!controlsEl) return;
+
+      const topics = ['all', ...new Set(POSTS.map(p => p.topic).filter(Boolean))];
+
+      controlsEl.innerHTML = `
+        <button class="overlay-sort-btn" id="overlaySortBtn">${overlaySortAsc ? 'Oldest first ⇕' : 'Newest first ⇕'}</button>
+        <div class="topic-divider"></div>
+        <div class="topic-filters" id="topicFilters">
+          ${topics.map(t => `<button class="topic-pill${overlayTopicFilter === t ? ' active' : ''}" data-topic="${t}">${t === 'all' ? 'All topics' : t}</button>`).join('')}
+        </div>`;
+
+      document.getElementById('overlaySortBtn').addEventListener('click', () => {
+        overlaySortAsc = !overlaySortAsc;
+        renderFullWriting();
+      });
+      document.querySelectorAll('.topic-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          overlayTopicFilter = pill.dataset.topic;
+          renderFullWriting();
+        });
+      });
+
+      let posts = POSTS.filter(p => overlayTopicFilter === 'all' || p.topic === overlayTopicFilter);
+      posts = [...posts].sort((a, b) => {
+        const d = new Date(b.date) - new Date(a.date);
+        return overlaySortAsc ? -d : d;
+      });
+
+      // Featured — pinned post first, or first in filtered set
+      const pinned = posts.find(p => p.pinned) || posts[0];
+      const rest   = posts.filter(p => p !== pinned);
+
+      featuredEl.innerHTML = '';
+      if (pinned) {
+        const wc = wordCount(pinned.body); const rt = readTime(wc);
+        const el = document.createElement('div');
+        el.className = 'post-pinned'; el.setAttribute('role', 'button'); el.setAttribute('tabindex', '0');
+        el.innerHTML = `
+          <div class="pinned-label">Featured</div>
+          <div class="post-meta">
+            <span class="post-tag">${pinned.tag}</span>
+            <span class="post-dot"></span>
+            <span class="post-date">${pinned.dateDisplay}</span>
+            <span class="post-dot"></span>
+            <span class="post-readtime">${rt} min read</span>
+            <span class="post-dot"></span>
+            <span class="post-wordcount">${wc.toLocaleString()} words</span>
+          </div>
+          <div class="post-title">${pinned.title}</div>
+          <div class="post-excerpt">${pinned.excerpt}</div>
+          <div class="post-cta">Read essay</div>`;
+        el.addEventListener('click', () => openPost(pinned.id));
+        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openPost(pinned.id); });
+        featuredEl.appendChild(el);
+      }
+
+      gridEl.innerHTML = '';
+      rest.forEach(post => {
+        const wc = wordCount(post.body); const rt = readTime(wc);
+        const el = document.createElement('div');
+        el.className = 'post-grid-card'; el.setAttribute('role', 'button'); el.setAttribute('tabindex', '0');
+        el.innerHTML = `
+          <div class="post-meta">
+            <span class="post-tag">${post.tag}</span>
+            <span class="post-dot"></span>
+            <span class="post-date">${post.dateDisplay}</span>
+            <span class="post-dot"></span>
+            <span class="post-readtime">${rt} min read</span>
+          </div>
+          <div class="post-title">${post.title}</div>
+          <div class="post-excerpt">${post.excerpt}</div>
+          <div class="post-cta">Read</div>`;
+        el.addEventListener('click', () => openPost(post.id));
+        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openPost(post.id); });
+        gridEl.appendChild(el);
+      });
+    }
+
+        // FOOTNOTE MARGIN-NOTE SYSTEM
     // ════════════════════════════════════════════════════
 
     // How wide a margin column must be (px) before we use it.
@@ -1290,7 +1513,11 @@
       [...activeNotes.keys()].forEach(n => dismissMarginNote(n, true));
       [...activePopovers.keys()].forEach(n => dismissPopover(n, true));
       document.getElementById('readingPanel').classList.remove('open');
-      document.body.style.overflow = '';
+      // Only remove panel-open if writing overlay is also closed
+      if (!document.getElementById('writingOverlay').classList.contains('open')) {
+        document.body.classList.remove('panel-open');
+        document.body.style.overflow = '';
+      }
     }
     document.getElementById('readingBack').addEventListener('click', closePost);
     document.addEventListener('keydown', e => {
@@ -1325,13 +1552,33 @@
 
     navToggle.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('visible'); });
     overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); });
-    navLinks.forEach(link => link.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); }));
+
+    // Nav links close both overlays before navigating to section
+    navLinks.forEach(link => link.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+      closePost();
+      closeWritingOverlay();
+    }));
+
+    // Site name = home button
+    document.getElementById('siteNameBtn').addEventListener('click', () => {
+      closePost();
+      closeWritingOverlay();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // See all writing button
+    document.getElementById('seeAllBtn').addEventListener('click', openWritingOverlay);
+
+    // Writing overlay close
+    document.getElementById('writingOverlayClose').addEventListener('click', closeWritingOverlay);
 
     const sectionObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
-          navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${id}`));
+          navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
         }
       });
     }, { threshold: 0.25 });
@@ -1341,7 +1588,7 @@
     backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
     // ── Init ──
-    renderWriting();
+    renderHomeWriting();
   </script>
 </body>
 </html>
