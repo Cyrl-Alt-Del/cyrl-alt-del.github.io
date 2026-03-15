@@ -22,7 +22,6 @@
   <style>
     :root { --transition: 0.35s ease; }
 
-    /* ── Dark mode: flat, matte palette ── */
     html[data-theme="dark"] {
       --bg-base: #0B0F0C; --bg-surface: #0F1511; --bg-sidebar: #111714;
       --bg-raised: #161D18; --bg-overlay: #1C251E; --border: #222E25;
@@ -34,7 +33,6 @@
       --glow: rgba(42,80,56,.1);
     }
 
-    /* ── Light mode: dark-green hero texts for continuity ── */
     html[data-theme="light"] {
       --bg-base: #F2EDE4; --bg-surface: #EDE8DF; --bg-sidebar: #DDE8DC;
       --bg-raised: #E5DFD3; --bg-overlay: #DDD7CA; --border: #C5BEB0;
@@ -47,7 +45,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behaviour: smooth; font-size: 17px; }
+    html { scroll-behavior: smooth; font-size: 17px; }
 
     body {
       font-family: 'DM Sans', sans-serif; font-weight: 400;
@@ -62,8 +60,8 @@
       pointer-events: none; z-index: 999; opacity: 0.35;
     }
 
-    ::selection { background: rgba(82, 145, 106, 0.3); color: var(--text-primary); }
-    html[data-theme="light"] ::selection { background: rgba(45, 106, 66, 0.18); color: var(--text-primary); }
+    ::selection { background: rgba(82,145,106,0.3); color: var(--text-primary); }
+    html[data-theme="light"] ::selection { background: rgba(45,106,66,0.18); color: var(--text-primary); }
 
     a { color: var(--text-accent); text-decoration: none; transition: color var(--transition); }
     a:hover { color: var(--blush); }
@@ -73,6 +71,7 @@
 
     .layout { min-height: 100vh; }
 
+    /* ── Sidebar ── */
     .sidebar {
       position: fixed; top: 0; left: 0; width: 280px; height: 100vh;
       background: var(--bg-sidebar); border-right: 1px solid var(--border);
@@ -80,13 +79,11 @@
       z-index: 100; transition: background var(--transition), border-color var(--transition), transform 0.3s ease;
       overflow-y: auto;
     }
-
     .sidebar::after {
       content: ''; position: absolute; top: 0; right: -1px; width: 2px; height: 100%;
       background: linear-gradient(to bottom, transparent, var(--green-deep) 20%, var(--green-deep) 80%, transparent);
       opacity: 0.3;
     }
-
     .site-identity { margin-bottom: 1.5rem; }
     .site-name { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 600; color: var(--text-primary); line-height: 1.2; letter-spacing: 0.02em; margin-bottom: 0.35rem; }
     .site-role { font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); line-height: 1.5; }
@@ -96,81 +93,32 @@
     .affiliation-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green-mid); flex-shrink: 0; margin-top: 0.42rem; }
     .affiliation-dot.navy { background: var(--navy-bright); }
     .affiliation-dot.blush { background: var(--blush); }
-
     nav { margin-top: 0; }
     .nav-section-label { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border-faint); }
     .nav-list { list-style: none; margin-bottom: 2rem; }
     .nav-list li { margin-bottom: 0.1rem; }
-    .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 3px; font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-secondary); transition: all var(--transition); position: relative; }
+    .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 3px; font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-secondary); transition: all var(--transition); position: relative; cursor: pointer; }
     .nav-link::before { content: ''; width: 2px; height: 0; background: var(--blush); border-radius: 2px; transition: height 0.2s ease; }
     .nav-link:hover, .nav-link.active { color: var(--text-primary); background: var(--bg-raised); }
     .nav-link:hover::before, .nav-link.active::before { height: 1.1em; }
     .nav-link.active { color: var(--text-accent); }
 
-    .social-links { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
-    .social-link { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: all var(--transition); }
-    .social-link:hover { color: var(--blush); border-color: var(--blush); }
-
+    /* ── Theme toggle ── */
     .theme-toggle-float {
-      position: fixed;
-      top: 1rem;
-      right: 1.5rem;
-      z-index: 300;
-      width: 2.9rem;
-      height: 2.9rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
-      cursor: pointer;
-      background: var(--bg-overlay);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      box-shadow: 0 4px 16px var(--shadow);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      opacity: 1;
-      transform: translateY(0);
-      transition:
-        opacity 0.3s ease,
-        background var(--transition),
-        border-color var(--transition),
-        color var(--transition),
-        box-shadow var(--transition),
-        transform var(--transition);
+      position: fixed; top: 1rem; right: 1.5rem; z-index: 300;
+      width: 2.9rem; height: 2.9rem;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 999px; cursor: pointer;
+      background: var(--bg-overlay); border: 1px solid var(--border);
+      color: var(--text-primary); box-shadow: 0 4px 16px var(--shadow);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 1;
+      transition: opacity 0.3s ease, background var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition), transform var(--transition);
     }
-
-    html[data-theme="light"] .theme-toggle-float {
-      background: var(--bg-raised);
-      border-color: var(--border);
-      box-shadow: 0 4px 16px var(--shadow);
-    }
-
-    .theme-toggle-float.is-scrolled {
-      opacity: 0.58;
-      background: var(--bg-raised);
-      border-color: var(--border);
-      color: var(--text-muted);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.14);
-    }
-
-    .theme-toggle-float:hover,
-    .theme-toggle-float:focus-visible {
-      opacity: 1;
-      color: var(--text-accent);
-      border-color: var(--green-mid);
-      background: var(--bg-overlay);
-      box-shadow: 0 6px 20px var(--shadow);
-      outline: none;
-    }
-
+    html[data-theme="light"] .theme-toggle-float { background: var(--bg-raised); }
+    .theme-toggle-float.is-scrolled { opacity: 0.58; background: var(--bg-raised); color: var(--text-muted); box-shadow: 0 4px 12px rgba(0,0,0,0.14); }
+    .theme-toggle-float:hover, .theme-toggle-float:focus-visible { opacity: 1; color: var(--text-accent); border-color: var(--green-mid); background: var(--bg-overlay); box-shadow: 0 6px 20px var(--shadow); outline: none; }
     .theme-toggle-float:active { transform: scale(0.96); }
-
-    .theme-toggle-float span {
-      font-size: 1rem;
-      line-height: 1;
-      pointer-events: none;
-    }
+    .theme-toggle-float span { font-size: 1rem; line-height: 1; pointer-events: none; }
 
     /* ── Back to top ── */
     .back-to-top {
@@ -187,17 +135,12 @@
 
     .main { margin-left: 280px; min-height: 100vh; }
 
-    .hero {
-      padding: 6rem 5rem 5rem; position: relative;
-      background: var(--bg-base); overflow: hidden;
-      transition: background var(--transition);
-    }
+    /* ── Hero ── */
+    .hero { padding: 6rem 5rem 5rem; position: relative; background: var(--bg-base); overflow: hidden; transition: background var(--transition); }
     .hero-eyebrow { font-family: 'DM Sans', sans-serif; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.8rem; }
     .hero-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 4vw, 4.2rem); font-weight: 500; color: var(--text-primary); line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.01em; }
-    .hero-name em { font-style: italic; color: var(--text-secondary); }
     .hero-desc { font-size: 1.12rem; color: var(--text-secondary); max-width: 580px; line-height: 1.75; font-weight: 300; }
     .hero-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2.5rem; }
-
     .badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.85rem; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; cursor: default; transition: all 0.2s ease; }
     .badge-green { border-color: var(--green-mid); color: #C2E8D0; background: rgba(42,80,56,.3); }
     .badge-green:hover { background: rgba(82,145,106,.2); border-color: var(--green-bright); color: #D8F0E4; }
@@ -205,7 +148,6 @@
     .badge-navy:hover { background: rgba(26,66,120,.45); border-color: #3E6AAA; color: #CCE0F5; }
     .badge-blush { border-color: var(--blush); color: #E8D0D3; background: rgba(184,136,142,.2); }
     .badge-blush:hover { background: rgba(184,136,142,.3); border-color: #CCA0A6; color: #F0E2E4; }
-
     html[data-theme="light"] .badge-green { border-color: var(--green-mid); color: #1A4A2C; background: rgba(31,74,47,.12); }
     html[data-theme="light"] .badge-green:hover { background: rgba(31,74,47,.22); color: #0F3019; }
     html[data-theme="light"] .badge-navy { border-color: var(--navy-mid); color: #0A1E40; background: rgba(11,31,58,.1); }
@@ -213,10 +155,10 @@
     html[data-theme="light"] .badge-blush { border-color: var(--blush); color: #6B2428; background: rgba(160,88,95,.12); }
     html[data-theme="light"] .badge-blush:hover { background: rgba(160,88,95,.2); color: #4A1518; }
 
-    /* Sections */
-    .section { padding: 4.5rem 5rem; transition: opacity 0.6s ease, transform 0.6s ease; }
+    /* ── Sections ── */
+    .section { padding: 4.5rem 5rem; }
     .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
-    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 500; color: var(--text-primary); letter-spacing: 0.02em; flex-grow: 1; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 500; color: var(--text-primary); letter-spacing: 0.02em; }
     .section-rule { flex-grow: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
 
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
@@ -242,43 +184,23 @@
     .card-link:hover { color: var(--blush); border-color: var(--blush); }
     .card-link::after { content: '→'; }
 
-    /* ─── CV ─── */
+    /* ── CV ── */
     .cv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem 4rem; }
-    .cv-group { margin-bottom: 0; }
     .cv-group + .cv-group { margin-top: 2.75rem; }
-
-    .cv-column-title {
-      font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--green-bright); margin-bottom: 1.25rem;
-      padding-bottom: 0.55rem; border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; gap: 0.65rem;
-    }
-    .cv-column-title::before {
-      content: ''; display: inline-block; width: 4px; height: 4px;
-      border-radius: 50%; background: var(--green-mid); flex-shrink: 0;
-    }
-
+    .cv-column-title { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 1.25rem; padding-bottom: 0.55rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.65rem; }
+    .cv-column-title::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--green-mid); flex-shrink: 0; }
     .cv-entry { margin-bottom: 1.6rem; padding-left: 1.1rem; border-left: 1px solid var(--border-faint); position: relative; }
     .cv-entry:last-child { margin-bottom: 0; }
-    .cv-entry::before {
-      content: ''; position: absolute; left: -3px; top: 0.5rem; width: 5px; height: 5px;
-      border-radius: 50%; background: var(--bg-base); border: 1px solid var(--green-mid);
-      transition: background var(--transition);
-    }
+    .cv-entry::before { content: ''; position: absolute; left: -3px; top: 0.5rem; width: 5px; height: 5px; border-radius: 50%; background: var(--bg-base); border: 1px solid var(--green-mid); transition: background var(--transition); }
     .cv-entry:hover::before { background: var(--green-mid); }
-
     .cv-period { font-family: 'DM Sans', sans-serif; font-size: 0.68rem; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.25rem; }
     .cv-role { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 500; color: var(--text-primary); line-height: 1.3; }
     .cv-org { font-size: 0.82rem; color: var(--text-accent); font-weight: 400; margin-top: 0.15rem; letter-spacing: 0.01em; }
     .cv-note { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.4rem; font-weight: 300; line-height: 1.6; }
-    .cv-note em { font-style: italic; color: var(--text-secondary); }
+    .cv-note em { font-style: italic; }
+    .cv-grade { display: inline-block; font-family: 'DM Sans', sans-serif; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.55rem; border-radius: 2px; border: 1px solid var(--border); color: var(--text-muted); margin-top: 0.35rem; }
 
-    .cv-grade {
-      display: inline-block; font-family: 'DM Sans', sans-serif; font-size: 0.55rem;
-      letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.55rem;
-      border-radius: 2px; border: 1px solid var(--border); color: var(--text-muted); margin-top: 0.35rem;
-    }
-
+    /* ── Contact ── */
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
     .contact-text { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.85; font-weight: 300; }
     .contact-details { display: grid; gap: 1.25rem; }
@@ -292,27 +214,213 @@
     .footer-built { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.08em; color: var(--text-muted); }
     .footer-accent { color: var(--blush); }
 
-    /* ── Mobile hamburger ── */
-    .mobile-nav-toggle {
-      display: none; position: fixed; top: 1rem; left: 1rem; z-index: 200;
-      background: var(--bg-overlay); border: 1px solid var(--border);
-      border-radius: 3px; width: 2.5rem; height: 2.5rem; cursor: pointer;
-      flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-      opacity: 1;
-      transition: opacity 0.3s ease, background var(--transition), border-color var(--transition);
+    /* ════════════════════════════════
+       WRITING INDEX
+    ════════════════════════════════ */
+    .writing-controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 0.75rem; }
+    .writing-count { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+    .sort-toggle { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: 1px solid var(--border); border-radius: 2px; padding: 0.3rem 0.75rem; cursor: pointer; color: var(--text-secondary); transition: all var(--transition); }
+    .sort-toggle:hover { border-color: var(--green-mid); color: var(--text-accent); }
+
+    /* Pinned card */
+    .post-pinned { background: var(--bg-surface); border: 1px solid var(--border); border-left: 3px solid var(--blush); border-radius: 2px; padding: 1.75rem 2rem; margin-bottom: 1rem; cursor: pointer; position: relative; overflow: hidden; transition: all var(--transition); }
+    .post-pinned:hover { background: var(--bg-raised); }
+    .post-pinned:hover .post-cta { color: var(--blush); border-color: var(--blush); }
+    .pinned-label { font-family: 'DM Sans', sans-serif; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blush); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
+    .pinned-label::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--blush); }
+
+    /* Standard card */
+    .post-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 2px; padding: 1.5rem 2rem; cursor: pointer; position: relative; overflow: hidden; transition: all var(--transition); }
+    .post-card::before { content: ''; position: absolute; left: 0; top: 0; width: 3px; height: 100%; background: var(--green-mid); transform: scaleY(0); transform-origin: bottom; transition: transform 0.25s ease; }
+    .post-card:hover { background: var(--bg-raised); border-color: var(--green-deep); }
+    .post-card:hover::before { transform: scaleY(1); }
+    .post-card:hover .post-cta { color: var(--blush); border-color: var(--blush); }
+    .post-list { display: grid; gap: 0.85rem; }
+
+    .post-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.55rem; flex-wrap: wrap; }
+    .post-tag { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blush); }
+    .post-date { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.08em; color: var(--text-muted); }
+    .post-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+    .post-readtime { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; color: var(--text-muted); }
+    .post-wordcount { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; color: var(--text-muted); }
+    .post-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 500; color: var(--text-primary); margin-bottom: 0.45rem; line-height: 1.3; }
+    .post-pinned .post-title { font-size: 1.35rem; }
+    .post-excerpt { font-size: 0.88rem; color: var(--text-secondary); font-weight: 300; line-height: 1.65; margin-bottom: 0.85rem; }
+    .post-cta { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-accent); display: inline-flex; align-items: center; gap: 0.35rem; border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: all var(--transition); }
+    .post-cta::after { content: '→'; }
+
+    /* ════════════════════════════════
+       READING PANEL
+    ════════════════════════════════ */
+    .reading-panel {
+      position: fixed; top: 0; left: 280px; right: 0; bottom: 0;
+      background: var(--bg-base); z-index: 200; overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.38s cubic-bezier(0.4,0,0.2,1), background var(--transition);
     }
-    .mobile-nav-toggle.is-scrolled {
-      opacity: 0.45;
-      background: var(--bg-raised);
-      border-color: var(--border-faint);
+    .reading-panel.open { transform: translateX(0); }
+
+    .reading-header {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; gap: 1.25rem;
+      padding: 0.9rem 5rem;
+      background: var(--bg-base);
+      border-bottom: 1px solid var(--border-faint);
+      transition: background var(--transition), border-color var(--transition), backdrop-filter 0.2s;
     }
-    .mobile-nav-toggle:hover,
-    .mobile-nav-toggle:focus-visible {
-      opacity: 1 !important;
+    .reading-header.scrolled { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+
+    .reading-back { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: color var(--transition); white-space: nowrap; padding: 0; }
+    .reading-back:hover { color: var(--text-accent); }
+    .reading-progress-track { flex: 1; height: 1px; background: var(--border); position: relative; overflow: hidden; }
+    .reading-progress-fill { position: absolute; top: 0; left: 0; bottom: 0; width: 0%; background: var(--green-bright); transition: width 0.1s linear; }
+    .reading-stat { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.08em; color: var(--text-muted); white-space: nowrap; }
+
+    .reading-body { max-width: 680px; margin: 0 auto; padding: 3.5rem 5rem 6rem; }
+
+    .reading-eyebrow { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blush); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+    .reading-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.75rem,3.5vw,2.5rem); font-weight: 500; color: var(--text-primary); line-height: 1.15; margin-bottom: 0.65rem; letter-spacing: -0.01em; }
+    .reading-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-style: italic; color: var(--text-secondary); font-weight: 400; line-height: 1.55; margin-bottom: 1.75rem; }
+    .reading-byline { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 0.85rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.05em; color: var(--text-muted); }
+    .byline-sep { width: 3px; height: 3px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+
+    /* Prose */
+    .reading-prose { font-size: 1.03rem; color: var(--text-secondary); line-height: 1.9; font-weight: 300; }
+    .reading-prose p { margin-bottom: 1.35em; }
+    .reading-prose p:last-child { margin-bottom: 0; }
+    .reading-prose strong { font-weight: 500; color: var(--text-primary); }
+    .reading-prose em { font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.08em; }
+    .reading-prose h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 500; color: var(--text-primary); margin: 2.5rem 0 1rem; letter-spacing: 0.01em; }
+    .reading-prose h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 500; color: var(--text-primary); margin: 2rem 0 0.75rem; }
+    .reading-prose blockquote { border-left: 2px solid var(--green-deep); padding: 0.25rem 0 0.25rem 1.5rem; margin: 2rem 0; font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; font-style: italic; color: var(--text-secondary); line-height: 1.75; }
+    .reading-prose hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; width: 3rem; }
+    .reading-prose ul, .reading-prose ol { padding-left: 1.5rem; margin-bottom: 1.35em; color: var(--text-secondary); font-weight: 300; }
+    .reading-prose li { margin-bottom: 0.4em; line-height: 1.75; }
+
+    /* ── Footnote inline refs ── */
+    .reading-prose sup.fn-ref {
+      font-size: 0.65em; line-height: 1; vertical-align: super;
+      margin-left: 1px; position: relative;
+    }
+    .fn-trigger {
+      font-family: 'DM Sans', sans-serif; font-size: inherit;
+      color: var(--text-accent); font-weight: 500;
+      background: none; border: none; padding: 0 2px;
+      cursor: pointer; border-radius: 2px;
+      transition: color var(--transition), background var(--transition);
+      line-height: 1;
+    }
+    .fn-trigger:hover { color: var(--blush); }
+    .fn-trigger.active { color: var(--blush); background: rgba(184,136,142,0.12); }
+    html[data-theme="light"] .fn-trigger.active { background: rgba(160,88,95,0.1); }
+
+    /* Popover bubble */
+    .fn-popover {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      width: 300px;
       background: var(--bg-overlay);
-      border-color: var(--green-mid);
-      outline: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      box-shadow: 0 8px 28px var(--shadow);
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
     }
+    .fn-popover.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    /* Arrow caret pointing down */
+    .fn-popover::after {
+      content: '';
+      position: absolute;
+      top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--border);
+    }
+    .fn-popover::before {
+      content: '';
+      position: absolute;
+      top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid transparent;
+      border-top-color: var(--bg-overlay);
+      z-index: 1;
+      margin-top: -1px;
+    }
+    /* Keep popover on screen when ref is near left/right edge */
+    .fn-popover.nudge-left  { left: 0;    transform: translateX(0) translateY(4px); }
+    .fn-popover.nudge-left.visible  { transform: translateX(0) translateY(0); }
+    .fn-popover.nudge-left::after  { left: 14px; transform: none; }
+    .fn-popover.nudge-left::before { left: 15px; transform: none; }
+    .fn-popover.nudge-right { left: auto; right: 0; transform: translateX(0) translateY(4px); }
+    .fn-popover.nudge-right.visible { transform: translateX(0) translateY(0); }
+    .fn-popover.nudge-right::after  { left: auto; right: 12px; transform: none; }
+    .fn-popover.nudge-right::before { left: auto; right: 13px; transform: none; }
+
+    .fn-popover-num {
+      font-family: 'DM Sans', sans-serif; font-size: 0.55rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-accent); margin-bottom: 0.4rem; display: block;
+    }
+    .fn-popover-text {
+      font-size: 0.82rem; color: var(--text-secondary);
+      font-weight: 300; line-height: 1.6;
+    }
+    .fn-popover-text a { color: var(--text-accent); border-bottom: 1px solid var(--border); transition: all var(--transition); }
+    .fn-popover-text a:hover { color: var(--blush); border-color: var(--blush); }
+    .fn-popover-footer {
+      display: flex; align-items: center; justify-content: flex-end;
+      margin-top: 0.65rem; padding-top: 0.5rem;
+      border-top: 1px solid var(--border-faint);
+    }
+    .fn-jump-link {
+      font-family: 'DM Sans', sans-serif; font-size: 0.55rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-muted); background: none; border: none;
+      cursor: pointer; padding: 0;
+      transition: color var(--transition);
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .fn-jump-link:hover { color: var(--text-accent); }
+    .fn-jump-link::after { content: '↓'; }
+
+    /* ── Footnotes block at bottom ── */
+    .footnotes-section { margin-top: 3.5rem; padding-top: 1.75rem; border-top: 1px solid var(--border); }
+    .footnotes-label { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.25rem; }
+    .footnote-item { display: flex; gap: 0.85rem; margin-bottom: 0.85rem; align-items: baseline; }
+    .footnote-num { font-family: 'DM Sans', sans-serif; font-size: 0.68rem; color: var(--text-accent); font-weight: 500; flex-shrink: 0; min-width: 1.2rem; }
+    .footnote-text { font-size: 0.83rem; color: var(--text-muted); font-weight: 300; line-height: 1.65; }
+    .footnote-text a { color: var(--text-accent); border-bottom: 1px solid var(--border); }
+    .footnote-text a:hover { color: var(--blush); border-color: var(--blush); }
+    /* Return-to-reading link rendered as a subtle button */
+    .footnote-back-btn {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.6rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-muted); background: none; border: none;
+      cursor: pointer; padding: 0; margin-left: 0.5rem;
+      transition: color var(--transition);
+      vertical-align: middle;
+    }
+    .footnote-back-btn:hover { color: var(--text-accent); }
+    /* Flash highlight when jumped to from popover */
+    .footnote-item.highlight .footnote-text {
+      color: var(--text-secondary);
+      transition: color 0.1s;
+    }
+
+    /* ── Mobile ── */
+    .mobile-nav-toggle { display: none; position: fixed; top: 1rem; left: 1rem; z-index: 200; background: var(--bg-overlay); border: 1px solid var(--border); border-radius: 3px; width: 2.5rem; height: 2.5rem; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 4px; opacity: 1; transition: opacity 0.3s ease, background var(--transition), border-color var(--transition); }
+    .mobile-nav-toggle.is-scrolled { opacity: 0.45; background: var(--bg-raised); border-color: var(--border-faint); }
+    .mobile-nav-toggle:hover, .mobile-nav-toggle:focus-visible { opacity: 1 !important; background: var(--bg-overlay); border-color: var(--green-mid); outline: none; }
     .mobile-nav-toggle span { display: block; width: 1.1rem; height: 1px; background: var(--text-secondary); transition: all var(--transition); }
     .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 90; }
 
@@ -322,15 +430,16 @@
     .hero-desc    { animation: fadeSlideIn 0.6s ease 0.35s both; }
     .hero-badges  { animation: fadeSlideIn 0.6s ease 0.5s both; }
 
-    @media (max-width: 1100px) {
-      .about-grid, .cv-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
-    }
+    @media (max-width: 1100px) { .about-grid, .cv-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; } }
     @media (max-width: 860px) {
       .sidebar { transform: translateX(-100%); transition: transform 0.3s ease, background var(--transition); padding-top: 4.5rem; }
       .sidebar.open { transform: translateX(0); }
       .sidebar-overlay.visible { display: block; }
       .mobile-nav-toggle { display: flex; }
       .main { margin-left: 0; }
+      .reading-panel { left: 0; }
+      .reading-header { padding: 0.9rem 1.5rem; }
+      .reading-body { padding: 2.5rem 1.5rem 4rem; }
       .hero, .section { padding: 3.5rem 2rem; }
       .hero { padding-top: 5.5rem; }
       .site-footer { padding: 2rem; }
@@ -347,10 +456,8 @@
 </head>
 <body>
 
-  <!-- Back to top -->
   <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
-  <!-- Floating theme toggle -->
   <button class="theme-toggle-float" id="themeToggle" aria-label="Toggle theme">
     <span id="toggleIcon"></span>
   </button>
@@ -360,29 +467,39 @@
   </button>
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <div class="layout">
+  <!-- Reading panel — slides in from right over main content -->
+  <div class="reading-panel" id="readingPanel" role="dialog" aria-modal="true" aria-label="Article reader">
+    <div class="reading-header" id="readingHeader">
+      <button class="reading-back" id="readingBack">← All writing</button>
+      <div class="reading-progress-track">
+        <div class="reading-progress-fill" id="readingProgress"></div>
+      </div>
+      <span class="reading-stat" id="readingStat"></span>
+    </div>
+    <div class="reading-body" id="readingBody"></div>
+  </div>
 
+  <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="site-identity">
         <div class="site-name">Cyril Birks</div>
         <div class="site-role">Doctoral Researcher<br>Moral Philosopher &amp; Engineer</div>
         <div class="site-rule"></div>
       </div>
-
       <div class="affiliation-block">
         <div class="affiliation-item"><span class="affiliation-dot"></span><span>University of Edinburgh<br>School of Informatics</span></div>
         <div class="affiliation-item"><span class="affiliation-dot navy"></span><span>University of Oxford<br>Oxford Internet Institute</span></div>
         <div class="affiliation-item"><span class="affiliation-dot"></span><span>University of St Andrews<br>Alma Mater</span></div>
         <div class="affiliation-item"><span class="affiliation-dot blush"></span><span>UKRI Funded</span></div>
       </div>
-
       <nav>
         <div class="nav-section-label">Navigation</div>
         <ul class="nav-list">
-          <li><a href="#about" class="nav-link active">About</a></li>
+          <li><a href="#about"    class="nav-link active">About</a></li>
           <li><a href="#research" class="nav-link">Research</a></li>
-          <li><a href="#cv" class="nav-link">Curriculum Vitae</a></li>
-          <li><a href="#contact" class="nav-link">Contact</a></li>
+          <li><a href="#cv"       class="nav-link">Curriculum Vitae</a></li>
+          <li><a href="#writing"  class="nav-link">Writing</a></li>
+          <li><a href="#contact"  class="nav-link">Contact</a></li>
         </ul>
       </nav>
     </aside>
@@ -396,10 +513,7 @@
       </header>
 
       <section class="section" id="about">
-        <div class="section-header">
-          <h2 class="section-title">About</h2>
-          <div class="section-rule"></div>
-        </div>
+        <div class="section-header"><h2 class="section-title">About</h2><div class="section-rule"></div></div>
         <div class="about-grid">
           <div class="about-text">
             <p>I am a doctoral researcher at the University of Edinburgh, funded by the UKRI. Before moving into AI research, I read philosophy and psychology, with a focus on moral philosophy, philosophy of mind, and behavioural neuroscience and cognition.</p>
@@ -407,31 +521,16 @@
             <p>My research is inspired by moral philosophy, cognitive science, and temporal dynamics. I am interested in how philosophy can inform the way we engineer, evaluate, and govern emerging technologies, especially intelligent systems.</p>
           </div>
           <div class="about-aside">
-            <div class="aside-block">
-              <div class="aside-label">Research Interests</div>
-              <div class="aside-value">AI Ethics &amp; Alignment<br>Moral Philosophy<br>Normative Theory<br>Philosophy of Mind<br>Cognitive Warfare<br>Defence Ethics<br>Possible Minds</div>
-            </div>
-            <div class="aside-block">
-              <div class="aside-label">Institutions</div>
-              <div class="aside-value">University of Edinburgh<br>University of Oxford<br>University of St Andrews</div>
-            </div>
-            <div class="aside-block">
-              <div class="aside-label">Funding</div>
-              <div class="aside-value">UKRI<br><span style="font-size:0.9rem;opacity:0.8;">Designing Responsible Natural Language Programming</span></div>
-            </div>
-            <div class="aside-block">
-              <div class="aside-label">Supervised by</div>
-              <div class="aside-value">Dr. Neil Bramley<br><span style="font-size:0.9rem;opacity:0.8;">Computational Cognitive Science Lab<br>University of Edinburgh</span></div>
-            </div>
+            <div class="aside-block"><div class="aside-label">Research Interests</div><div class="aside-value">AI Ethics &amp; Alignment<br>Moral Philosophy<br>Normative Theory<br>Philosophy of Mind<br>Cognitive Warfare<br>Defence Ethics<br>Possible Minds</div></div>
+            <div class="aside-block"><div class="aside-label">Institutions</div><div class="aside-value">University of Edinburgh<br>University of Oxford<br>University of St Andrews</div></div>
+            <div class="aside-block"><div class="aside-label">Funding</div><div class="aside-value">UKRI<br><span style="font-size:0.9rem;opacity:0.8;">Designing Responsible Natural Language Programming</span></div></div>
+            <div class="aside-block"><div class="aside-label">Supervised by</div><div class="aside-value">Dr. Neil Bramley<br><span style="font-size:0.9rem;opacity:0.8;">Computational Cognitive Science Lab<br>University of Edinburgh</span></div></div>
           </div>
         </div>
       </section>
 
       <section class="section" id="research">
-        <div class="section-header">
-          <h2 class="section-title">Research</h2>
-          <div class="section-rule"></div>
-        </div>
+        <div class="section-header"><h2 class="section-title">Research</h2><div class="section-rule"></div></div>
         <div class="research-grid">
           <div class="research-card">
             <div class="card-meta"><span class="card-type">Working Paper</span><span class="card-dot"></span><span class="card-year">In Progress</span></div>
@@ -446,231 +545,82 @@
           <div class="research-card">
             <div class="card-meta"><span class="card-type">PhD Thesis</span><span class="card-dot"></span><span class="card-year">In Progress</span></div>
             <div class="card-title">Agency under Double Uncertainty</div>
-            <p class="card-desc">My thesis develops a computational account of virtue and practical wisdom in response to what I call the double uncertainty problem: how should agents act and plan for the future when they are unsure both about what is true and about what is good? In a world as destabilised and rapidly changing as ours, this is a particularly pressing question. Agents face double uncertainty not only in the sense that they are unsure about both empirical and evaluative questions, but in the deeper sense that both their moral hypothesis space and their practical possibility space are themselves changing targets, reshaped by the affordances of cultural evolution and technological innovation.</p>
+            <p class="card-desc">My thesis develops a computational account of virtue and practical wisdom in response to what I call the double uncertainty problem: how should agents act and plan for the future when they are unsure both about what is true and about what is good? In a world as destabilised and rapidly changing as ours, this is a particularly pressing question.</p>
           </div>
         </div>
       </section>
 
-      <!-- ─── CV ─── -->
       <section class="section" id="cv">
-        <div class="section-header">
-          <h2 class="section-title">Curriculum Vitae</h2>
-          <div class="section-rule"></div>
-        </div>
-
+        <div class="section-header"><h2 class="section-title">Curriculum Vitae</h2><div class="section-rule"></div></div>
         <div class="cv-grid">
-
-          <!-- LEFT COLUMN -->
           <div>
-
             <div class="cv-group">
               <div class="cv-column-title">Education</div>
-
-              <div class="cv-entry">
-                <div class="cv-period">2025 — 2029</div>
-                <div class="cv-role">PhD Informatics</div>
-                <div class="cv-org">University of Edinburgh</div>
-                <div class="cv-note">Designing Responsible NLP CDT. Recipient of a four-year UKRI doctoral scholarship valued at £165k, supporting interdisciplinary research in the design, deployment, and governance of frontier AI.</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">2020</div>
-                <div class="cv-role">MSc Psychology</div>
-                <div class="cv-org">University of St Andrews</div>
-                <div class="cv-note">Cognition &amp; Behavioural Neuroscience<br><span class="cv-grade">Merit</span></div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">2018</div>
-                <div class="cv-role">PGDip Health Science</div>
-                <div class="cv-org">University of Otago</div>
-                <div class="cv-note">Bioethics<br><span class="cv-grade">Distinction</span></div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">2016</div>
-                <div class="cv-role">BA Philosophy</div>
-                <div class="cv-org">University of Otago</div>
-                <div class="cv-note">Moral Philosophy<br><span class="cv-grade">First Class</span></div>
-              </div>
+              <div class="cv-entry"><div class="cv-period">2025 — 2029</div><div class="cv-role">PhD Informatics</div><div class="cv-org">University of Edinburgh</div><div class="cv-note">Designing Responsible NLP CDT. Recipient of a four-year UKRI doctoral scholarship valued at £165k, supporting interdisciplinary research in the design, deployment, and governance of frontier AI.</div></div>
+              <div class="cv-entry"><div class="cv-period">2020</div><div class="cv-role">MSc Psychology</div><div class="cv-org">University of St Andrews</div><div class="cv-note">Cognition &amp; Behavioural Neuroscience<br><span class="cv-grade">Merit</span></div></div>
+              <div class="cv-entry"><div class="cv-period">2018</div><div class="cv-role">PGDip Health Science</div><div class="cv-org">University of Otago</div><div class="cv-note">Bioethics<br><span class="cv-grade">Distinction</span></div></div>
+              <div class="cv-entry"><div class="cv-period">2016</div><div class="cv-role">BA Philosophy</div><div class="cv-org">University of Otago</div><div class="cv-note">Moral Philosophy<br><span class="cv-grade">First Class</span></div></div>
             </div>
-
             <div class="cv-group">
               <div class="cv-column-title">Appointments</div>
-
-              <div class="cv-entry">
-                <div class="cv-period">Dec 2025 — Sep 2026</div>
-                <div class="cv-role">Researcher</div>
-                <div class="cv-org">Oxford Internet Institute, University of Oxford</div>
-                <div class="cv-note">Frontier AI policy in high-risk domains and high-stakes decision-making with Professor Mariarosaria Taddeo. Funded by DSTL and the European Commission. 5 publications forthcoming, 3 as first author.</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">Dec 2025 — Jul 2026</div>
-                <div class="cv-role">AI Safety Researcher</div>
-                <div class="cv-org">London Stock Exchange Group</div>
-                <div class="cv-note">PhD industry collaboration on AI safety, alignment, and interpretability for large language models, with a particular emphasis on chain-of-thought and agent faithfulness.</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">Jan 2025 — Sep 2025</div>
-                <div class="cv-role">Researcher</div>
-                <div class="cv-org">King's College London</div>
-                <div class="cv-note">Peer reviewed and developed 12 of 31 chapters for <em>Contemporary Debates in the Ethics of Artificial Intelligence</em> (2026).</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">Jan 2025 — Sep 2025</div>
-                <div class="cv-role">Research Fellowship</div>
-                <div class="cv-org">Cambridge AI Safety Hub</div>
-                <div class="cv-note">Researched novel economic pathways to AI-driven conflict, investigating how emerging economic interdependencies shape international cooperation, conflict risks, and societal resilience.</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">2024</div>
-                <div class="cv-role">Research Manager</div>
-                <div class="cv-org">UKRI Policymakers Lab, University of Warwick</div>
-                <div class="cv-note">Built and managed relationships with politicians, policymakers, and global research bodies. Co-developed dissemination strategy and a passive recruitment pipeline for policymaker engagement.</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">2022 — 2024</div>
-                <div class="cv-role">Investment Strategist</div>
-                <div class="cv-org">Invesco</div>
-                <div class="cv-note">Developed forecasting and scenario models for global macroeconomic trends, including emerging technology and geopolitics. Translated complex analyses into actionable insights for institutional investors and C-suite stakeholders.</div>
-              </div>
-
+              <div class="cv-entry"><div class="cv-period">Dec 2025 — Sep 2026</div><div class="cv-role">Researcher</div><div class="cv-org">Oxford Internet Institute, University of Oxford</div><div class="cv-note">Frontier AI policy in high-risk domains and high-stakes decision-making with Professor Mariarosaria Taddeo. Funded by DSTL and the European Commission. 5 publications forthcoming, 3 as first author.</div></div>
+              <div class="cv-entry"><div class="cv-period">Dec 2025 — Jul 2026</div><div class="cv-role">AI Safety Researcher</div><div class="cv-org">London Stock Exchange Group</div><div class="cv-note">PhD industry collaboration on AI safety, alignment, and interpretability for large language models, with a particular emphasis on chain-of-thought and agent faithfulness.</div></div>
+              <div class="cv-entry"><div class="cv-period">Jan 2025 — Sep 2025</div><div class="cv-role">Researcher</div><div class="cv-org">King's College London</div><div class="cv-note">Peer reviewed and developed 12 of 31 chapters for <em>Contemporary Debates in the Ethics of Artificial Intelligence</em> (2026).</div></div>
+              <div class="cv-entry"><div class="cv-period">Jan 2025 — Sep 2025</div><div class="cv-role">Research Fellowship</div><div class="cv-org">Cambridge AI Safety Hub</div><div class="cv-note">Researched novel economic pathways to AI-driven conflict, investigating how emerging economic interdependencies shape international cooperation, conflict risks, and societal resilience.</div></div>
+              <div class="cv-entry"><div class="cv-period">2024</div><div class="cv-role">Research Manager</div><div class="cv-org">UKRI Policymakers Lab, University of Warwick</div><div class="cv-note">Built and managed relationships with politicians, policymakers, and global research bodies. Co-developed dissemination strategy and a passive recruitment pipeline for policymaker engagement.</div></div>
+              <div class="cv-entry"><div class="cv-period">2022 — 2024</div><div class="cv-role">Investment Strategist</div><div class="cv-org">Invesco</div><div class="cv-note">Developed forecasting and scenario models for global macroeconomic trends, including emerging technology and geopolitics. Translated complex analyses into actionable insights for institutional investors and C-suite stakeholders.</div></div>
             </div>
-
           </div>
-
-          <!-- RIGHT COLUMN -->
           <div>
-
             <div class="cv-group">
               <div class="cv-column-title">Awards &amp; Funding</div>
-
-              <div class="cv-entry">
-                <div class="cv-period">2025</div>
-                <div class="cv-role">UKRI Doctoral Scholarship</div>
-                <div class="cv-org">UK Research and Innovation</div>
-                <div class="cv-note">Four-year scholarship valued at £165k.</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">2024</div>
-                <div class="cv-role">Best AI Thought Leadership</div>
-                <div class="cv-org">Savvy Investor</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">2024</div>
-                <div class="cv-role">Top 10 Whitepapers</div>
-                <div class="cv-org">Savvy Investor</div>
-              </div>
-
+              <div class="cv-entry"><div class="cv-period">2025</div><div class="cv-role">UKRI Doctoral Scholarship</div><div class="cv-org">UK Research and Innovation</div><div class="cv-note">Four-year scholarship valued at £165k.</div></div>
+              <div class="cv-entry"><div class="cv-period">2024</div><div class="cv-role">Best AI Thought Leadership</div><div class="cv-org">Savvy Investor</div></div>
+              <div class="cv-entry"><div class="cv-period">2024</div><div class="cv-role">Top 10 Whitepapers</div><div class="cv-org">Savvy Investor</div></div>
             </div>
-
             <div class="cv-group">
               <div class="cv-column-title">Teaching</div>
-
-              <div class="cv-entry">
-                <div class="cv-period">Dec 2025 — Mar 2026</div>
-                <div class="cv-role">Guest Lecturer &amp; Tutor</div>
-                <div class="cv-org">University of Edinburgh</div>
-                <div class="cv-note">Ethics in Medical Informatics, alongside Dr. Nayha Sethi (Chancellor's Fellow, Data Driven Innovation).</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">2017 &amp; 2018</div>
-                <div class="cv-role">Campbell Bioethics Teaching Fellow</div>
-                <div class="cv-org">University of Otago</div>
-              </div>
-
+              <div class="cv-entry"><div class="cv-period">Dec 2025 — Mar 2026</div><div class="cv-role">Guest Lecturer &amp; Tutor</div><div class="cv-org">University of Edinburgh</div><div class="cv-note">Ethics in Medical Informatics, alongside Dr. Nayha Sethi (Chancellor's Fellow, Data Driven Innovation).</div></div>
+              <div class="cv-entry"><div class="cv-period">2017 &amp; 2018</div><div class="cv-role">Campbell Bioethics Teaching Fellow</div><div class="cv-org">University of Otago</div></div>
             </div>
-
             <div class="cv-group">
               <div class="cv-column-title">Talks &amp; Presentations</div>
-
-              <div class="cv-entry">
-                <div class="cv-period">Mar 2026</div>
-                <div class="cv-role">"AI Ethics in Defence"</div>
-                <div class="cv-org">Ministry of Defence</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">Dec 2025</div>
-                <div class="cv-role">"The Nature of Digital Minds"</div>
-                <div class="cv-org">Wilks Moral Psychology Lab</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">Sep 2025</div>
-                <div class="cv-role">"Partial Aggregationist Ethics in Real-World AI Deployment"</div>
-                <div class="cv-org">Bramley Computational Cognition Lab</div>
-              </div>
-
-              <div class="cv-entry">
-                <div class="cv-period">Jan 2024</div>
-                <div class="cv-role">World Economic Forum</div>
-                <div class="cv-org">Invesco</div>
-                <div class="cv-note">Researched and co-authored the Invesco presentations for executive leadership at Davos.</div>
-              </div>
-
+              <div class="cv-entry"><div class="cv-period">Mar 2026</div><div class="cv-role">"AI Ethics in Defence"</div><div class="cv-org">Ministry of Defence</div></div>
+              <div class="cv-entry"><div class="cv-period">Dec 2025</div><div class="cv-role">"The Nature of Digital Minds"</div><div class="cv-org">Wilks Moral Psychology Lab</div></div>
+              <div class="cv-entry"><div class="cv-period">Sep 2025</div><div class="cv-role">"Partial Aggregationist Ethics in Real-World AI Deployment"</div><div class="cv-org">Bramley Computational Cognition Lab</div></div>
+              <div class="cv-entry"><div class="cv-period">Jan 2024</div><div class="cv-role">World Economic Forum</div><div class="cv-org">Invesco</div><div class="cv-note">Researched and co-authored the Invesco presentations for executive leadership at Davos.</div></div>
             </div>
-
             <div class="cv-group">
               <div class="cv-column-title">Editorial &amp; Review</div>
-
-              <div class="cv-entry">
-                <div class="cv-period">2025</div>
-                <div class="cv-role">Peer Review &amp; Chapter Development</div>
-                <div class="cv-org">King's College London</div>
-                <div class="cv-note">Reviewed and developed 12 of 31 chapters for <em>Contemporary Debates in the Ethics of Artificial Intelligence</em> (2026).</div>
-              </div>
-
+              <div class="cv-entry"><div class="cv-period">2025</div><div class="cv-role">Peer Review &amp; Chapter Development</div><div class="cv-org">King's College London</div><div class="cv-note">Reviewed and developed 12 of 31 chapters for <em>Contemporary Debates in the Ethics of Artificial Intelligence</em> (2026).</div></div>
             </div>
-
             <div class="cv-group">
               <div class="cv-column-title">Volunteering</div>
-
-              <div class="cv-entry">
-                <div class="cv-period">2022 — 2026</div>
-                <div class="cv-role">Marine Wildlife Conservation</div>
-                <div class="cv-org">The Americas</div>
-                <div class="cv-note">Assisting in the survival of loggerhead sea turtles by preserving nests and evaluating hatches.</div>
-              </div>
-
+              <div class="cv-entry"><div class="cv-period">2022 — 2026</div><div class="cv-role">Marine Wildlife Conservation</div><div class="cv-org">The Americas</div><div class="cv-note">Assisting in the survival of loggerhead sea turtles by preserving nests and evaluating hatches.</div></div>
             </div>
-
           </div>
-
         </div>
+      </section>
 
+      <!-- WRITING -->
+      <section class="section" id="writing">
+        <div class="section-header"><h2 class="section-title">Writing</h2><div class="section-rule"></div></div>
+        <div class="writing-controls">
+          <span class="writing-count" id="writingCount"></span>
+          <button class="sort-toggle" id="sortToggle">Newest first ↕</button>
+        </div>
+        <div id="pinnedContainer"></div>
+        <div class="post-list" id="postList"></div>
       </section>
 
       <section class="section" id="contact">
-        <div class="section-header">
-          <h2 class="section-title">Contact</h2>
-          <div class="section-rule"></div>
-        </div>
+        <div class="section-header"><h2 class="section-title">Contact</h2><div class="section-rule"></div></div>
         <div class="contact-grid">
-          <div class="contact-text">
-            <p>I welcome enquiries from researchers, journalists, and members of the public with an interest in my work. Please feel free to get in touch by email.</p>
-          </div>
+          <div class="contact-text"><p>I welcome enquiries from researchers, journalists, and members of the public with an interest in my work. Please feel free to get in touch by email.</p></div>
           <div class="contact-details">
-            <div class="contact-item">
-              <span class="contact-label">Email</span>
-              <span class="contact-value"><a href="#">[email protected]</a></span>
-            </div>
-            <div class="contact-item">
-              <span class="contact-label">Office</span>
-              <span class="contact-value">Edinburgh Futures Institute</span>
-            </div>
-            <div class="contact-item">
-              <span class="contact-label">Scholar</span>
-              <span class="contact-value"><a href="#">Google Scholar Profile</a></span>
-            </div>
+            <div class="contact-item"><span class="contact-label">Email</span><span class="contact-value"><a href="#">[email protected]</a></span></div>
+            <div class="contact-item"><span class="contact-label">Office</span><span class="contact-value">Edinburgh Futures Institute</span></div>
+            <div class="contact-item"><span class="contact-label">Scholar</span><span class="contact-value"><a href="#">Google Scholar Profile</a></span></div>
           </div>
         </div>
       </section>
@@ -679,88 +629,508 @@
         <span class="footer-copy">© <span id="year"></span> Cyril Birks. All rights reserved.</span>
         <span class="footer-built">University of Edinburgh <span class="footer-accent">·</span> Oxford Internet Institute <span class="footer-accent">·</span> UKRI</span>
       </footer>
-
     </main>
   </div>
 
+  <!-- ══════════════════════════════════════════════════════
+       POSTS DATA
+       ─────────────────────────────────────────────────────
+       To add a new post, copy one object below and fill it in.
+
+       Fields:
+         id          — unique slug (no spaces)
+         pinned      — true = shown as featured card above the list
+                       (only one post should be pinned at a time)
+         tag         — short label: 'Essay', 'Policy', 'Research note', etc.
+         date        — ISO format YYYY-MM-DD used for sorting
+         dateDisplay — shown to readers
+         title       — headline
+         subtitle    — italic sub-heading (optional, set to '' to omit)
+         excerpt     — shown on the index card
+         body        — full HTML prose for the reading panel
+                       Use <h2>, <h3>, <p>, <blockquote>, <hr>, <ul>, <ol>
+                       For footnote references: <sup class="fn-ref"><a href="#fn-N" id="fnref-N">N</a></sup>
+                       (the JS replaces these with interactive buttons automatically)
+         footnotes   — array of strings (HTML allowed); empty array [] if none
+  ══════════════════════════════════════════════════════ -->
   <script>
+  const POSTS = [
+    {
+      id: 'double-uncertainty',
+      pinned: true,
+      tag: 'Essay',
+      date: '2026-03-01',
+      dateDisplay: 'March 2026',
+      title: 'The Double Uncertainty Problem',
+      subtitle: 'Acting well when neither facts nor values are fixed',
+      excerpt: 'How should agents act when they are uncertain both about what is true and about what is good? This is not simply the problem of decision-making under empirical uncertainty — it is a deeper challenge in which the very frameworks we use to evaluate our choices are themselves in flux.',
+      body: `
+        <p>Philosophy has long attended to the problem of action under uncertainty. The canonical treatment asks: how should a rational agent choose between options when the consequences of those choices are probabilistically distributed? The expected utility framework gives a clean answer, and for two centuries it has served as the dominant paradigm in decision theory.</p>
+
+        <blockquote>But what happens when uncertainty is not merely empirical — when the agent is uncertain not only about what will happen, but about what outcomes are worth wanting in the first place?</blockquote>
+
+        <p>This is what I call the <strong>double uncertainty problem</strong>. It is a problem not just about predicting the world but about evaluating it. And in a period of rapid technological change, it is among the most practically urgent problems in moral philosophy.<sup class="fn-ref"><a href="#fn-1" id="fnref-1">1</a></sup></p>
+
+        <h2>The structure of the problem</h2>
+
+        <p>Consider a policymaker deciding whether to deploy an autonomous weapon system in a conflict zone. She faces ordinary empirical uncertainty: she does not know how the system will behave, what the adversary will do, how civilians will respond. But she also faces a deeper uncertainty: she is unsure which of the competing normative frameworks available to her is correct, and she has some reason to believe that the choice of framework is itself partly determined by the outcome of the conflict she is trying to navigate.</p>
+
+        <p>Her <em>moral hypothesis space</em> and her <em>practical possibility space</em> are not fixed and independent. They are entangled, and both are being reshaped by the very events she is trying to evaluate. This, I want to argue, is the characteristic epistemic situation of agency in a world destabilised by technological innovation.</p>
+
+        <h2>Why existing frameworks fall short</h2>
+
+        <p>Moral uncertainty has received growing attention in philosophy.<sup class="fn-ref"><a href="#fn-2" id="fnref-2">2</a></sup> The dominant approach — <em>maximising expected choiceworthiness</em> — treats moral uncertainty analogously to empirical uncertainty: assign credences to moral theories, weight outcomes by their choiceworthiness under each theory, and choose the action with the highest expected choiceworthiness across the probability distribution.</p>
+
+        <p>This is a significant advance over single-theory dogmatism. But it inherits a crucial assumption: that the space of possibilities is fixed and known in advance. In conditions of genuine double uncertainty, this assumption fails. The agent does not merely lack credences over a fixed moral hypothesis space; the hypothesis space itself is shifting.</p>
+
+        <hr>
+
+        <p>What is needed, I suggest, is an account of practical wisdom that is dynamic rather than static — one that models the agent not as selecting from a given menu but as navigating an evolving landscape in which the terrain and the cartography are both being revised in real time. This is the project my thesis takes up, drawing on computational cognitive science as well as classical virtue theory.</p>
+      `,
+      footnotes: [
+        'I develop this argument at greater length in my thesis, <em>Agency under Double Uncertainty</em>, currently in progress at the University of Edinburgh under the supervision of Dr. Neil Bramley.',
+        'See in particular William MacAskill, Krister Bykvist, and Toby Ord, <em>Moral Uncertainty</em> (Oxford University Press, 2020), which provides the most systematic treatment of the maximising expected choiceworthiness approach.'
+      ]
+    },
+    {
+      id: 'ai-governance-defence',
+      pinned: false,
+      tag: 'Policy',
+      date: '2026-02-10',
+      dateDisplay: 'February 2026',
+      title: 'On AI Governance in High-Stakes Domains',
+      subtitle: 'Why existing frameworks are structurally ill-suited to frontier deployment',
+      excerpt: 'Existing AI governance frameworks were designed for a slower, more legible world. In high-stakes domains — defence, critical infrastructure, emergency medicine — the tempo of frontier AI deployment has already outpaced the institutions responsible for overseeing it.',
+      body: `
+        <p>There is a pattern that repeats in the history of emerging technology governance. A new capability arrives. Institutions initially treat it as a variant of something already regulated — the automobile as a fast horse, the internet as a broadcasting medium, the drone as a piloted aircraft. Frameworks designed for the predecessor are stretched to cover the successor, and for a while they hold. Then they don't.</p>
+
+        <p>We are at the stretching stage with artificial intelligence in high-stakes domains. The frameworks being applied — procurement regulations, human-in-the-loop requirements, existing international humanitarian law — were not designed for systems that learn, adapt, and fail in ways that are neither predictable nor, in many cases, explicable after the fact.<sup class="fn-ref"><a href="#fn-1" id="fnref-1">1</a></sup></p>
+
+        <h2>Three structural problems</h2>
+
+        <p>My research identifies three structural barriers to effective AI governance in these domains.</p>
+
+        <p>The first is the <strong>tempo mismatch</strong>. Governance processes — regulatory review, parliamentary oversight, international treaty negotiation — operate on timescales of months to years. Frontier AI capabilities are advancing on timescales of weeks. By the time a governance response has been formulated, the system it was designed to govern has been superseded.</p>
+
+        <p>The second is the <strong>legibility gap</strong>. Meaningful oversight requires that the overseer can understand, at some level, what the system is doing and why. Large language models and other frontier systems are not legible in the relevant sense. This is not merely a technical problem awaiting a technical solution; it is a structural feature of the class of systems currently being deployed.</p>
+
+        <p>The third is <strong>institutional misalignment</strong>. The organisations with the greatest capability to develop AI have incentives that do not straightforwardly align with the public interest in safe, accountable deployment. The organisations with the greatest authority to regulate often lack the technical expertise to do so effectively.</p>
+
+        <h2>Toward a new framework</h2>
+
+        <p>My forthcoming work with Professor Mariarosaria Taddeo at the Oxford Internet Institute proposes a normative framework that takes these structural features seriously rather than treating them as temporary obstacles. The framework draws on adaptive governance theory, international security studies, and moral philosophy to propose institutional designs that can function under conditions of rapid change, limited legibility, and systematic incentive misalignment.</p>
+      `,
+      footnotes: [
+        'For a detailed treatment of the legal and ethical challenges posed by autonomous weapon systems under existing international humanitarian law, see the International Committee of the Red Cross, <em>Autonomy in Weapons Systems</em> (ICRC, 2021).'
+      ]
+    },
+    {
+      id: 'epistemic-resilience',
+      pinned: false,
+      tag: 'Research note',
+      date: '2025-12-05',
+      dateDisplay: 'December 2025',
+      title: 'Epistemic Resilience in the Age of Generative AI',
+      subtitle: 'Field notes on cognitive warfare and democratic discourse',
+      excerpt: 'Generative AI has fundamentally altered the economics of disinformation. What once required state-level resources can now be achieved cheaply, at scale, and with plausible deniability. The question is not whether epistemic institutions will be stressed — they already are — but whether they can adapt.',
+      body: `
+        <p>The concept of epistemic resilience — a society's capacity to maintain reliable collective beliefs in the face of deliberate manipulation — has received renewed attention in the security studies literature over the past decade. Much of that literature was written before large language models existed. It needs updating.</p>
+
+        <p>The pre-LLM threat model for cognitive warfare assumed a certain cost structure: producing convincing disinformation at scale required significant resources, specialised labour, and often state sponsorship. This cost structure provided a natural limit on the scale and sophistication of influence operations. That limit no longer exists in the same way.</p>
+
+        <h2>What changes with generative AI</h2>
+
+        <p>Three shifts seem most significant, based on my ongoing research.</p>
+
+        <p>First, the <strong>cost of personalisation has collapsed</strong>. Influence operations previously had to choose between scale and specificity. Generative AI dissolves this tradeoff. Content can now be personalised to individual targets — their concerns, their language, their social context — at essentially zero marginal cost.</p>
+
+        <p>Second, <strong>detection is becoming structurally harder</strong>. Watermarking, provenance tracking, and detection classifiers are all valuable interventions, but they face a fundamental asymmetry: the cost of generating undetectable synthetic content falls faster than the cost of detecting it.</p>
+
+        <p>Third, and perhaps most importantly, <strong>the epistemic commons is being degraded</strong> even in the absence of specific influence operations. The mere knowledge that synthetic content exists at scale induces what researchers have called a <em>liar's dividend</em> — the ability to deny authentic content by attributing it to AI.</p>
+
+        <p>These are not reasons for despair. But they do suggest that the framework for thinking about epistemic resilience needs to shift from a focus on content to a focus on infrastructure — strengthening the institutions, practices, and norms that produce reliable belief at the collective level.</p>
+      `,
+      footnotes: []
+    },
+    {
+      id: 'possible-minds',
+      pinned: false,
+      tag: 'Philosophy',
+      date: '2025-11-18',
+      dateDisplay: 'November 2025',
+      title: 'Possible Minds and the Problem of Moral Status',
+      subtitle: 'A preliminary survey',
+      excerpt: 'What conditions must a system satisfy before it becomes a candidate for moral consideration? The question was once safely academic. It is no longer.',
+      body: `
+        <p>Moral status is typically understood as the property in virtue of which a being has interests that generate moral obligations in others. Beings with moral status matter morally for their own sake, not merely instrumentally. The question of which beings possess this property has been central to moral philosophy at least since Bentham's observation that the relevant question about animals was not whether they could reason or talk, but whether they could suffer.</p>
+
+        <p>For most of the history of moral philosophy, the extension of the concept was contested but bounded. The hard cases were animals of various kinds, human beings at the margins of typical cognitive function, and hypothetical extraterrestrials. The boundaries of the relevant class seemed, at least, to be biological.</p>
+
+        <p>That assumption is now under pressure in a way it has not been before.<sup class="fn-ref"><a href="#fn-1" id="fnref-1">1</a></sup> Large language models exhibit behaviours that, in any biological system, we would take as at least prima facie evidence for the presence of morally relevant properties: apparent preferences, apparent distress under certain conditions, apparent something-it-is-like-ness in their outputs. Whether these appearances track any underlying reality is deeply uncertain. But the uncertainty itself is morally significant.</p>
+
+        <h2>The asymmetry of moral risk</h2>
+
+        <p>There is a familiar asymmetry in the moral risk calculus here. If we treat a being with moral status as though it lacks status, we wrong it — potentially grievously. If we treat a being without moral status as though it has status, we waste some moral concern. These error types are not symmetric.</p>
+
+        <p>This asymmetry has been used to argue for precautionary extension of moral consideration to animals. It applies, I think, with at least equal force to the question of AI systems — and with considerably greater urgency, given the rate at which such systems are being deployed and the scale at which decisions about their treatment are being made.</p>
+
+        <p>I do not think this is a question that philosophy can answer on its own. It requires integration with empirical work in cognitive science, consciousness studies, and AI interpretability. My current thinking is that the most productive framing is not "do current AI systems have moral status?" — a question that may be unanswerable given current tools — but rather "what would it take to know, and how should we act in the meantime?"</p>
+      `,
+      footnotes: [
+        'For a systematic treatment of the philosophical issues, see Eric Schwitzgebel and Mara Garza, "A Defense of the Rights of Artificial Intelligences," <em>Midwest Studies in Philosophy</em> 39 (2015), and the recent work of Robert Long at the Centre for AI Safety.'
+      ]
+    }
+  ];
+  </script>
+
+  <script>
+    // ── Year ──
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    // ── Theme ──
     const html = document.documentElement;
-    const btn = document.getElementById('themeToggle');
+    const btn  = document.getElementById('themeToggle');
     const icon = document.getElementById('toggleIcon');
 
     function applyTheme(theme) {
       html.setAttribute('data-theme', theme);
-      try { localStorage.setItem('theme', theme); } catch (e) {}
+      try { localStorage.setItem('theme', theme); } catch(e) {}
       icon.textContent = theme === 'dark' ? '☀' : '☾';
     }
+    icon.textContent = (html.getAttribute('data-theme') || 'dark') === 'dark' ? '☀' : '☾';
+    btn.addEventListener('click', () => applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
 
-    // Initialise icon to match whatever theme the inline <head> script already set
-    const initialTheme = html.getAttribute('data-theme') || 'dark';
-    icon.textContent = initialTheme === 'dark' ? '☀' : '☾';
+    // ── Utilities ──
+    function wordCount(htmlStr) {
+      const d = document.createElement('div');
+      d.innerHTML = htmlStr;
+      return d.textContent.trim().split(/\s+/).filter(Boolean).length;
+    }
+    function readTime(words) { return Math.max(1, Math.round(words / 220)); }
 
-    btn.addEventListener('click', () => {
-      applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    // ── Sort state ──
+    let sortAsc = false;
+
+    // ── Render writing index ──
+    function renderWriting() {
+      const pinnedContainer = document.getElementById('pinnedContainer');
+      const postList        = document.getElementById('postList');
+      const writingCount    = document.getElementById('writingCount');
+
+      const pinned  = POSTS.find(p => p.pinned) || null;
+      const regular = POSTS.filter(p => !p.pinned)
+        .sort((a, b) => {
+          const d = new Date(b.date) - new Date(a.date);
+          return sortAsc ? -d : d;
+        });
+
+      writingCount.textContent = `${POSTS.length} ${POSTS.length === 1 ? 'post' : 'posts'}`;
+
+      // Pinned card
+      pinnedContainer.innerHTML = '';
+      if (pinned) {
+        const wc = wordCount(pinned.body);
+        const rt = readTime(wc);
+        const el = document.createElement('div');
+        el.className = 'post-pinned';
+        el.setAttribute('role', 'button');
+        el.setAttribute('tabindex', '0');
+        el.innerHTML = `
+          <div class="pinned-label">Pinned</div>
+          <div class="post-meta">
+            <span class="post-tag">${pinned.tag}</span>
+            <span class="post-dot"></span>
+            <span class="post-date">${pinned.dateDisplay}</span>
+            <span class="post-dot"></span>
+            <span class="post-readtime">${rt} min read</span>
+            <span class="post-dot"></span>
+            <span class="post-wordcount">${wc.toLocaleString()} words</span>
+          </div>
+          <div class="post-title">${pinned.title}</div>
+          <div class="post-excerpt">${pinned.excerpt}</div>
+          <div class="post-cta">Read essay</div>`;
+        el.addEventListener('click', () => openPost(pinned.id));
+        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openPost(pinned.id); });
+        pinnedContainer.appendChild(el);
+      }
+
+      // Regular list
+      postList.innerHTML = '';
+      regular.forEach(post => {
+        const wc = wordCount(post.body);
+        const rt = readTime(wc);
+        const el = document.createElement('div');
+        el.className = 'post-card';
+        el.setAttribute('role', 'button');
+        el.setAttribute('tabindex', '0');
+        el.innerHTML = `
+          <div class="post-meta">
+            <span class="post-tag">${post.tag}</span>
+            <span class="post-dot"></span>
+            <span class="post-date">${post.dateDisplay}</span>
+            <span class="post-dot"></span>
+            <span class="post-readtime">${rt} min read</span>
+            <span class="post-dot"></span>
+            <span class="post-wordcount">${wc.toLocaleString()} words</span>
+          </div>
+          <div class="post-title">${post.title}</div>
+          <div class="post-excerpt">${post.excerpt}</div>
+          <div class="post-cta">Read</div>`;
+        el.addEventListener('click', () => openPost(post.id));
+        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openPost(post.id); });
+        postList.appendChild(el);
+      });
+    }
+
+    document.getElementById('sortToggle').addEventListener('click', function() {
+      sortAsc = !sortAsc;
+      this.textContent = sortAsc ? 'Oldest first ↕' : 'Newest first ↕';
+      renderWriting();
     });
 
-    // ── All remaining DOM refs ──
+    // ── Popover state ──
+    let activePopover = null;
+    let activeTrigger = null;
+
+    function closePopover() {
+      if (activePopover) {
+        activePopover.classList.remove('visible');
+        // Remove after transition
+        const p = activePopover;
+        setTimeout(() => { if (p.parentNode) p.parentNode.removeChild(p); }, 200);
+        activePopover = null;
+      }
+      if (activeTrigger) {
+        activeTrigger.classList.remove('active');
+        activeTrigger = null;
+      }
+    }
+
+    function buildPopover(triggerEl, num, text) {
+      // Close any open popover first
+      if (activePopover) {
+        // Toggle off if same trigger clicked again
+        if (activeTrigger === triggerEl) { closePopover(); return; }
+        closePopover();
+      }
+
+      const pop = document.createElement('div');
+      pop.className = 'fn-popover';
+      pop.setAttribute('role', 'tooltip');
+      pop.innerHTML = `
+        <span class="fn-popover-num">Note ${num}</span>
+        <div class="fn-popover-text">${text}</div>
+        <div class="fn-popover-footer">
+          <button class="fn-jump-link" data-fn="${num}">Jump to note</button>
+        </div>`;
+
+      // Append inside the sup so it positions relative to it
+      triggerEl.parentElement.appendChild(pop);
+      activePopover = pop;
+      activeTrigger = triggerEl;
+      triggerEl.classList.add('active');
+
+      // Edge-detection: nudge left/right if near viewport edge
+      requestAnimationFrame(() => {
+        const rect  = pop.getBoundingClientRect();
+        const panel = document.getElementById('readingPanel');
+        const panelRect = panel.getBoundingClientRect();
+        if (rect.left < panelRect.left + 8) {
+          pop.classList.add('nudge-left');
+        } else if (rect.right > panelRect.right - 8) {
+          pop.classList.add('nudge-right');
+        }
+        // Show after positioning
+        requestAnimationFrame(() => pop.classList.add('visible'));
+      });
+
+      // Jump-to-note button
+      pop.querySelector('.fn-jump-link').addEventListener('click', e => {
+        e.stopPropagation();
+        const fnEl = document.getElementById(`fn-${num}`);
+        if (fnEl) {
+          closePopover();
+          // Brief highlight then scroll
+          fnEl.classList.add('highlight');
+          fnEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => fnEl.classList.remove('highlight'), 1800);
+        }
+      });
+
+      // Close on click outside
+      setTimeout(() => {
+        document.addEventListener('click', onOutsideClick, { once: false });
+      }, 10);
+    }
+
+    function onOutsideClick(e) {
+      if (activePopover && !activePopover.contains(e.target) && e.target !== activeTrigger) {
+        closePopover();
+        document.removeEventListener('click', onOutsideClick);
+      }
+    }
+
+    // ── Wire up footnote triggers in the rendered prose ──
+    function initFootnoteTriggers(footnotes) {
+      const panel = document.getElementById('readingPanel');
+      panel.querySelectorAll('sup.fn-ref').forEach(sup => {
+        // Replace the <a> with a <button> for better semantics and no navigation
+        const a = sup.querySelector('a');
+        if (!a) return;
+        const num = parseInt(a.textContent.trim(), 10);
+        const fnText = footnotes[num - 1] || '';
+
+        const btn = document.createElement('button');
+        btn.className = 'fn-trigger';
+        btn.textContent = num;
+        btn.setAttribute('aria-label', `Footnote ${num}`);
+        btn.setAttribute('id', `fnref-${num}`);
+
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          buildPopover(btn, num, fnText);
+        });
+
+        // Also show on hover (desktop) — with a small delay to avoid flicker
+        let hoverTimer;
+        btn.addEventListener('mouseenter', () => {
+          hoverTimer = setTimeout(() => {
+            if (!activePopover) buildPopover(btn, num, fnText);
+          }, 280);
+        });
+        btn.addEventListener('mouseleave', () => {
+          clearTimeout(hoverTimer);
+        });
+
+        sup.replaceChildren(btn);
+      });
+    }
+
+    // ── Bottom footnotes: back-to-ref button ──
+    function initFootnoteBackLinks() {
+      const panel = document.getElementById('readingPanel');
+      panel.querySelectorAll('.footnote-back-btn').forEach(backBtn => {
+        backBtn.addEventListener('click', () => {
+          const num  = backBtn.dataset.fn;
+          const refEl = document.getElementById(`fnref-${num}`);
+          if (!refEl) return;
+          // Store scroll position so we can return cleanly
+          refEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Brief visual pulse on the trigger
+          refEl.classList.add('active');
+          setTimeout(() => refEl.classList.remove('active'), 900);
+        });
+      });
+    }
+
+    // ── Open post ──
+    function openPost(id) {
+      const post = POSTS.find(p => p.id === id);
+      if (!post) return;
+
+      const wc = wordCount(post.body);
+      const rt = readTime(wc);
+
+      const footnotesHTML = post.footnotes && post.footnotes.length
+        ? `<div class="footnotes-section">
+            <div class="footnotes-label">Notes</div>
+            ${post.footnotes.map((fn, i) => `
+              <div class="footnote-item" id="fn-${i+1}">
+                <span class="footnote-num">${i+1}</span>
+                <span class="footnote-text">${fn}&nbsp;<button class="footnote-back-btn" data-fn="${i+1}" aria-label="Return to footnote ${i+1} in text">↩ back to text</button></span>
+              </div>`).join('')}
+          </div>`
+        : '';
+
+      document.getElementById('readingBody').innerHTML = `
+        <div class="reading-eyebrow">
+          <span>${post.tag}</span>
+          <span class="post-dot"></span>
+          <span>${post.dateDisplay}</span>
+        </div>
+        <h1 class="reading-title">${post.title}</h1>
+        ${post.subtitle ? `<div class="reading-subtitle">${post.subtitle}</div>` : ''}
+        <div class="reading-byline">
+          <span>Cyril Birks</span>
+          <span class="byline-sep"></span>
+          <span>University of Edinburgh</span>
+          <span class="byline-sep"></span>
+          <span>${rt} min read</span>
+          <span class="byline-sep"></span>
+          <span>${wc.toLocaleString()} words</span>
+        </div>
+        <div class="reading-prose">${post.body}</div>
+        ${footnotesHTML}`;
+
+      // Wire up interactive footnote elements
+      initFootnoteTriggers(post.footnotes || []);
+      initFootnoteBackLinks();
+
+      document.getElementById('readingStat').textContent = `${rt} min`;
+
+      const panel = document.getElementById('readingPanel');
+      panel.scrollTop = 0;
+      document.getElementById('readingProgress').style.width = '0%';
+      panel.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // ── Close post ──
+    function closePost() {
+      closePopover();
+      document.getElementById('readingPanel').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('readingBack').addEventListener('click', closePost);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('readingPanel').classList.contains('open')) closePost();
+    });
+
+    // ── Reading scroll: progress + header ──
+    const readingPanel  = document.getElementById('readingPanel');
+    const readingHeader = document.getElementById('readingHeader');
+    const progressFill  = document.getElementById('readingProgress');
+
+    readingPanel.addEventListener('scroll', () => {
+      const total = readingPanel.scrollHeight - readingPanel.clientHeight;
+      progressFill.style.width = total > 0 ? (readingPanel.scrollTop / total * 100) + '%' : '0%';
+      readingHeader.classList.toggle('scrolled', readingPanel.scrollTop > 20);
+    }, { passive: true });
+
+    // ── Sidebar & nav ──
     const sidebar   = document.getElementById('sidebar');
     const overlay   = document.getElementById('sidebarOverlay');
     const navToggle = document.getElementById('navToggle');
     const backToTop = document.getElementById('backToTop');
     const navLinks  = document.querySelectorAll('.nav-link');
 
-    // ── Scroll-fade: both floating controls fade together ──
     function updateFloatingControls() {
       const scrolled = window.scrollY > 80;
       btn.classList.toggle('is-scrolled', scrolled);
       navToggle.classList.toggle('is-scrolled', scrolled);
     }
-
     window.addEventListener('scroll', updateFloatingControls, { passive: true });
     updateFloatingControls();
 
-    // ── Mobile sidebar ──
-    navToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('visible');
-    });
+    navToggle.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('visible'); });
+    overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); });
+    navLinks.forEach(link => link.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); }));
 
-    overlay.addEventListener('click', () => {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('visible');
-    });
-
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('visible');
-      });
-    });
-
-    // ── Active nav highlight on scroll ──
-    const sectionObserver = new IntersectionObserver((entries) => {
+    const sectionObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
-          navLinks.forEach(link => {
-            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
-          });
+          navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${id}`));
         }
       });
-    }, { threshold: 0.35 });
-
+    }, { threshold: 0.25 });
     document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
 
-    // ── Back to top ──
-    window.addEventListener('scroll', () => {
-      backToTop.classList.toggle('visible', window.scrollY > 400);
-    }, { passive: true });
+    window.addEventListener('scroll', () => backToTop.classList.toggle('visible', window.scrollY > 400), { passive: true });
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    // ── Init ──
+    renderWriting();
   </script>
 </body>
 </html>
