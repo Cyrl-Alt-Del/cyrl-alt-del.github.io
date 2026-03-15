@@ -169,6 +169,57 @@
     .aside-label { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 0.5rem; }
     .aside-value { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-secondary); line-height: 1.5; }
 
+    /* ── Research epigraph ── */
+    .research-epigraph {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-style: italic; font-weight: 400;
+      color: var(--text-secondary); line-height: 1.6;
+      margin-bottom: 2.25rem; margin-top: -0.75rem;
+      max-width: 520px;
+    }
+
+    /* ── Research status tags ── */
+    .research-status {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.18rem 0.6rem; border-radius: 2px; border: 1px solid;
+      font-weight: 400;
+    }
+    /* In Progress — neutral, low weight */
+    .research-status--progress {
+      color: var(--text-muted);
+      border-color: var(--border);
+      background: transparent;
+    }
+    /* Pre-print — navy: public, citable, not yet reviewed */
+    .research-status--preprint {
+      color: #9EC0E0;
+      border-color: var(--navy-bright);
+      background: rgba(26,66,120,.18);
+    }
+    /* Under Review — blush: active, in process */
+    .research-status--review {
+      color: var(--blush);
+      border-color: var(--blush);
+      background: rgba(184,136,142,.12);
+    }
+    /* Published — green: complete */
+    .research-status--published {
+      color: var(--text-accent);
+      border-color: var(--green-mid);
+      background: rgba(42,80,56,.2);
+    }
+    html[data-theme="light"] .research-status--preprint {
+      color: var(--navy-mid); border-color: var(--navy-mid);
+      background: rgba(11,31,58,.08);
+    }
+    html[data-theme="light"] .research-status--review {
+      color: var(--blush); background: rgba(160,88,95,.08);
+    }
+    html[data-theme="light"] .research-status--published {
+      color: var(--text-accent); background: rgba(31,74,47,.1);
+    }
+
     .research-grid { display: grid; gap: 1.25rem; }
     .research-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 2px; padding: 1.75rem 2rem; transition: all var(--transition); position: relative; overflow: hidden; }
     .research-card::before { content: ''; position: absolute; left: 0; top: 0; width: 3px; height: 100%; background: var(--green-deep); transform: scaleY(0); transform-origin: bottom; transition: transform 0.3s ease; }
@@ -738,7 +789,7 @@
           <li><a href="#about"    class="nav-link active">About</a></li>
           <li><a href="#research" class="nav-link">Research</a></li>
           <li><a href="#cv"       class="nav-link">Curriculum Vitae</a></li>
-          <li><a href="#writing"  class="nav-link">Writing</a></li>
+          <li><a href="#writing" class="nav-link" id="navWritingLink">Writing</a></li>
           <li><a href="#contact"  class="nav-link">Contact</a></li>
         </ul>
       </nav>
@@ -771,19 +822,32 @@
 
       <section class="section" id="research">
         <div class="section-header"><h2 class="section-title">Research</h2><div class="section-rule"></div></div>
+        <p class="research-epigraph"><em>How should we act when neither facts nor values are fixed?</em></p>
         <div class="research-grid">
           <div class="research-card">
-            <div class="card-meta"><span class="card-type">Working Paper</span><span class="card-dot"></span><span class="card-year">In Progress</span></div>
+            <div class="card-meta">
+              <span class="card-type">Working Paper</span>
+              <span class="card-dot"></span>
+              <span class="research-status research-status--review">Under Review</span>
+            </div>
             <div class="card-title">AI Governance in Defence</div>
             <p class="card-desc">Three manuscripts under review identifying (i) practical barriers to AI governance, (ii) developing a new normative framework for governance in high stakes contexts, and (iii) proposing policy responses.</p>
           </div>
           <div class="research-card">
-            <div class="card-meta"><span class="card-type">Working Paper</span><span class="card-dot"></span><span class="card-year">In Progress</span></div>
+            <div class="card-meta">
+              <span class="card-type">Working Paper</span>
+              <span class="card-dot"></span>
+              <span class="research-status research-status--progress">In Progress</span>
+            </div>
             <div class="card-title">Epistemic Resilience</div>
             <p class="card-desc">Exploring the role of generative AI in cognitive warfare and its impacts on society's epistemic resilience.</p>
           </div>
           <div class="research-card">
-            <div class="card-meta"><span class="card-type">PhD Thesis</span><span class="card-dot"></span><span class="card-year">In Progress</span></div>
+            <div class="card-meta">
+              <span class="card-type">PhD Thesis</span>
+              <span class="card-dot"></span>
+              <span class="research-status research-status--progress">In Progress</span>
+            </div>
             <div class="card-title">Agency under Double Uncertainty</div>
             <p class="card-desc">My thesis develops a computational account of virtue and practical wisdom in response to what I call the double uncertainty problem: how should agents act and plan for the future when they are unsure both about what is true and about what is good? In a world as destabilised and rapidly changing as ours, this is a particularly pressing question.</p>
           </div>
@@ -1553,12 +1617,18 @@
     navToggle.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('visible'); });
     overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); });
 
-    // Nav links close both overlays before navigating to section
-    navLinks.forEach(link => link.addEventListener('click', () => {
+    // Nav links: close overlays before navigating; Writing link opens overlay instead
+    navLinks.forEach(link => link.addEventListener('click', e => {
       sidebar.classList.remove('open');
       overlay.classList.remove('visible');
-      closePost();
-      closeWritingOverlay();
+      if (link.id === 'navWritingLink') {
+        e.preventDefault();
+        closePost();
+        openWritingOverlay();
+      } else {
+        closePost();
+        closeWritingOverlay();
+      }
     }));
 
     // Site name = home button
