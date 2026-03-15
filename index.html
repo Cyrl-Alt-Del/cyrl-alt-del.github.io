@@ -319,7 +319,7 @@
     .byline-sep { width: 3px; height: 3px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
 
     /* Prose */
-    .reading-prose { font-size: 1.03rem; color: var(--text-secondary); line-height: 1.9; font-weight: 300; }
+    .reading-prose { font-size: 1.03rem; color: var(--text-secondary); line-height: 1.9; font-weight: 300; overflow: visible; }
     .reading-prose p { margin-bottom: 1.35em; }
     .reading-prose p:last-child { margin-bottom: 0; }
     .reading-prose strong { font-weight: 500; color: var(--text-primary); }
@@ -334,24 +334,43 @@
     /* ── Footnote inline trigger ── */
     .reading-prose sup.fn-ref {
       font-size: 0.65em; line-height: 1; vertical-align: super; margin-left: 1px;
+      /* Must be position:relative so the fallback popover (position:absolute)
+         anchors to this element and not some distant ancestor.               */
+      position: relative;
     }
     .fn-trigger {
       font-family: 'DM Sans', sans-serif; font-size: inherit;
       color: var(--text-accent); font-weight: 500;
       background: none; border: none; padding: 0 1px;
       cursor: pointer; border-radius: 2px; line-height: 1;
-      transition: color var(--transition), background var(--transition);
+      /* Dotted underline makes it immediately obvious the number is interactive */
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 2px;
+      text-decoration-color: var(--text-accent);
+      transition: color var(--transition), background var(--transition),
+                  text-decoration-color var(--transition);
     }
-    .fn-trigger:hover { color: var(--blush); }
-    /* Hovered (transient) state — subtle highlight */
-    .fn-trigger.hovered { color: var(--blush); }
-    /* Pinned state — blush tint background so it reads as "locked" */
+    .fn-trigger:hover {
+      color: var(--blush);
+      text-decoration-color: var(--blush);
+    }
+    /* Hovered (transient) state */
+    .fn-trigger.hovered {
+      color: var(--blush);
+      text-decoration-color: var(--blush);
+    }
+    /* Pinned state — blush solid underline + tint background.
+       The solid underline echoes the blush left-border on the margin note,
+       making the visual connection between trigger and note unmistakable.  */
     .fn-trigger.pinned {
       color: var(--blush);
       background: rgba(184,136,142,0.15);
       border-radius: 2px;
       outline: 1px solid rgba(184,136,142,0.3);
       outline-offset: 1px;
+      text-decoration-style: solid;
+      text-decoration-color: var(--blush);
     }
     html[data-theme="light"] .fn-trigger.pinned {
       background: rgba(160,88,95,0.1);
