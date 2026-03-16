@@ -29,19 +29,23 @@
       --green-bright: #52916A; --navy: #0B1E36; --navy-mid: #133058;
       --navy-bright: #1A4278; --blush: #B8888E; --blush-faint: #6E343A;
       --text-primary: #D8D4CB; --text-secondary: #9C9890; --text-muted: #606058;
-      --text-accent: #7AAD8E; --rule: #243528; --shadow: rgba(0,0,0,.6);
+      --text-accent: #7AAD8E; --text-accent-bright: #8DC49E; --rule: #243528; --shadow: rgba(0,0,0,.6);
       --glow: rgba(42,80,56,.1);
+      /* Ochre — warm amber, secondary accent */
+      --ochre: #C4A056; --ochre-border: #7A6030; --ochre-bg: rgba(122,96,48,.14);
     }
 
     html[data-theme="light"] {
       --bg-base: #F2EDE4; --bg-surface: #EDE8DF; --bg-sidebar: #DDE8DC;
-      --bg-raised: #E5DFD3; --bg-overlay: #DDD7CA; --border: #C5BEB0;
-      --border-faint: #D8D2C5; --green-deep: #1F4A2F; --green-mid: #2D6A42;
-      --green-bright: #3D8A56; --navy: #0B1F3A; --navy-mid: #0E2B52;
-      --navy-bright: #163D75; --blush: #A0585F; --blush-faint: #E8C8CB;
-      --text-primary: #1F4A2F; --text-secondary: #4A453E; --text-muted: #7A7268;
-      --text-accent: #2D6A42; --rule: #B8B2A4; --shadow: rgba(0,0,0,.12);
-      --glow: rgba(45,106,66,.08);
+      --bg-raised: #E5DFD3; --bg-overlay: #DDD7CA; --border: #B8B2A4;
+      --border-faint: #CCC6B8; --green-deep: #1A3D26; --green-mid: #256038;
+      --green-bright: #327A4A; --navy: #0A1A32; --navy-mid: #0C2448;
+      --navy-bright: #123268; --blush: #8E4850; --blush-faint: #E0B8BB;
+      --text-primary: #1C3A24; --text-secondary: #3A352E; --text-muted: #6A6258;
+      --text-accent: #2A7A48; --text-accent-bright: #327A4A; --rule: #AAA49A; --shadow: rgba(0,0,0,.15);
+      --glow: rgba(31,88,53,.1);
+      /* Ochre — warm amber, secondary accent */
+      --ochre: #8A6418; --ochre-border: #A87E28; --ochre-bg: rgba(140,100,24,.09);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -58,10 +62,12 @@
       content: ''; position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
       pointer-events: none; z-index: 999; opacity: 0.35;
+      transition: opacity 0.35s ease;
     }
+    html[data-theme="light"] body::before { opacity: 0.12; }
 
     ::selection { background: rgba(82,145,106,0.3); color: var(--text-primary); }
-    html[data-theme="light"] ::selection { background: rgba(45,106,66,0.18); color: var(--text-primary); }
+    html[data-theme="light"] ::selection { background: rgba(31,88,53,0.18); color: var(--text-primary); }
 
     a { color: var(--text-accent); text-decoration: none; transition: color var(--transition); }
     a:hover { color: var(--blush); }
@@ -77,16 +83,13 @@
       background: var(--bg-sidebar); border-right: 1px solid var(--border);
       display: flex; flex-direction: column; padding: 2.5rem 2rem;
       z-index: 100; transition: background var(--transition), border-color var(--transition), transform 0.3s ease;
-      overflow-y: auto;
+      overflow-y: auto; overflow-x: hidden;
+      scrollbar-width: none; /* Firefox */
     }
-    .sidebar::after {
-      content: ''; position: absolute; top: 0; right: -1px; width: 2px; height: 100%;
-      background: linear-gradient(to bottom, transparent, var(--green-deep) 20%, var(--green-deep) 80%, transparent);
-      opacity: 0.3;
-    }
+    .sidebar::-webkit-scrollbar { display: none; }
     .site-identity { margin-bottom: 1.5rem; }
     .site-name { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 600; color: var(--text-primary); line-height: 1.2; letter-spacing: 0.02em; margin-bottom: 0.35rem; }
-    .site-role { font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); line-height: 1.5; }
+    .site-role { font-family: 'DM Sans', sans-serif; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); line-height: 1.5; }
     .site-rule { width: 2rem; height: 1px; background: var(--green-mid); margin: 1.2rem 0; opacity: 0.5; }
     .affiliation-block { margin-bottom: 2rem; }
     .affiliation-item { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; }
@@ -94,10 +97,10 @@
     .affiliation-dot.navy { background: var(--navy-bright); }
     .affiliation-dot.blush { background: var(--blush); }
     nav { margin-top: 0; }
-    .nav-section-label { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border-faint); }
+    .nav-section-label { font-family: 'DM Sans', sans-serif; font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border-faint); }
     .nav-list { list-style: none; margin-bottom: 2rem; }
     .nav-list li { margin-bottom: 0.1rem; }
-    .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 3px; font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-secondary); transition: all var(--transition); position: relative; cursor: pointer; }
+    .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 2px; font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-secondary); transition: all var(--transition); position: relative; cursor: pointer; }
     .nav-link::before { content: ''; width: 2px; height: 0; background: var(--blush); border-radius: 2px; transition: height 0.2s ease; }
     .nav-link:hover, .nav-link.active { color: var(--text-primary); background: var(--bg-raised); }
     .nav-link:hover::before, .nav-link.active::before { height: 1.1em; }
@@ -125,7 +128,7 @@
       position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 150;
       width: 2.2rem; height: 2.2rem;
       background: var(--bg-raised); border: 1px solid var(--border);
-      border-radius: 3px; display: flex; align-items: center; justify-content: center;
+      border-radius: 2px; display: flex; align-items: center; justify-content: center;
       cursor: pointer; color: var(--text-muted); font-size: 0.85rem;
       opacity: 0; transform: translateY(8px); pointer-events: none;
       transition: opacity 0.25s ease, transform 0.25s ease, border-color var(--transition), color var(--transition), background var(--transition);
@@ -136,12 +139,12 @@
     .main { margin-left: 280px; min-height: 100vh; }
 
     /* ── Hero ── */
-    .hero { padding: 6rem 5rem 5rem; position: relative; background: var(--bg-base); overflow: hidden; transition: background var(--transition); }
-    .hero-eyebrow { font-family: 'DM Sans', sans-serif; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.8rem; }
+    .hero { padding: 5rem 5rem 3rem; position: relative; background: var(--bg-base); overflow: hidden; transition: background var(--transition); }
+    .hero-eyebrow { font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.8rem; }
     .hero-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 4vw, 4.2rem); font-weight: 500; color: var(--text-primary); line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.01em; }
     .hero-desc { font-size: 1.12rem; color: var(--text-secondary); max-width: 580px; line-height: 1.75; font-weight: 300; }
     .hero-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2.5rem; }
-    .badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.85rem; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; cursor: default; transition: all 0.2s ease; }
+    .badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.85rem; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; cursor: default; transition: all 0.2s ease; }
     .badge-green { border-color: var(--green-mid); color: #C2E8D0; background: rgba(42,80,56,.3); }
     .badge-green:hover { background: rgba(82,145,106,.2); border-color: var(--green-bright); color: #D8F0E4; }
     .badge-navy { border-color: var(--navy-bright); color: #B0C8E8; background: rgba(26,66,120,.3); }
@@ -152,21 +155,22 @@
     html[data-theme="light"] .badge-green:hover { background: rgba(31,74,47,.22); color: #0F3019; }
     html[data-theme="light"] .badge-navy { border-color: var(--navy-mid); color: #0A1E40; background: rgba(11,31,58,.1); }
     html[data-theme="light"] .badge-navy:hover { background: rgba(11,31,58,.18); color: #060F20; }
-    html[data-theme="light"] .badge-blush { border-color: var(--blush); color: #6B2428; background: rgba(160,88,95,.12); }
-    html[data-theme="light"] .badge-blush:hover { background: rgba(160,88,95,.2); color: #4A1518; }
+    html[data-theme="light"] .badge-blush { border-color: var(--blush); color: #5E1E24; background: rgba(142,72,80,.12); }
+    html[data-theme="light"] .badge-blush:hover { background: rgba(142,72,80,.2); color: #3C1018; }
 
     /* ── Sections ── */
     .section { padding: 4.5rem 5rem; }
     .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 500; color: var(--text-primary); letter-spacing: 0.02em; }
-    .section-rule { flex-grow: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
+    /* Section rule lines removed */
+    .section-rule { display: none; }
 
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
     .about-text { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.85; font-weight: 300; }
     .about-text strong { font-weight: 500; color: var(--text-primary); }
     .about-aside { border-left: 2px solid var(--green-deep); padding-left: 1.75rem; }
     .aside-block { margin-bottom: 2rem; }
-    .aside-label { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 0.5rem; }
+    .aside-label { font-family: 'DM Sans', sans-serif; font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 0.5rem; }
     .aside-value { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-secondary); line-height: 1.5; }
 
     /* ── Research epigraph ── */
@@ -181,29 +185,25 @@
     /* ── Research status tags ── */
     .research-status {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase;
+      font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
       padding: 0.18rem 0.6rem; border-radius: 2px; border: 1px solid;
       font-weight: 400;
     }
-    /* In Progress — neutral, low weight */
     .research-status--progress {
       color: var(--text-muted);
       border-color: var(--border);
       background: transparent;
     }
-    /* Pre-print — navy: public, citable, not yet reviewed */
     .research-status--preprint {
       color: #9EC0E0;
       border-color: var(--navy-bright);
       background: rgba(26,66,120,.18);
     }
-    /* Under Review — ochre: active, in process */
     .research-status--review {
-      color: #C4A96A;
-      border-color: #7A6A3A;
-      background: rgba(122,106,58,.15);
+      color: var(--ochre);
+      border-color: var(--ochre-border);
+      background: var(--ochre-bg);
     }
-    /* Published — green: complete */
     .research-status--published {
       color: var(--text-accent);
       border-color: var(--green-mid);
@@ -214,7 +214,7 @@
       background: rgba(11,31,58,.08);
     }
     html[data-theme="light"] .research-status--review {
-      color: #7A5C10; border-color: #9A7820; background: rgba(139,105,20,.08);
+      color: var(--ochre); border-color: var(--ochre-border); background: var(--ochre-bg);
     }
     html[data-theme="light"] .research-status--published {
       color: var(--text-accent); background: rgba(31,74,47,.1);
@@ -222,34 +222,34 @@
 
     .research-grid { display: grid; gap: 1.25rem; }
     .research-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 2px; padding: 1.75rem 2rem; transition: all var(--transition); position: relative; overflow: hidden; }
-    .research-card::before { content: ''; position: absolute; left: 0; top: 0; width: 3px; height: 100%; background: var(--green-deep); transform: scaleY(0); transform-origin: bottom; transition: transform 0.3s ease; }
+    .research-card::before { content: ''; position: absolute; left: 0; top: 0; width: 3px; height: 100%; background: var(--blush); transform: scaleY(0); transform-origin: bottom; transition: transform 0.3s ease; }
     .research-card:hover::before { transform: scaleY(1); }
-    .research-card:hover { background: var(--bg-raised); border-color: var(--green-deep); }
+    .research-card:hover { background: var(--bg-raised); border-color: var(--blush-faint); }
     .card-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
-    .card-type { font-family: 'DM Sans', sans-serif; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blush); }
-    .card-year { font-family: 'DM Sans', sans-serif; font-size: 0.68rem; letter-spacing: 0.08em; color: var(--text-muted); }
+    .card-type { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blush); }
+    .card-year { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; letter-spacing: 0.08em; color: var(--text-muted); }
     .card-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border); }
     .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 500; color: var(--text-primary); margin-bottom: 0.6rem; line-height: 1.35; }
     .card-desc { font-size: 0.9rem; color: var(--text-secondary); font-weight: 300; line-height: 1.65; margin-bottom: 1rem; }
-    .card-link { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-accent); display: inline-flex; align-items: center; gap: 0.4rem; border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: all var(--transition); }
+    .card-link { font-family: 'DM Sans', sans-serif; font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-accent); display: inline-flex; align-items: center; gap: 0.4rem; border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: all var(--transition); }
     .card-link:hover { color: var(--blush); border-color: var(--blush); }
     .card-link::after { content: '→'; }
 
     /* ── CV ── */
     .cv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem 4rem; }
     .cv-group + .cv-group { margin-top: 2.75rem; }
-    .cv-column-title { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 1.25rem; padding-bottom: 0.55rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.65rem; }
+    .cv-column-title { font-family: 'DM Sans', sans-serif; font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 1.25rem; padding-bottom: 0.55rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.65rem; }
     .cv-column-title::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--green-mid); flex-shrink: 0; }
     .cv-entry { margin-bottom: 1.6rem; padding-left: 1.1rem; border-left: 1px solid var(--border-faint); position: relative; }
     .cv-entry:last-child { margin-bottom: 0; }
     .cv-entry::before { content: ''; position: absolute; left: -3px; top: 0.5rem; width: 5px; height: 5px; border-radius: 50%; background: var(--bg-base); border: 1px solid var(--green-mid); transition: background var(--transition); }
     .cv-entry:hover::before { background: var(--green-mid); }
-    .cv-period { font-family: 'DM Sans', sans-serif; font-size: 0.68rem; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.25rem; }
+    .cv-period { font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.25rem; }
     .cv-role { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 500; color: var(--text-primary); line-height: 1.3; }
     .cv-org { font-size: 0.82rem; color: var(--text-accent); font-weight: 400; margin-top: 0.15rem; letter-spacing: 0.01em; }
     .cv-note { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.4rem; font-weight: 300; line-height: 1.6; }
     .cv-note em { font-style: italic; }
-    .cv-grade { display: inline-block; font-family: 'DM Sans', sans-serif; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.55rem; border-radius: 2px; border: 1px solid var(--border); color: var(--text-muted); margin-top: 0.35rem; }
+    .cv-grade { display: inline-block; font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.55rem; border-radius: 2px; border: 1px solid var(--border); color: var(--text-muted); margin-top: 0.35rem; }
 
     /* ── Contact ── */
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
@@ -257,47 +257,72 @@
     .contact-details { display: grid; gap: 1.25rem; }
     .contact-item { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0.75rem; align-items: start; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-faint); }
     .contact-item:last-child { border-bottom: none; }
-    .contact-label { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); padding-top: 0.12rem; }
+    .contact-label { font-family: 'DM Sans', sans-serif; font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); padding-top: 0.12rem; }
     .contact-value { font-size: 0.95rem; color: var(--text-secondary); font-weight: 300; }
 
     .site-footer { padding: 2rem 5rem; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-faint); gap: 1rem; flex-wrap: wrap; }
-    .footer-copy { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; color: var(--text-muted); }
-    .footer-built { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.08em; color: var(--text-muted); }
+    .footer-copy { font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--text-muted); }
+    .footer-built { font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.08em; color: var(--text-muted); }
     .footer-accent { color: var(--blush); }
 
     /* ════════════════════════════════
        WRITING INDEX
     ════════════════════════════════ */
     .writing-controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 0.75rem; }
-    .writing-count { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
-    .sort-toggle { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: 1px solid var(--border); border-radius: 2px; padding: 0.3rem 0.75rem; cursor: pointer; color: var(--text-secondary); transition: all var(--transition); }
+    .writing-count { font-family: 'DM Sans', sans-serif; font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+    .sort-toggle { font-family: 'DM Sans', sans-serif; font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: 1px solid var(--border); border-radius: 2px; padding: 0.3rem 0.75rem; cursor: pointer; color: var(--text-secondary); transition: all var(--transition); }
     .sort-toggle:hover { border-color: var(--green-mid); color: var(--text-accent); }
 
     /* Pinned card */
     .post-pinned { background: var(--bg-surface); border: 1px solid var(--border); border-left: 3px solid var(--blush); border-radius: 2px; padding: 1.75rem 2rem; margin-bottom: 1rem; cursor: pointer; position: relative; overflow: hidden; transition: all var(--transition); }
     .post-pinned:hover { background: var(--bg-raised); }
     .post-pinned:hover .post-cta { color: var(--blush); border-color: var(--blush); }
-    .pinned-label { font-family: 'DM Sans', sans-serif; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blush); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
+    .pinned-label { font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blush); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
     .pinned-label::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--blush); }
 
     /* Standard card */
     .post-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 2px; padding: 1.5rem 2rem; cursor: pointer; position: relative; overflow: hidden; transition: all var(--transition); }
     .post-card::before { content: ''; position: absolute; left: 0; top: 0; width: 3px; height: 100%; background: var(--green-mid); transform: scaleY(0); transform-origin: bottom; transition: transform 0.25s ease; }
-    .post-card:hover { background: var(--bg-raised); border-color: var(--green-deep); }
+    .post-card:hover { background: var(--bg-raised); }
     .post-card:hover::before { transform: scaleY(1); }
     .post-card:hover .post-cta { color: var(--blush); border-color: var(--blush); }
     .post-list { display: grid; gap: 0.85rem; }
 
+    /* ── Topic-aware card bar colours ── */
+    .post-card[data-topic="Essay"]::before,
+    .post-grid-card[data-topic="Essay"]::before       { background: var(--green-mid); }
+    .post-card[data-topic="Policy"]::before,
+    .post-grid-card[data-topic="Policy"]::before      { background: var(--navy-bright); }
+    .post-card[data-topic="Research note"]::before,
+    .post-grid-card[data-topic="Research note"]::before { background: var(--blush); }
+    .post-card[data-topic="Philosophy"]::before,
+    .post-grid-card[data-topic="Philosophy"]::before  { background: var(--ochre-border); }
+    .post-card[data-topic="Faith"]::before,
+    .post-grid-card[data-topic="Faith"]::before       { background: #6B5A7A; }
+    .post-card[data-topic="Geopolitics"]::before,
+    .post-grid-card[data-topic="Geopolitics"]::before { background: #3A5A6A; }
+    .post-card[data-topic="Personal"]::before,
+    .post-grid-card[data-topic="Personal"]::before    { background: #6A4A3A; }
+
+    /* Topic-aware hover border */
+    .post-card[data-topic="Essay"]:hover       { border-color: var(--green-deep); }
+    .post-card[data-topic="Policy"]:hover      { border-color: var(--navy-mid); }
+    .post-card[data-topic="Research note"]:hover { border-color: var(--blush-faint); }
+    .post-card[data-topic="Philosophy"]:hover  { border-color: var(--ochre-border); }
+    .post-card[data-topic="Faith"]:hover       { border-color: #6B5A7A; }
+    .post-card[data-topic="Geopolitics"]:hover { border-color: #3A5A6A; }
+    .post-card[data-topic="Personal"]:hover    { border-color: #6A4A3A; }
+
     .post-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.55rem; flex-wrap: wrap; }
-    .post-tag { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blush); }
-    .post-date { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.08em; color: var(--text-muted); }
+    .post-tag { font-family: 'DM Sans', sans-serif; font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blush); }
+    .post-date { font-family: 'DM Sans', sans-serif; font-size: 0.64rem; letter-spacing: 0.08em; color: var(--text-muted); }
     .post-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
-    .post-readtime { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; color: var(--text-muted); }
-    .post-wordcount { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; color: var(--text-muted); }
+    .post-readtime { font-family: 'DM Sans', sans-serif; font-size: 0.64rem; color: var(--text-muted); }
+    .post-wordcount { font-family: 'DM Sans', sans-serif; font-size: 0.64rem; color: var(--text-muted); }
     .post-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 500; color: var(--text-primary); margin-bottom: 0.45rem; line-height: 1.3; }
     .post-pinned .post-title { font-size: 1.35rem; }
     .post-excerpt { font-size: 0.88rem; color: var(--text-secondary); font-weight: 300; line-height: 1.65; margin-bottom: 0.85rem; }
-    .post-cta { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-accent); display: inline-flex; align-items: center; gap: 0.35rem; border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: all var(--transition); }
+    .post-cta { font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-accent); display: inline-flex; align-items: center; gap: 0.35rem; border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: all var(--transition); }
     .post-cta::after { content: '→'; }
 
     /* ════════════════════════════════
@@ -322,31 +347,25 @@
     .reading-header.scrolled { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 
     .reading-back {
-      font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.12em;
+      font-family: 'DM Sans', sans-serif; font-size: 0.64rem; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--text-muted);
-      background: none; border: 1px solid transparent; border-radius: 3px;
+      background: none; border: 1px solid transparent; border-radius: 2px;
       cursor: pointer; display: flex; align-items: center; gap: 0.4rem;
       white-space: nowrap; padding: 0.3rem 0.6rem;
       transition: color var(--transition), border-color var(--transition),
-                  box-shadow var(--transition), background var(--transition);
+                  background var(--transition);
     }
     .reading-back:hover { color: var(--text-accent); border-color: var(--border); }
-    /* Glow state: reached near end of article */
-    @keyframes reading-back-pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(58,107,74,0); }
-      50%       { box-shadow: 0 0 0 5px rgba(58,107,74,0.28); }
-    }
-    .reading-back.glow {
+    /* Elevated state when user has reached near the end of an article — calm, no pulse */
+    .reading-back.near-end {
       color: var(--text-accent);
       border-color: var(--green-mid);
-      background: rgba(42,80,56,0.18);
-      animation: reading-back-pulse 2.4s ease-in-out infinite;
+      background: rgba(42,80,56,0.14);
     }
-    html[data-theme="light"] .reading-back.glow {
+    html[data-theme="light"] .reading-back.near-end {
       color: var(--text-accent);
       border-color: var(--green-mid);
-      background: rgba(31,74,47,0.1);
-      box-shadow: 0 0 0 4px rgba(31,74,47,0.1);
+      background: rgba(31,88,53,0.08);
     }
 
     /* ── End-of-article CTA ── */
@@ -374,50 +393,42 @@
       display: inline-block;
     }
     .article-end-email:hover { color: var(--blush); border-color: var(--blush); }
-    .reading-progress-track { flex: 1; height: 1px; background: var(--border); position: relative; overflow: hidden; }
-    .reading-progress-fill { position: absolute; top: 0; left: 0; bottom: 0; width: 0%; background: var(--green-bright); opacity: 0.45; transition: width 0.1s linear; }
-    .reading-stat { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.08em; color: var(--text-muted); white-space: nowrap; }
+    .reading-progress-track { flex: 1; height: 2px; background: var(--border); position: relative; overflow: hidden; border-radius: 2px; }
+    .reading-progress-fill { position: absolute; top: 0; left: 0; bottom: 0; width: 0%; background: var(--green-bright); opacity: 0.55; transition: width 0.1s linear, background 0.6s ease, opacity 0.6s ease; border-radius: 2px; }
+    .reading-progress-fill.complete { background: #7ADBA0; opacity: 0.9; }
+    .reading-stat { font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.08em; color: var(--text-muted); white-space: nowrap; }
 
-    /* ── Three-column reading grid ──
-       The margin columns use minmax(0, 220px) — they naturally
-       shrink to zero when the panel is narrow, so nothing ever
-       forces a horizontal scrollbar.
-       --reading-margin-min is the threshold below which we
-       switch to popover mode; read by JS.                        */
     :root { --reading-margin-min: 160px; }
 
     .reading-grid {
       display: grid;
       grid-template-columns:
-        minmax(0, 220px)   /* left margin  */
-        minmax(320px, 720px) /* prose        */
-        minmax(0, 220px);  /* right margin */
+        minmax(0, 220px)
+        minmax(320px, 720px)
+        minmax(0, 220px);
       justify-content: center;
       padding: 0 1rem;
-      /* Left and right margin cols need relative positioning
-         so notes inside them stack correctly */
       align-items: start;
       gap: 0;
     }
 
     .reading-body {
       padding: 3.5rem 2.5rem 6rem;
-      min-width: 0; /* prevent blowout inside grid */
+      min-width: 0;
     }
 
-    /* Margin columns — notes stack here as normal flow children */
     .reading-margin {
-      padding-top: 3.5rem; /* align with prose top padding */
+      padding-top: 3.5rem;
       min-width: 0;
       position: relative;
     }
     .reading-margin-left  { padding-right: 1.25rem; }
     .reading-margin-right { padding-left: 1.25rem; }
 
-    .reading-eyebrow { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blush); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+    .reading-eyebrow { font-family: 'DM Sans', sans-serif; font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blush); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
     .reading-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.75rem,3.5vw,2.5rem); font-weight: 500; color: var(--text-primary); line-height: 1.15; margin-bottom: 0.65rem; letter-spacing: -0.01em; }
     .reading-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-style: italic; color: var(--text-secondary); font-weight: 400; line-height: 1.55; margin-bottom: 1.75rem; }
-    .reading-byline { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 0.85rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.05em; color: var(--text-muted); }
+    .reading-byline { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 0.85rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.72rem; letter-spacing: 0.05em; color: var(--text-muted); }
     .byline-sep { width: 3px; height: 3px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
 
     /* Prose */
@@ -436,8 +447,6 @@
     /* ── Footnote inline trigger ── */
     .reading-prose sup.fn-ref {
       font-size: 0.65em; line-height: 1; vertical-align: super; margin-left: 1px;
-      /* Must be position:relative so the fallback popover (position:absolute)
-         anchors to this element and not some distant ancestor.               */
       position: relative;
     }
     .fn-trigger {
@@ -445,7 +454,6 @@
       color: var(--text-accent); font-weight: 500;
       background: none; border: none; padding: 0 1px;
       cursor: pointer; border-radius: 2px; line-height: 1;
-      /* Dotted underline makes it immediately obvious the number is interactive */
       text-decoration: underline;
       text-decoration-style: dotted;
       text-underline-offset: 2px;
@@ -457,14 +465,10 @@
       color: var(--blush);
       text-decoration-color: var(--blush);
     }
-    /* Hovered (transient) state */
     .fn-trigger.hovered {
       color: var(--blush);
       text-decoration-color: var(--blush);
     }
-    /* Pinned state — blush solid underline + tint background.
-       The solid underline echoes the blush left-border on the margin note,
-       making the visual connection between trigger and note unmistakable.  */
     .fn-trigger.pinned {
       color: var(--blush);
       background: rgba(184,136,142,0.15);
@@ -475,13 +479,11 @@
       text-decoration-color: var(--blush);
     }
     html[data-theme="light"] .fn-trigger.pinned {
-      background: rgba(160,88,95,0.1);
-      outline-color: rgba(160,88,95,0.25);
+      background: rgba(142,72,80,0.1);
+      outline-color: rgba(142,72,80,0.25);
     }
 
-    /* ── Margin note container ──
-       Sits inside the margin column (position: relative).
-       JS sets top in px; left/right span the full column.     */
+    /* ── Margin note container ── */
     .fn-margin-note {
       position: absolute;
       left: 0; right: 0;
@@ -495,7 +497,6 @@
       opacity: 1;
       pointer-events: auto;
     }
-    /* Pinned note gets the blush left-border accent */
     .fn-margin-note .fn-note-inner {
       border-left: 2px solid transparent;
       padding-left: 0.75rem;
@@ -504,23 +505,21 @@
     .fn-margin-note.pinned .fn-note-inner {
       border-left-color: var(--blush);
     }
-    /* Small pin icon shown only when pinned */
     .fn-pin-indicator {
       display: none;
-      font-family: 'DM Sans', sans-serif; font-size: 0.5rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.54rem;
       letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--blush); margin-bottom: 0.35rem;
       align-items: center; gap: 0.3rem;
     }
     .fn-margin-note.pinned .fn-pin-indicator { display: flex; }
-    /* Pin icon — a tiny filled circle */
     .fn-pin-indicator::before {
       content: '';
       display: inline-block; width: 4px; height: 4px;
       border-radius: 50%; background: var(--blush); flex-shrink: 0;
     }
     .fn-note-num {
-      font-family: 'DM Sans', sans-serif; font-size: 0.55rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.6rem;
       letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--text-accent); margin-bottom: 0.3rem; display: block;
     }
@@ -530,13 +529,12 @@
     }
     .fn-note-text a { color: var(--text-accent); border-bottom: 1px solid var(--border); transition: all var(--transition); }
     .fn-note-text a:hover { color: var(--blush); border-color: var(--blush); }
-    /* Jump link at the bottom of the note */
     .fn-note-footer {
       margin-top: 0.55rem; padding-top: 0.45rem;
       border-top: 1px solid var(--border-faint);
     }
     .fn-jump-link {
-      font-family: 'DM Sans', sans-serif; font-size: 0.52rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.54rem;
       letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--text-muted); background: none; border: none;
       cursor: pointer; padding: 0; display: flex; align-items: center; gap: 0.25rem;
@@ -545,12 +543,12 @@
     .fn-jump-link:hover { color: var(--text-accent); }
     .fn-jump-link::after { content: '↓'; }
 
-    /* Fallback popover for narrow screens (< 1100px panel width) */
+    /* Fallback popover for narrow screens */
     .fn-popover {
       position: absolute; bottom: calc(100% + 10px); left: 50%;
       transform: translateX(-50%) translateY(4px);
       width: 280px; background: var(--bg-overlay);
-      border: 1px solid var(--border); border-radius: 4px;
+      border: 1px solid var(--border); border-radius: 2px;
       padding: 0.85rem 1rem; box-shadow: 0 8px 28px var(--shadow);
       z-index: 500; opacity: 0; pointer-events: none;
       transition: opacity 0.18s ease, transform 0.18s ease;
@@ -564,28 +562,28 @@
     .fn-popover.nudge-right { left: auto; right: 0; transform: translateX(0) translateY(4px); }
     .fn-popover.nudge-right.visible { transform: translateX(0) translateY(0); }
     .fn-popover.nudge-right::after, .fn-popover.nudge-right::before { left: auto; right: 12px; transform: none; }
-    .fn-popover-num { font-family: 'DM Sans', sans-serif; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-accent); margin-bottom: 0.4rem; display: block; }
+    .fn-popover-num { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-accent); margin-bottom: 0.4rem; display: block; }
     .fn-popover-text { font-size: 0.82rem; color: var(--text-secondary); font-weight: 300; line-height: 1.6; }
     .fn-popover-text a { color: var(--text-accent); border-bottom: 1px solid var(--border); }
     .fn-popover-text a:hover { color: var(--blush); border-color: var(--blush); }
     .fn-popover.pinned { border-left: 2px solid var(--blush); }
     .fn-popover-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 0.65rem; padding-top: 0.5rem; border-top: 1px solid var(--border-faint); }
-    .fn-popover-pin-label { font-family: 'DM Sans', sans-serif; font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blush); display: none; align-items: center; gap: 0.25rem; }
+    .fn-popover-pin-label { font-family: 'DM Sans', sans-serif; font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blush); display: none; align-items: center; gap: 0.25rem; }
     .fn-popover-pin-label::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--blush); }
     .fn-popover.pinned .fn-popover-pin-label { display: flex; }
-    .fn-jump-link-pop { font-family: 'DM Sans', sans-serif; font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 0.25rem; margin-left: auto; transition: color var(--transition); }
+    .fn-jump-link-pop { font-family: 'DM Sans', sans-serif; font-size: 0.54rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 0.25rem; margin-left: auto; transition: color var(--transition); }
     .fn-jump-link-pop:hover { color: var(--text-accent); }
     .fn-jump-link-pop::after { content: '↓'; }
 
     /* ── Footnotes block at bottom ── */
     .footnotes-section { margin-top: 3.5rem; padding-top: 1.75rem; border-top: 1px solid var(--border); }
-    .footnotes-label { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.25rem; }
+    .footnotes-label { font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.25rem; }
     .footnote-item { display: flex; gap: 0.85rem; margin-bottom: 0.85rem; align-items: baseline; }
     .footnote-num { font-family: 'DM Sans', sans-serif; font-size: 0.68rem; color: var(--text-accent); font-weight: 500; flex-shrink: 0; min-width: 1.2rem; }
     .footnote-text { font-size: 0.83rem; color: var(--text-muted); font-weight: 300; line-height: 1.65; }
     .footnote-text a { color: var(--text-accent); border-bottom: 1px solid var(--border); }
     .footnote-text a:hover { color: var(--blush); border-color: var(--blush); }
-    .footnote-back-btn { display: inline-flex; align-items: center; gap: 0.3rem; font-family: 'DM Sans', sans-serif; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); background: none; border: none; cursor: pointer; padding: 0; margin-left: 0.5rem; transition: color var(--transition); vertical-align: middle; }
+    .footnote-back-btn { display: inline-flex; align-items: center; gap: 0.3rem; font-family: 'DM Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); background: none; border: none; cursor: pointer; padding: 0; margin-left: 0.5rem; transition: color var(--transition); vertical-align: middle; }
     .footnote-back-btn:hover { color: var(--text-accent); }
     .footnote-item.highlight .footnote-text { color: var(--text-secondary); transition: color 0.1s; }
 
@@ -629,7 +627,7 @@
       margin-bottom: 1.75rem; flex-wrap: wrap;
     }
     .overlay-sort-btn {
-      font-family: 'DM Sans', sans-serif; font-size: 0.6rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.64rem;
       letter-spacing: 0.1em; text-transform: uppercase;
       background: none; border: 1px solid var(--border); border-radius: 2px;
       padding: 0.3rem 0.75rem; cursor: pointer; color: var(--text-secondary);
@@ -641,7 +639,7 @@
     }
     .topic-filters { display: flex; gap: 0.45rem; flex-wrap: wrap; }
     .topic-pill {
-      font-family: 'DM Sans', sans-serif; font-size: 0.58rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.62rem;
       letter-spacing: 0.1em; text-transform: uppercase;
       background: none; border: 1px solid; border-radius: 2px;
       padding: 0.28rem 0.7rem; cursor: pointer;
@@ -684,19 +682,51 @@
     .topic-pill[data-topic="Research note"]:hover {
       background: var(--blush-faint); color: #F0D8DB; border-color: #CCA0A6;
     }
-    /* Philosophy — warm ochre */
+    /* Philosophy — muted ochre */
     .topic-pill[data-topic="Philosophy"] {
-      border-color: #7A6A3A; color: #C4A96A;
-      background: rgba(122,106,58,.15);
+      border-color: var(--ochre-border); color: var(--ochre);
+      background: var(--ochre-bg);
     }
     .topic-pill[data-topic="Philosophy"].active,
     .topic-pill[data-topic="Philosophy"]:hover {
-      background: rgba(122,106,58,.35); color: #E0C882; border-color: #A89050;
+      background: rgba(96,84,42,.28); color: #C8B472; border-color: #887640;
     }
+    /* Faith — soft violet */
+    .topic-pill[data-topic="Faith"] {
+      border-color: #6B5A7A; color: #B89EC8;
+      background: rgba(107,90,122,.15);
+    }
+    .topic-pill[data-topic="Faith"].active,
+    .topic-pill[data-topic="Faith"]:hover {
+      background: rgba(107,90,122,.32); color: #D4C0E0; border-color: #9080A8;
+    }
+    /* Geopolitics — slate steel */
+    .topic-pill[data-topic="Geopolitics"] {
+      border-color: #3A5A6A; color: #8AC0D0;
+      background: rgba(58,90,106,.15);
+    }
+    .topic-pill[data-topic="Geopolitics"].active,
+    .topic-pill[data-topic="Geopolitics"]:hover {
+      background: rgba(58,90,106,.32); color: #B0D8E8; border-color: #5A8098;
+    }
+    /* Personal — warm terracotta */
+    .topic-pill[data-topic="Personal"] {
+      border-color: #6A4A3A; color: #C4A090;
+      background: rgba(106,74,58,.15);
+    }
+    .topic-pill[data-topic="Personal"].active,
+    .topic-pill[data-topic="Personal"]:hover {
+      background: rgba(106,74,58,.32); color: #E0BEB0; border-color: #9A6A58;
+    }
+
+    /* Light mode topic pills */
     html[data-theme="light"] .topic-pill[data-topic="Essay"] { background: rgba(31,74,47,.1); color: var(--text-accent); }
     html[data-theme="light"] .topic-pill[data-topic="Policy"] { background: rgba(11,31,58,.08); color: var(--navy-mid); border-color: var(--navy-mid); }
-    html[data-theme="light"] .topic-pill[data-topic="Research note"] { background: rgba(160,88,95,.08); }
-    html[data-theme="light"] .topic-pill[data-topic="Philosophy"] { color: #7A5C10; border-color: #9A7820; background: rgba(139,105,20,.08); }
+    html[data-theme="light"] .topic-pill[data-topic="Research note"] { background: rgba(142,72,80,.08); color: var(--blush); border-color: var(--blush); }
+    html[data-theme="light"] .topic-pill[data-topic="Philosophy"] { color: var(--ochre); border-color: var(--ochre-border); background: var(--ochre-bg); }
+    html[data-theme="light"] .topic-pill[data-topic="Faith"] { color: #5A3E6A; border-color: #7A5A8A; background: rgba(90,62,106,.08); }
+    html[data-theme="light"] .topic-pill[data-topic="Geopolitics"] { color: #1E4A5A; border-color: #2E6A7A; background: rgba(30,74,90,.08); }
+    html[data-theme="light"] .topic-pill[data-topic="Personal"] { color: #5A3020; border-color: #7A5040; background: rgba(90,48,32,.08); }
 
     /* ── Full writing overlay — featured + grid ── */
     .writing-full-grid {
@@ -714,7 +744,7 @@
       width: 3px; height: 100%; background: var(--green-mid);
       transform: scaleY(0); transform-origin: bottom; transition: transform 0.25s ease;
     }
-    .post-grid-card:hover { background: var(--bg-raised); border-color: var(--green-deep); }
+    .post-grid-card:hover { background: var(--bg-raised); }
     .post-grid-card:hover::before { transform: scaleY(1); }
     .post-grid-card:hover .post-cta { color: var(--blush); border-color: var(--blush); }
     .post-grid-card .post-title { font-size: 1.05rem; margin-bottom: 0.35rem; }
@@ -727,7 +757,7 @@
     /* ── Home writing preview: "see all" button ── */
     .see-all-wrap { margin-top: 1.5rem; }
     .see-all-btn {
-      font-family: 'DM Sans', sans-serif; font-size: 0.62rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.66rem;
       letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--text-accent); background: none; border: none;
       cursor: pointer; padding: 0;
@@ -738,7 +768,7 @@
     .see-all-btn:hover { color: var(--blush); border-color: var(--blush); }
 
     /* ── Mobile ── */
-    .mobile-nav-toggle { display: none; position: fixed; top: 1rem; left: 1rem; z-index: 200; background: var(--bg-overlay); border: 1px solid var(--border); border-radius: 3px; width: 2.5rem; height: 2.5rem; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 4px; opacity: 1; transition: opacity 0.3s ease, background var(--transition), border-color var(--transition); }
+    .mobile-nav-toggle { display: none; position: fixed; top: 1rem; left: 1rem; z-index: 200; background: var(--bg-overlay); border: 1px solid var(--border); border-radius: 2px; width: 2.5rem; height: 2.5rem; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 4px; opacity: 1; transition: opacity 0.3s ease, background var(--transition), border-color var(--transition); }
     .mobile-nav-toggle.is-scrolled { opacity: 0.45; background: var(--bg-raised); border-color: var(--border-faint); }
     .mobile-nav-toggle:hover, .mobile-nav-toggle:focus-visible { opacity: 1 !important; background: var(--bg-overlay); border-color: var(--green-mid); outline: none; }
     .mobile-nav-toggle span { display: block; width: 1.1rem; height: 1px; background: var(--text-secondary); transition: all var(--transition); }
@@ -985,27 +1015,6 @@
     </main>
   </div>
 
-  <!-- ══════════════════════════════════════════════════════
-       POSTS DATA
-       ─────────────────────────────────────────────────────
-       To add a new post, copy one object below and fill it in.
-
-       Fields:
-         id          — unique slug (no spaces)
-         pinned      — true = shown as featured card above the list
-                       (only one post should be pinned at a time)
-         tag         — short label: 'Essay', 'Policy', 'Research note', etc.
-         date        — ISO format YYYY-MM-DD used for sorting
-         dateDisplay — shown to readers
-         title       — headline
-         subtitle    — italic sub-heading (optional, set to '' to omit)
-         excerpt     — shown on the index card
-         body        — full HTML prose for the reading panel
-                       Use <h2>, <h3>, <p>, <blockquote>, <hr>, <ul>, <ol>
-                       For footnote references: <sup class="fn-ref"><a href="#fn-N" id="fnref-N">N</a></sup>
-                       (the JS replaces these with interactive buttons automatically)
-         footnotes   — array of strings (HTML allowed); empty array [] if none
-  ══════════════════════════════════════════════════════ -->
   <script>
   const POSTS = [
     {
@@ -1140,6 +1149,70 @@
       footnotes: [
         'For a systematic treatment of the philosophical issues, see Eric Schwitzgebel and Mara Garza, "A Defense of the Rights of Artificial Intelligences," <em>Midwest Studies in Philosophy</em> 39 (2015), and the recent work of Robert Long at the Centre for AI Safety.'
       ]
+    },
+    {
+      id: 'faith-and-reason',
+      pinned: false,
+      featured: false,
+      topic: 'Faith',
+      tag: 'Faith',
+      date: '2025-10-12',
+      dateDisplay: 'October 2025',
+      title: 'Faith, Reason, and the Limits of Certainty',
+      subtitle: 'On the epistemic virtues of religious commitment',
+      excerpt: 'The common framing of faith and reason as adversaries misunderstands both. Faith, properly understood, is not a suspension of rational inquiry but a distinctive orientation toward questions that rational inquiry alone cannot close.',
+      body: `
+        <p>There is a long tradition, especially within analytic philosophy of religion, of treating faith as epistemically defective — a kind of belief held in excess of the evidence, or in spite of it. On this view, the faithful person is someone who has failed to proportion their credences to what the evidence warrants, and the virtuous epistemic agent ought, if anything, to withhold belief on the great metaphysical questions until the evidence comes in.</p>
+
+        <p>I want to push back on this framing, not by defending any particular religious tradition, but by questioning the model of epistemic virtue that underlies it.</p>
+
+        <h2>The myth of the neutral standpoint</h2>
+
+        <p>The evidentialist objection to faith assumes that the rational agent begins from a position of neutral suspension and adds belief only as evidence accumulates. But this picture is difficult to sustain once we attend carefully to the structure of our most basic epistemic commitments.</p>
+
+        <p>We do not arrive at our trust in the reliability of perception, in the uniformity of nature, in the existence of other minds, by marshalling evidence for those propositions from some prior vantage point of neutrality. These commitments are constitutive of the practice of inquiry itself. They are what philosophers sometimes call <em>hinge propositions</em> — the hinges on which all other inquiry turns.<sup class="fn-ref"><a href="#fn-1" id="fnref-1">1</a></sup></p>
+
+        <p>The question, then, is not whether one has such foundational commitments, but which ones, and on what basis. Religious faith, at its most philosophically serious, can be understood as a commitment of this kind — not a failure of rationality but a distinctive answer to the question of what is ultimately real and what grounds our orientation toward the world.</p>
+
+        <h2>Living with open questions</h2>
+
+        <p>This is not to say that faith is immune to rational scrutiny, or that all faith commitments are equally defensible. It is to say that the charge of irrationality often proves too much — it would, if consistently applied, undermine the very framework within which it is levelled.</p>
+
+        <p>What seems more honest, and more philosophically interesting, is to acknowledge that the deepest questions about existence, value, and meaning remain genuinely open — not because we have not yet accumulated enough evidence, but because they are the kind of questions that cannot be settled by evidence alone. How one lives with that openness is, perhaps, the most important question of all.</p>
+      `,
+      footnotes: [
+        'The term is Wittgenstein\'s, developed in <em>On Certainty</em> (1969). For a sophisticated application to religious epistemology, see Alvin Plantinga\'s work on proper function and warranted belief.'
+      ]
+    },
+    {
+      id: 'geopolitics-ai-order',
+      pinned: false,
+      featured: false,
+      topic: 'Geopolitics',
+      tag: 'Geopolitics',
+      date: '2025-09-22',
+      dateDisplay: 'September 2025',
+      title: 'AI and the Fracturing International Order',
+      subtitle: 'Technology, sovereignty, and the shape of strategic competition',
+      excerpt: 'The race to develop frontier AI is reshaping international relations in ways that existing frameworks — built around nuclear deterrence, trade interdependence, and multilateral institutions — were not designed to handle. The result is a geopolitical landscape that is genuinely novel.',
+      body: `
+        <p>The geopolitics of artificial intelligence is sometimes discussed as though it were simply a new chapter in the familiar story of great-power competition — the same dynamics of security dilemma, relative gains, and technological asymmetry, applied to a new domain. There is something to this framing. But it obscures features of the current moment that are, I think, genuinely unprecedented.</p>
+
+        <h2>Why AI is different</h2>
+
+        <p>The most important difference is the relationship between the technology and the state. Nuclear weapons, the paradigmatic technology of the last era of great-power competition, were from the outset developed within and controlled by state institutions. The relevant actors were governments, and the relevant dynamics were primarily interstate.</p>
+
+        <p>Frontier AI is being developed primarily by private firms, operating across jurisdictions, with supply chains and talent pools that are irreducibly international. The relationship between these firms and states is contested, variable, and in many cases adversarial. Governments are attempting to assert sovereignty over a technology that is, in fundamental respects, resistant to the kind of territorial control on which sovereignty depends.<sup class="fn-ref"><a href="#fn-1" id="fnref-1">1</a></sup></p>
+
+        <h2>The fragmentation of the epistemic commons</h2>
+
+        <p>A second distinctive feature is the interaction between AI capability and information environments. The same models that are reshaping economic production and scientific research are also reshaping the conditions under which political judgements are made — by citizens, by policymakers, and by the AI systems increasingly embedded in decision processes.</p>
+
+        <p>This creates feedback loops that have no clear analogue in previous periods of technological transition. The geopolitical competition over AI capabilities is simultaneously a competition over the epistemic infrastructure within which that competition is understood and evaluated. Understanding this recursive structure seems to me essential for anyone trying to think clearly about where we are heading.</p>
+      `,
+      footnotes: [
+        'For a rigorous treatment of this tension, see Henry Farrell and Abraham Newman, "Weaponized Interdependence: How Global Economic Networks Shape State Coercion," <em>International Security</em> 44:1 (2019).'
+      ]
     }
   ];
   </script>
@@ -1185,6 +1258,7 @@
         const el = document.createElement('div');
         el.className = 'post-card';
         el.setAttribute('role', 'button'); el.setAttribute('tabindex', '0');
+        el.setAttribute('data-topic', post.topic || '');
         el.innerHTML = `
           <div class="post-meta">
             <span class="post-tag">${post.tag}</span>
@@ -1210,9 +1284,7 @@
       document.getElementById('writingOverlay').classList.add('open');
       document.body.classList.add('panel-open');
       document.body.style.overflow = 'hidden';
-      // Reset toggle to full opacity — we are at the top of the overlay
       btn.classList.remove('is-scrolled');
-      // Writing link becomes active while overlay is open
       setActiveNav('writing');
     }
     function closeWritingOverlay() {
@@ -1220,10 +1292,8 @@
       if (!document.getElementById('readingPanel').classList.contains('open')) {
         document.body.classList.remove('panel-open');
         document.body.style.overflow = '';
-        // Return toggle to main-page scroll state
         btn.classList.toggle('is-scrolled', window.scrollY > 80);
       }
-      // Restore active nav to whatever section is currently in view
       updateActiveSection();
     }
 
@@ -1260,7 +1330,6 @@
         return overlaySortAsc ? -d : d;
       });
 
-      // Featured — pinned post first, or first in filtered set
       const pinned = posts.find(p => p.pinned) || posts[0];
       const rest   = posts.filter(p => p !== pinned);
 
@@ -1269,6 +1338,7 @@
         const wc = wordCount(pinned.body); const rt = readTime(wc);
         const el = document.createElement('div');
         el.className = 'post-pinned'; el.setAttribute('role', 'button'); el.setAttribute('tabindex', '0');
+        el.setAttribute('data-topic', pinned.topic || '');
         el.innerHTML = `
           <div class="pinned-label">Featured</div>
           <div class="post-meta">
@@ -1293,6 +1363,7 @@
         const wc = wordCount(post.body); const rt = readTime(wc);
         const el = document.createElement('div');
         el.className = 'post-grid-card'; el.setAttribute('role', 'button'); el.setAttribute('tabindex', '0');
+        el.setAttribute('data-topic', post.topic || '');
         el.innerHTML = `
           <div class="post-meta">
             <span class="post-tag">${post.tag}</span>
@@ -1310,43 +1381,25 @@
       });
     }
 
-        // FOOTNOTE MARGIN-NOTE SYSTEM
-    // ════════════════════════════════════════════════════
-
-    // How wide a margin column must be (px) before we use it.
-    // Measured from the actual rendered column, not viewport.
+    // FOOTNOTE MARGIN-NOTE SYSTEM
     const MARGIN_MIN = 150;
-    const NOTE_GAP   = 8;  // extra vertical spacing between stacked notes
+    const NOTE_GAP   = 8;
 
-    // Active notes: Map<num, { el, triggerEl, pinned, inMargin }>
     const activeNotes    = new Map();
     const activePopovers = new Map();
 
-    // ── Decide which margin column to use, or fall back to popover ──
     function getMarginCol() {
       const ml = document.getElementById('marginLeft');
       const mr = document.getElementById('marginRight');
       if (!ml || !mr) return null;
-      // Prefer right; use left if right is too narrow
       const rw = mr.getBoundingClientRect().width;
       const lw = ml.getBoundingClientRect().width;
       if (rw >= MARGIN_MIN) return mr;
       if (lw >= MARGIN_MIN) return ml;
-      return null; // neither wide enough → popover
+      return null;
     }
 
-    // ── Compute the vertical offset of the note within its margin column.
-    //    We want the note's top to align with the trigger in the prose,
-    //    then push it down to avoid collisions with existing notes.     ──
     function computeMarginTop(triggerEl, col) {
-      const colRect      = col.getBoundingClientRect();
-      const panel        = document.getElementById('readingPanel');
-      const trigRect     = triggerEl.getBoundingClientRect();
-
-      // Offset relative to top of the margin column element (which
-      // starts at the same scroll origin as the panel content).
-      // We use offsetTop walking up to the readingGrid to get a
-      // scroll-stable value, not a viewport value.
       let offsetFromGrid = 0;
       let el = triggerEl;
       const grid = document.getElementById('readingGrid');
@@ -1354,13 +1407,8 @@
         offsetFromGrid += el.offsetTop;
         el = el.offsetParent;
       }
-
-      // The margin col has padding-top of 3.5rem (56px at 16px base).
-      // We subtract that so note[0] starts flush with the prose top.
       const colPaddingTop = parseFloat(getComputedStyle(col).paddingTop) || 0;
       let top = offsetFromGrid - colPaddingTop;
-
-      // Collision avoidance with already-placed notes in this column
       col.querySelectorAll('.fn-margin-note').forEach(existing => {
         const existingTop    = existing.offsetTop;
         const existingBottom = existingTop + existing.offsetHeight + NOTE_GAP;
@@ -1368,21 +1416,16 @@
           top = existingBottom;
         }
       });
-
       return Math.max(0, top);
     }
 
-    // ── Place a note in the margin column ──
     function showMarginNote(triggerEl, num, text, pinned) {
       const col = getMarginCol();
       if (!col) { showPopover(triggerEl, num, text, pinned); return; }
-
-      // If already showing, just upgrade to pinned
       if (activeNotes.has(num)) {
         if (pinned) upgradeToPin(num);
         return;
       }
-
       const note = document.createElement('div');
       note.className = 'fn-margin-note' + (pinned ? ' pinned' : '');
       note.dataset.fn = num;
@@ -1395,25 +1438,17 @@
             <button class="fn-jump-link" data-fn="${num}">Jump to note</button>
           </div>
         </div>`;
-
-      // position: absolute within the margin column
       note.style.position = 'absolute';
       note.style.left     = '0';
       note.style.right    = '0';
-      note.style.top      = '0px'; // will be set after append
-
-      col.style.position = 'relative'; // ensure col is positioning context
+      note.style.top      = '0px';
+      col.style.position = 'relative';
       col.appendChild(note);
-
-      // Now measure and set top
       const top = computeMarginTop(triggerEl, col);
       note.style.top = top + 'px';
-
       activeNotes.set(num, { el: note, triggerEl, pinned, col });
       triggerEl.classList.add(pinned ? 'pinned' : 'hovered');
-
       requestAnimationFrame(() => note.classList.add('visible'));
-
       note.querySelector('.fn-jump-link').addEventListener('click', e => {
         e.stopPropagation();
         jumpToBottomNote(num);
@@ -1454,13 +1489,11 @@
       activePopovers.forEach((rec, num) => { if (!rec.pinned) dismissPopover(num, false); });
     }
 
-    // ── Popover fallback ──
     function showPopover(triggerEl, num, text, pinned) {
       if (activePopovers.has(num)) {
         if (pinned) upgradePinPopover(num);
         return;
       }
-
       const pop = document.createElement('div');
       pop.className = 'fn-popover' + (pinned ? ' pinned' : '');
       pop.innerHTML = `
@@ -1470,11 +1503,9 @@
           <span class="fn-popover-pin-label">Pinned</span>
           <button class="fn-jump-link-pop" data-fn="${num}">Jump to note</button>
         </div>`;
-
       triggerEl.parentElement.appendChild(pop);
       activePopovers.set(num, { el: pop, triggerEl, pinned });
       triggerEl.classList.add(pinned ? 'pinned' : 'hovered');
-
       requestAnimationFrame(() => {
         const rect = pop.getBoundingClientRect();
         const pr   = document.getElementById('readingPanel').getBoundingClientRect();
@@ -1482,7 +1513,6 @@
         else if (rect.right > pr.right - 8) pop.classList.add('nudge-right');
         requestAnimationFrame(() => pop.classList.add('visible'));
       });
-
       pop.querySelector('.fn-jump-link-pop').addEventListener('click', e => {
         e.stopPropagation();
         jumpToBottomNote(num);
@@ -1499,7 +1529,6 @@
       activePopovers.delete(num);
     }
 
-    // ── Jump to bottom note, highlight, offer back-scroll ──
     function jumpToBottomNote(num) {
       const fnEl = document.getElementById('fn-' + num);
       if (!fnEl) return;
@@ -1508,24 +1537,19 @@
       setTimeout(() => fnEl.classList.remove('highlight'), 1800);
     }
 
-    // ── Wire up triggers after a post is rendered ──
     function initFootnoteTriggers(footnotes) {
       const panel = document.getElementById('readingPanel');
-
       panel.querySelectorAll('sup.fn-ref').forEach(sup => {
         const a = sup.querySelector('a');
         if (!a) return;
         const num    = parseInt(a.textContent.trim(), 10);
         const fnText = footnotes[num - 1] || '';
-
         const btn = document.createElement('button');
         btn.className = 'fn-trigger';
         btn.textContent = num;
         btn.setAttribute('aria-label', 'Footnote ' + num);
         btn.setAttribute('id', 'fnref-' + num);
-
         let hoverTimer;
-
         btn.addEventListener('mouseenter', () => {
           hoverTimer = setTimeout(() => {
             if (!activeNotes.has(num) && !activePopovers.has(num)) {
@@ -1533,7 +1557,6 @@
             }
           }, 260);
         });
-
         btn.addEventListener('mouseleave', () => {
           clearTimeout(hoverTimer);
           const rec    = activeNotes.get(num);
@@ -1541,12 +1564,10 @@
           if (rec    && !rec.pinned)    dismissMarginNote(num, false);
           if (popRec && !popRec.pinned) dismissPopover(num, false);
         });
-
         btn.addEventListener('click', e => {
           e.stopPropagation();
           const rec    = activeNotes.get(num);
           const popRec = activePopovers.get(num);
-
           if (rec) {
             rec.pinned ? dismissMarginNote(num, false) : upgradeToPin(num);
           } else if (popRec) {
@@ -1555,16 +1576,12 @@
             showMarginNote(btn, num, fnText, true);
           }
         });
-
         sup.replaceChildren(btn);
       });
-
-      // Click on grid background dismisses all transient notes
       const grid = document.getElementById('readingGrid');
       if (grid) grid.addEventListener('click', dismissAllUnpinned);
     }
 
-    // ── Bottom footnotes: back-to-ref ──
     function initFootnoteBackLinks() {
       const panel = document.getElementById('readingPanel');
       panel.querySelectorAll('.footnote-back-btn').forEach(backBtn => {
@@ -1579,14 +1596,11 @@
       });
     }
 
-    // ── Open post ──
     function openPost(id) {
       const post = POSTS.find(p => p.id === id);
       if (!post) return;
-
       const wc = wordCount(post.body);
       const rt = readTime(wc);
-
       const footnotesHTML = post.footnotes && post.footnotes.length
         ? `<div class="footnotes-section">
             <div class="footnotes-label">Notes</div>
@@ -1597,7 +1611,6 @@
               </div>`).join('')}
           </div>`
         : '';
-
       document.getElementById('readingBody').innerHTML = `
         <div class="reading-eyebrow">
           <span>${post.tag}</span>
@@ -1621,33 +1634,26 @@
           <p class="article-end-cta-text">If this piece raised questions worth discussing, I&rsquo;d be glad to hear from you.</p>
           <a class="article-end-email" href="mailto:xx@ed.ac.uk">xx@ed.ac.uk</a>
         </div>`;
-
-      // Wire up interactive footnote elements
       initFootnoteTriggers(post.footnotes || []);
       initFootnoteBackLinks();
-
       document.getElementById('readingStat').textContent = `${rt} min`;
-
       const panel = document.getElementById('readingPanel');
       panel.scrollTop = 0;
       document.getElementById('readingProgress').style.width = '0%';
       panel.classList.add('open');
       document.body.style.overflow = 'hidden';
-      // Reset toggle opacity — we are at the top of the article
       btn.classList.remove('is-scrolled');
     }
 
-    // ── Close post ──
     function closePost() {
       [...activeNotes.keys()].forEach(n => dismissMarginNote(n, true));
       [...activePopovers.keys()].forEach(n => dismissPopover(n, true));
-      // Reset glow and end CTA
-      const backBtn = document.getElementById('readingBack');
-      if (backBtn) backBtn.classList.remove('glow');
       const endCta = document.getElementById('articleEndCta');
       if (endCta) endCta.classList.remove('visible');
+      const backBtn = document.getElementById('readingBack');
+      if (backBtn) backBtn.classList.remove('near-end');
+      progressFill.classList.remove('complete');
       document.getElementById('readingPanel').classList.remove('open');
-      // Only remove panel-open if writing overlay is also closed
       if (!document.getElementById('writingOverlay').classList.contains('open')) {
         document.body.classList.remove('panel-open');
         document.body.style.overflow = '';
@@ -1655,9 +1661,6 @@
       }
     }
     document.getElementById('readingBack').addEventListener('click', closePost);
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && document.getElementById('readingPanel').classList.contains('open')) closePost();
-    });
 
     // ── Reading scroll: progress + header + toggle fade ──
     const readingPanel  = document.getElementById('readingPanel');
@@ -1667,22 +1670,22 @@
     readingPanel.addEventListener('scroll', () => {
       const scrollTop = readingPanel.scrollTop;
       const total     = readingPanel.scrollHeight - readingPanel.clientHeight;
-      // Progress bar
-      progressFill.style.width = total > 0 ? (scrollTop / total * 100) + '%' : '0%';
+      const pct       = total > 0 ? scrollTop / total : 0;
+      progressFill.style.width = (pct * 100) + '%';
+      // Complete state on progress bar
+      progressFill.classList.toggle('complete', pct >= 0.99);
       readingHeader.classList.toggle('scrolled', scrollTop > 20);
-      // Drive toggle fade from this scroll container while panel is open
       if (readingPanel.classList.contains('open')) {
         btn.classList.toggle('is-scrolled', scrollTop > 80);
       }
-      // Glow the back button and show end-CTA when near the end
-      const nearEnd = total > 0 && (scrollTop / total) >= 0.90;
+      // Near-end: elevate back button and show end CTA
+      const nearEnd = total > 0 && pct >= 0.88;
       const backBtn = document.getElementById('readingBack');
       const endCta  = document.getElementById('articleEndCta');
-      if (backBtn) backBtn.classList.toggle('glow', nearEnd);
+      if (backBtn) backBtn.classList.toggle('near-end', nearEnd);
       if (endCta)  endCta.classList.toggle('visible', nearEnd);
     }, { passive: true });
 
-    // Writing overlay scroll → drive toggle fade
     const writingOverlayEl = document.getElementById('writingOverlay');
     writingOverlayEl.addEventListener('scroll', () => {
       if (writingOverlayEl.classList.contains('open')) {
@@ -1708,7 +1711,6 @@
     navToggle.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('visible'); });
     overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); });
 
-    // Nav links: close overlays before navigating; Writing link opens overlay instead
     navLinks.forEach(link => link.addEventListener('click', e => {
       sidebar.classList.remove('open');
       overlay.classList.remove('visible');
@@ -1721,19 +1723,31 @@
           openWritingOverlay();
         }
       } else {
+        e.preventDefault();
         closePost();
         closeWritingOverlay();
+        const targetId = link.getAttribute('href').replace('#', '');
+        const target   = document.getElementById(targetId);
+        if (target) {
+          // Brief delay so overlays can begin closing before scroll
+          setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 20);
+        }
       }
     }));
 
-    // Site name = home button
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (document.getElementById('readingPanel').classList.contains('open')) closePost();
+        else if (document.getElementById('writingOverlay').classList.contains('open')) closeWritingOverlay();
+      }
+    });
+
     document.getElementById('siteNameBtn').addEventListener('click', () => {
       closePost();
       closeWritingOverlay();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // See all writing button
     document.getElementById('seeAllBtn').addEventListener('click', () => {
       if (document.getElementById('writingOverlay').classList.contains('open')) {
         closeWritingOverlay();
@@ -1742,27 +1756,17 @@
       }
     });
 
-    // Writing overlay close
     document.getElementById('writingOverlayClose').addEventListener('click', closeWritingOverlay);
 
     function setActiveNav(id) {
       navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
     }
 
-    // Track which section is currently in view using a scroll-position
-    // approach rather than IntersectionObserver thresholds — this handles
-    // sections of very different heights reliably.
     const sections = Array.from(document.querySelectorAll('section[id]'));
 
     function updateActiveSection() {
-      // Overlays take precedence — don't update from scroll while one is open
       if (document.getElementById('writingOverlay').classList.contains('open')) return;
       if (document.getElementById('readingPanel').classList.contains('open')) return;
-
-      // Find the section whose top is closest to (but still above) 40% of viewport height.
-      // This means a section is considered "active" once its heading has passed
-      // well into the visible area, which gives every section a fair window
-      // regardless of its height.
       const trigger = window.innerHeight * 0.4;
       let active = sections[0];
       for (const s of sections) {
